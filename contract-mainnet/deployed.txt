@@ -1,0 +1,28 @@
+Deployer                    :
+
+VaultMaster                 :
+VaultCreator                :
+ControllerCreator           :
+
+
+//vault
+BaseToken                   :
+Vault                       :
+Controller                  :
+Strategy                    :
+
+
+
+===================
+max                         : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+min                         : 0x0000000000000000000000000000000000000000
+1 ether                     : 1000000000000000000
+optimize                    : 999999
+
+busd                        :
+wbnb                        :
+
+
+
+
+
