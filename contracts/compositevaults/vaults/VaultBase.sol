@@ -22,9 +22,9 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
 
     IERC20 public basedToken;
 
-    uint public earnLowerlimit = 1; // minimum to invest
-    uint public depositLimit = 0; // limit for each deposit (set 0 to disable)
-    uint private totalDepositCap = 0; // initial cap (set 0 to disable)
+    uint public earnLowerlimit; // minimum to invest
+    uint public depositLimit; // limit for each deposit (set 0 to disable)
+    uint private totalDepositCap; // initial cap (set 0 to disable)
 
     address public governance;
     address public controller;
@@ -32,7 +32,7 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
     IVaultMaster vaultMaster;
     mapping(address => address) public converterMap; // non-core token => converter
 
-    bool public acceptContractDepositor = false;
+    bool public acceptContractDepositor;
     mapping(address => bool) public whitelistedContract;
     bool private _mutex;
 
@@ -43,7 +43,10 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
     uint public startReleasingCompoundBlk;
     uint public endReleasingCompoundBlk;
 
-    bool public override openHarvest = true;
+    //earnBefore: avoid deposit fee in farm, not to use with farm has bonus received when deposit
+    //!earnBefore: avoid bonus received when deposit to farm, not to use with farm has deposit fee
+    bool public earnBefore;
+    bool public override openHarvest;
     uint public lastHarvestAllTimeStamp;
 
     bool public depositPaused;
@@ -57,6 +60,9 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
     ) public initializer {
         __ERC20_init(_name, _symbol);
         _setupDecimals(IDecimals(address(_basedToken)).decimals());
+
+        earnLowerlimit = 1;
+        openHarvest = true;
 
         basedToken = _basedToken;
         vaultMaster = _vaultMaster;
@@ -243,10 +249,11 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
         require(_mint_amount >= _min_mint_amount, "slippage");
     }
 
-    //this function avoid deposit fee in farm, not to use with farm has bonus received when deposit
     function _deposit(address _account, address _mintTo, uint _pool, uint _amount) internal returns (uint _shares) {
         basedToken.safeTransferFrom(_account, address(this), _amount);
-        earn();
+        if (earnBefore) {
+            earn();
+        }
         uint256 _after = balance();
         _amount = _after.sub(_pool); // additional check for deflationary tokens
         require(depositLimit == 0 || _amount <= depositLimit, ">depositLimit");
@@ -260,6 +267,9 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
 
         _minterBlock = keccak256(abi.encodePacked(tx.origin, block.number));
         _mint(_mintTo, _shares);
+        if (!earnBefore) {
+            earn();
+        }
     }
 
     // Used to swap any borrowed reserve over the debt limit to liquidate to 'token'

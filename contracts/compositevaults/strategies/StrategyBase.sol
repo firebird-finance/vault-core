@@ -225,7 +225,7 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard {
 
     function _buyWantAndReinvest() internal virtual;
 
-    function harvest(address _mergedStrategy) external override virtual {
+    function harvest(address _mergedStrategy) external override virtual nonReentrant {
         require(msg.sender == controller || msg.sender == strategist || msg.sender == governance, "!authorized");
 
         uint256 pricePerFullShareBefore = vault.getPricePerFullShare();

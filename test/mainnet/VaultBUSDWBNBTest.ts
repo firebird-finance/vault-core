@@ -39,7 +39,7 @@ describe("StrategyBTCWBNB", function() {
     let signers: SignerWithAddress[];
     const bobAddress = "0x1b96b92314c44b159149f7e0303511fb2fc4774f";
     let bob: SignerWithAddress;
-    const deployerMainnetAddress = "0x7Be4D5A99c903C437EC77A20CB6d0688cBB73c7f";
+    const deployerMainnetAddress = "0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c";
     let deployerMainnet: SignerWithAddress;
 
     let baseToken: MockErc20;

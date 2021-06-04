@@ -42,7 +42,7 @@ contract StrategyAutoCake is StrategyBase {
         address _baseToken, address _farmingToken,
         address _autoFarm, uint _poolId, address _targetCompound, address _targetProfit,
         address _controller
-    ) public {
+    ) public nonReentrant {
         require(_initialized == false, "Strategy: Initialize must be false.");
         initialize(_baseToken, _farmingToken, _controller, _targetCompound, _targetProfit);
         autoFarm = _autoFarm;
@@ -59,7 +59,11 @@ contract StrategyAutoCake is StrategyBase {
         return "StrategyAutoCake";
     }
 
-    function deposit() public override {
+    function deposit() public override nonReentrant {
+        _deposit();
+    }
+
+    function _deposit() internal {
         uint _baseBal = IERC20(baseToken).balanceOf(address(this));
         if (_baseBal > 0) {
             IAutoFarmV2(autoFarm).deposit(poolId, _baseBal);
@@ -105,7 +109,7 @@ contract StrategyAutoCake is StrategyBase {
                 vault.addNewCompound(_after, blocksToReleaseCompound);
             }
 
-            deposit();
+            _deposit();
         }
     }
 

@@ -36,7 +36,7 @@ contract StrategyPancakeCake is StrategyBase {
         address _baseToken, address _farmingToken,
         address _farmPool, address _targetCompound, address _targetProfit,
         address _controller
-    ) public {
+    ) public nonReentrant {
         require(_initialized == false, "Strategy: Initialize must be false.");
         initialize(_baseToken, _farmingToken, _controller, _targetCompound, _targetProfit);
         farmPool = _farmPool;
@@ -49,7 +49,7 @@ contract StrategyPancakeCake is StrategyBase {
         return "StrategyPancakeCake";
     }
 
-    function deposit() public override {
+    function deposit() public override nonReentrant {
         uint _baseBal = IERC20(baseToken).balanceOf(address(this));
         if (_baseBal > 0) {
             _stakeCake();

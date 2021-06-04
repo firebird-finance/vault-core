@@ -3,17 +3,18 @@
 pragma solidity 0.6.12;
 
 import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/SafeERC20.sol";
+import "@openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol";
 import "./IVaultMaster.sol";
 
-contract VaultMaster is IVaultMaster {
+contract VaultMaster is IVaultMaster, ContextUpgradeSafe {
     using SafeERC20 for IERC20;
 
     address public governance;
 
-    address public override reserveFund = 0x7Be4D5A99c903C437EC77A20CB6d0688cBB73c7f; // % profit from Vaults
-    address public override performanceReward = 0x7Be4D5A99c903C437EC77A20CB6d0688cBB73c7f; // set to deploy wallet at start
+    address public override reserveFund = 0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c; // % profit from Vaults
+    address public override performanceReward = 0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c; // set to deploy wallet at start
 
-    uint256 public override performanceFee = 500; // 5%
+    uint256 public override performanceFee = 450; // 4.5%
     uint256 public override gasFee = 0; // 0% at start and can be set by governance decision
     uint256 public override withdrawalProtectionFee = 0; // % of withdrawal go back to vault (for auto-compounding) to protect withdrawals
 
@@ -25,7 +26,7 @@ contract VaultMaster is IVaultMaster {
 
     mapping(address => uint) public override slippage; // over 10000
 
-    constructor() public {
+    function initialize() public initializer {
         governance = msg.sender;
     }
 

@@ -43,7 +43,7 @@ contract StrategyStakePoolStableSwap is StrategyBase {
         address _stakePool, address _targetCompound, address _targetProfit,
         address _basePoolSwap, uint _baseCompoundIndex,
         address _controller
-    ) public {
+    ) public nonReentrant {
         require(_initialized == false, "Strategy: Initialize must be false.");
         initialize(_baseToken, address(0), _controller, _targetCompound, _targetProfit);
         stakePool = _stakePool;
@@ -68,7 +68,11 @@ contract StrategyStakePoolStableSwap is StrategyBase {
         return "StrategyStableSwap";
     }
 
-    function deposit() public override {
+    function deposit() public override nonReentrant {
+        _deposit();
+    }
+
+    function _deposit() internal {
         uint _baseBal = IERC20(baseToken).balanceOf(address(this));
         if (_baseBal > 0) {
             IStakePool(stakePool).stake(_baseBal);
@@ -118,7 +122,7 @@ contract StrategyStakePoolStableSwap is StrategyBase {
                 uint _compound = _after.sub(_before);
                 vault.addNewCompound(_compound, blocksToReleaseCompound);
             }
-            deposit();
+            _deposit();
         }
     }
 

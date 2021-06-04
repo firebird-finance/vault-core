@@ -2,7 +2,7 @@ const Web3 = require('web3');
 require('dotenv').config();
 const ControllerABI = require('../../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
 const ownerPrivateKey = process.env.MNEMONICC;
-let deployerMainnet = '0x7Be4D5A99c903C437EC77A20CB6d0688cBB73c7f';
+let deployerMainnet = '0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c';
 
 let vaultsAddress = ['0x33e770DF8bB4af69b653312Ffa31b060f5c4FEB3'];
 let controllersAddress = ['0xf5B7359e0dE30B11fDFFf26e39d9498B7640bAC4'];

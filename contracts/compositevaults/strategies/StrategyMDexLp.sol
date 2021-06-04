@@ -45,7 +45,7 @@ contract StrategyMDexLp is StrategyBase {
         address _baseToken, address[] memory _farmingTokens,
         address _farmPool, uint _poolId, address _targetCompound, address _targetProfit, address _token0, address _token1,
         address _controller
-    ) public {
+    ) public nonReentrant {
         require(_initialized == false, "Strategy: Initialize must be false.");
         unirouter = IUniswapV2Router(0x7DAe51BD3E3376B8c7c4900E9107f12Be3AF1bA8);
         initialize(_baseToken, address(0), _controller, _targetCompound, _targetProfit);
@@ -75,7 +75,11 @@ contract StrategyMDexLp is StrategyBase {
         return "StrategyMDexLp";
     }
 
-    function deposit() public override {
+    function deposit() public override nonReentrant {
+        _deposit();
+    }
+
+    function _deposit() internal {
         uint _baseBal = IERC20(baseToken).balanceOf(address(this));
         if (_baseBal > 0) {
             IMDexChef(farmPool).deposit(poolId, _baseBal);
@@ -138,7 +142,7 @@ contract StrategyMDexLp is StrategyBase {
                 uint _compound = _after.sub(_before);
                 vault.addNewCompound(_compound, blocksToReleaseCompound);
             }
-            deposit();
+            _deposit();
         }
     }
 

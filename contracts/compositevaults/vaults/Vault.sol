@@ -2,7 +2,7 @@
 
 pragma solidity 0.6.12;
 
-import "./VaultCakeBase.sol";
+import "./VaultBase.sol";
 
 contract Vault is VaultBase {
     event ExecuteTransaction(address indexed target, uint value, string signature, bytes data);
