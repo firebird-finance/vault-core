@@ -42,8 +42,7 @@ contract StrategyAutoCake is StrategyBase {
         address _baseToken, address _farmingToken,
         address _autoFarm, uint _poolId, address _targetCompound, address _targetProfit,
         address _controller
-    ) public nonReentrant {
-        require(_initialized == false, "Strategy: Initialize must be false.");
+    ) public nonReentrant initializer {
         initialize(_baseToken, _farmingToken, _controller, _targetCompound, _targetProfit);
         autoFarm = _autoFarm;
         poolId = _poolId;
@@ -52,7 +51,6 @@ contract StrategyAutoCake is StrategyBase {
         autoStrat = _autoStrat;
 
         IERC20(baseToken).approve(autoFarm, type(uint256).max);
-        _initialized = true;
     }
 
     function getName() public override pure returns (string memory) {

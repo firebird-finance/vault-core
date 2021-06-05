@@ -28,6 +28,9 @@ contract VaultMaster is IVaultMaster, ContextUpgradeSafe {
 
     function initialize() public initializer {
         governance = msg.sender;
+        reserveFund = 0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c;
+        performanceReward = 0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c;
+        performanceFee = 450;
     }
 
     modifier onlyGovernance() {

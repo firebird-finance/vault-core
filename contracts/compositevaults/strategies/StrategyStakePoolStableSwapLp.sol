@@ -48,8 +48,7 @@ contract StrategyStakePoolStableSwapLp is StrategyBase {
         address _stakePool, address _targetCompound, address _targetProfit,
         address _poolSwap, address _basePoolSwap, uint _baseCompoundIndex,
         address _controller
-    ) public nonReentrant {
-        require(_initialized == false, "Strategy: Initialize must be false.");
+    ) public nonReentrant initializer {
         initialize(_baseToken, address(0), _controller, _targetCompound, _targetProfit);
         stakePool = _stakePool;
         poolSwap = _poolSwap;
@@ -67,7 +66,6 @@ contract StrategyStakePoolStableSwapLp is StrategyBase {
             IERC20(_rewardToken).approve(address(unirouter), type(uint256).max);
             IERC20(_rewardToken).approve(address(firebirdRouter), type(uint256).max);
         }
-        _initialized = true;
     }
 
     function getName() public override pure returns (string memory) {

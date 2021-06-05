@@ -45,8 +45,7 @@ contract StrategyMDexLp is StrategyBase {
         address _baseToken, address[] memory _farmingTokens,
         address _farmPool, uint _poolId, address _targetCompound, address _targetProfit, address _token0, address _token1,
         address _controller
-    ) public nonReentrant {
-        require(_initialized == false, "Strategy: Initialize must be false.");
+    ) public nonReentrant initializer {
         unirouter = IUniswapV2Router(0x7DAe51BD3E3376B8c7c4900E9107f12Be3AF1bA8);
         initialize(_baseToken, address(0), _controller, _targetCompound, _targetProfit);
         farmPool = _farmPool;
@@ -68,7 +67,6 @@ contract StrategyMDexLp is StrategyBase {
             IERC20(farmingTokens[i]).approve(address(unirouter), type(uint256).max);
             IERC20(farmingTokens[i]).approve(address(firebirdRouter), type(uint256).max);
         }
-        _initialized = true;
     }
 
     function getName() public override pure returns (string memory) {

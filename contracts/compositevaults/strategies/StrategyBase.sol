@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol";
 
 import "../../interfaces/IUniswapV2Router.sol";
 import "../../interfaces/Balancer.sol";
@@ -31,13 +32,13 @@ import "../IStrategy.sol";
 
 */
 
-abstract contract StrategyBase is IStrategy, ReentrancyGuard {
+abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
     using SafeERC20 for IERC20;
     using Address for address;
     using SafeMath for uint;
 
-    IUniswapV2Router public unirouter = IUniswapV2Router(0x10ED43C718714eb63d5aA57B78B54704E256024E);
-    IFirebirdRouter public firebirdRouter = IFirebirdRouter(0xb7e19a1188776f32E8C2B790D9ca578F2896Da7C);
+    IUniswapV2Router public unirouter = IUniswapV2Router(0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506);
+    IFirebirdRouter public firebirdRouter = IFirebirdRouter(0xF6fa9Ea1f64f1BBfA8d71f7f43fAF6D45520bfac);
 
     address public override baseToken;
     address public farmingToken;
@@ -45,7 +46,7 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard {
     address public targetProfitToken; // compoundToken -> profit
 
     address public governance;
-    address public timelock = address(0x36fcf1c1525854b2d195F5d03d483f01549e06f2);
+    address public timelock = address(0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c);
 
     address public controller;
     address public strategist;
@@ -58,7 +59,6 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard {
 
     uint256 public performanceFee = 0; //1400 <-> 14.0%
     uint public lastHarvestTimeStamp;
-    bool internal _initialized = false;
 
     function initialize(address _baseToken, address _farmingToken, address _controller, address _targetCompoundToken, address _targetProfitToken) internal {
         baseToken = _baseToken;

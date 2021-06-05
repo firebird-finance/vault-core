@@ -27,7 +27,10 @@ import {
     VaultController,
     StrategyPairWeightLpFactory,
     StrategyPairWeightLp,
-    StrategySushiLpFactory
+    StrategySushiLpFactory,
+    StrategySushiMiniV2LpFactory,
+    StrategyQuickLpFactory,
+    StrategyCurveStableFactory,
 } from "../../typechain";
 
 import {SignerWithAddress} from "hardhat-deploy-ethers/dist/src/signer-with-address";
@@ -101,27 +104,60 @@ describe("StrategyBTCWBNB", function() {
         await strategy.connect(deployerMainnet).setFirebirdPairs(busd.address, btc.address, ["0xf98313f818c53E40Bd758C5276EF4B434463Bec4"]);
         await strategy.connect(deployerMainnet).setFirebirdPairs(cakeAddress, busd.address, ["0xC99E3abe7729a3869d5cAd631bcbB90e3d389AA2"]);
 
-        //bnb-busd
-        let strategy82 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy82.connect(deployerMainnet).initialize(
-            "0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16",
-            "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82",
-            "0x73feaa1eE314F8c655E354234017bE2193C9E24E",
-            252,
-            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
-            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
-            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-            "0xe9e7cea3dedca5984780bafc599bd69add087d56",
+
+        //am3crv
+        let strategy2 = await new StrategyCurveStableFactory(deployerMainnet).deploy();
+        await strategy2.connect(deployerMainnet).initialize(
+          "0xE7a24EF0C5e95Ffb0f6684b813A78F2a3AD7D171",
+          "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
+          "0xe381C25de995d62b453aF8B931aAc84fcCaa7A62",
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          1,
+          "0x445FE580eF8d70FF569aB36e80c647af338db351",
+          controller.address
+        );
+        //matic -> usdc
+        await strategy2.connect(deployerMainnet).setFirebirdPairs("0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0xcd353f79d9fade311fc3119b841e1f456b54e858"]);
+
+
+        //btc-eth quick lp
+        let strategy1 = await new StrategyQuickLpFactory(deployerMainnet).deploy();
+        await strategy1.connect(deployerMainnet).initialize(
+          "0xdc9232e2df177d7a12fdff6ecbab114e2231198d",
+          "0x831753DD7087CaC61aB5644b308642cc1c33Dc13",
+          "0x070D182EB7E9C3972664C959CE58C5fC6219A7ad",
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+          "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6",
+          controller.address
+        );
+        //quick -> eth
+        await strategy1.connect(deployerMainnet).setFirebirdPairs("0x831753DD7087CaC61aB5644b308642cc1c33Dc13", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0x1bd06b96dd42ada85fdd0795f3b4a79db914add5"]);
+        //eth -> btc
+        await strategy1.connect(deployerMainnet).setFirebirdPairs("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", ["0xdc9232e2df177d7a12fdff6ecbab114e2231198d"]);
+
+
+        //btc-eth sushi lp
+        let strategy0 = await new StrategySushiMiniV2LpFactory(deployerMainnet).deploy();
+        await strategy0.connect(deployerMainnet).initialize(
+            "0xe62ec2e799305e0d367b0cc3ee2cda135bf89816",
+            ["0x0b3F868E0BE5597D5DB7fEB59E1CADBb0fdDa50a", "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270"], //sushi, matic
+            "0x0769fd68dFb93167989C6f7254cd0D766Fb2841F",
+            3,
+            "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
+            "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
+            "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", //btc
+            "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
             controller.address
         );
-        //cake -> bnb
-        await strategy82
-            .connect(deployerMainnet)
-            .setFirebirdPairs("0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82", "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c", ["0x0eD7e52944161450477ee417DE9Cd3a859b14fD0"]);
-        // bnb -> busd
-        await strategy82
-            .connect(deployerMainnet)
-            .setFirebirdPairs("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0xe9e7cea3dedca5984780bafc599bd69add087d56", ["0x522361C3aa0d81D1726Fa7d40aA14505d0e097C9"]);
+        //sushi -> eth
+        await strategy0.connect(deployerMainnet).setFirebirdPairs("0x0b3F868E0BE5597D5DB7fEB59E1CADBb0fdDa50a", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0xb5846453b67d0b4b4ce655930cf6e4129f4416d7"]);
+        // matic -> eth
+        await strategy0.connect(deployerMainnet).setFirebirdPairs("0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0xc4e595acdd7d12fec385e5da5d43160e8a0bac0e"]);
+        // eth -> btc
+        await strategy0.connect(deployerMainnet).setFirebirdPairs("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", ["0xe62ec2e799305e0d367b0cc3ee2cda135bf89816"]);
     });
 
     async function setNextBlockTimestamp(timestamp: number) {

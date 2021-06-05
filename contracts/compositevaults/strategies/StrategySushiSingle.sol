@@ -37,14 +37,12 @@ contract StrategySushiSingle is StrategyBase {
         address _baseToken, address _farmingToken,
         address _farmPool, uint _poolId, address _targetCompound, address _targetProfit,
         address _controller
-    ) public nonReentrant {
-        require(_initialized == false, "Strategy: Initialize must be false.");
+    ) public nonReentrant initializer {
         initialize(_baseToken, _farmingToken, _controller, _targetCompound, _targetProfit);
         farmPool = _farmPool;
         poolId = _poolId;
 
         IERC20(baseToken).approve(address(farmPool), type(uint256).max);
-        _initialized = true;
     }
 
     function getName() public override pure returns (string memory) {

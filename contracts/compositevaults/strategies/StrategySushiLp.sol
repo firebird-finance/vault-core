@@ -42,8 +42,7 @@ contract StrategySushiLp is StrategyBase {
         address _baseToken, address _farmingToken,
         address _farmPool, uint _poolId, address _targetCompound, address _targetProfit, address _token0, address _token1,
         address _controller
-    ) public nonReentrant {
-        require(_initialized == false, "Strategy: Initialize must be false.");
+    ) public nonReentrant initializer {
         initialize(_baseToken, _farmingToken, _controller, _targetCompound, _targetProfit);
         farmPool = _farmPool;
         poolId = _poolId;
@@ -59,7 +58,6 @@ contract StrategySushiLp is StrategyBase {
             IERC20(token1).approve(address(unirouter), type(uint256).max);
             IERC20(token1).approve(address(firebirdRouter), type(uint256).max);
         }
-        _initialized = true;
     }
 
     function getName() public override pure returns (string memory) {

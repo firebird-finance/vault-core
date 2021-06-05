@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 
 import "./StrategyBase.sol";
-import "../../interfaces/IRewardPool.sol";
+import "../../interfaces/IQuickStakingRewards.sol";
 
 /*
 
@@ -24,33 +24,28 @@ import "../../interfaces/IRewardPool.sol";
 
 */
 
-contract StrategyPairWeightLp is StrategyBase {
+contract StrategyQuickLp is StrategyBase {
     uint public blocksToReleaseCompound = 0; // disable
 
-    address public farmPool;
-    uint public poolId;
+    address public farmPool = 0x0895196562C7868C5Be92459FaE7f877ED450452;
 
-    address public token0;
-    address public token1;
-    uint public token0Weight; //max 100
-    uint public token1Weight; //max 100
+    address public token0 = 0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82;
+    address public token1 = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c;
 
-    // baseToken       = 0xf98313f818c53E40Bd758C5276EF4B434463Bec4 (BUSDWBNB-LP)
-    // farmingToken = 0x4f0ed527e8A95ecAA132Af214dFd41F30b361600 (CAKE)
-    // targetCompound = 0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56 (BUSD)
-    // token0 = 0x0610C2d9F6EbC40078cf081e2D1C4252dD50ad15 (WBNB)
-    // token1 = 0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56 (BUSD)
+    // baseToken       = 0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6 (CAKEBNB-CAKELP)
+    // farmingToken = 0x4f47a0d15c1e53f3d94c069c7d16977c29f9cb6b (RAMEN)
+    // targetCompound = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c (BNB)
+    // token0 = 0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82 (CAKE)
+    // token1 = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c (BNB)
     function initialize(
         address _baseToken, address _farmingToken,
-        address _farmPool, uint _poolId, address _targetCompound, address _targetProfit, uint _token0Weight, address _token0, address _token1,
+        address _farmPool, address _targetCompound, address _targetProfit, address _token0, address _token1,
         address _controller
     ) public nonReentrant initializer {
+        unirouter = IUniswapV2Router(0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff);
         initialize(_baseToken, _farmingToken, _controller, _targetCompound, _targetProfit);
         farmPool = _farmPool;
-        poolId = _poolId;
         token0 = _token0;
-        token0Weight = _token0Weight;
-        token1Weight = 100 - _token0Weight;
         token1 = _token1;
 
         IERC20(baseToken).approve(address(farmPool), type(uint256).max);
@@ -65,7 +60,7 @@ contract StrategyPairWeightLp is StrategyBase {
     }
 
     function getName() public override pure returns (string memory) {
-        return "StrategyPairWeightLp";
+        return "StrategySushiLp";
     }
 
     function deposit() public override nonReentrant {
@@ -75,19 +70,19 @@ contract StrategyPairWeightLp is StrategyBase {
     function _deposit() internal {
         uint _baseBal = IERC20(baseToken).balanceOf(address(this));
         if (_baseBal > 0) {
-            IRewardPool(farmPool).deposit(poolId, _baseBal);
+            IQuickStakingRewards(farmPool).stake(_baseBal);
             emit Deposit(baseToken, _baseBal);
         }
     }
 
     function _withdrawSome(uint _amount) internal override returns (uint) {
-        (uint _stakedAmount,) = IRewardPool(farmPool).userInfo(poolId, address(this));
+        uint _stakedAmount = IQuickStakingRewards(farmPool).balanceOf(address(this));
         if (_amount > _stakedAmount) {
             _amount = _stakedAmount;
         }
 
         uint _before = IERC20(baseToken).balanceOf(address(this));
-        IRewardPool(farmPool).withdraw(poolId, _amount);
+        IQuickStakingRewards(farmPool).withdraw(_amount);
         uint _after = IERC20(baseToken).balanceOf(address(this));
         _amount = _after.sub(_before);
 
@@ -95,12 +90,11 @@ contract StrategyPairWeightLp is StrategyBase {
     }
 
     function _withdrawAll() internal override {
-        (uint _stakedAmount,) = IRewardPool(farmPool).userInfo(poolId, address(this));
-        IRewardPool(farmPool).withdraw(poolId, _stakedAmount);
+        IQuickStakingRewards(farmPool).exit();
     }
 
     function claimReward() public override {
-        IRewardPool(farmPool).deposit(poolId, 0);
+        IQuickStakingRewards(farmPool).getReward();
     }
 
     function _buyWantAndReinvest() internal override {
@@ -108,11 +102,11 @@ contract StrategyPairWeightLp is StrategyBase {
             address _targetCompoundToken = targetCompoundToken;
             uint256 _targetCompoundBal = IERC20(_targetCompoundToken).balanceOf(address(this));
             if (_targetCompoundToken != token0) {
-                uint256 _compoundToBuyToken0 = _targetCompoundBal.mul(token0Weight).div(100);
+                uint256 _compoundToBuyToken0 = _targetCompoundBal.div(2);
                 _swapTokens(_targetCompoundToken, token0, _compoundToBuyToken0);
             }
             if (_targetCompoundToken != token1) {
-                uint256 _compoundToBuyToken1 = _targetCompoundBal.mul(token1Weight).div(100);
+                uint256 _compoundToBuyToken1 = _targetCompoundBal.div(2);
                 _swapTokens(_targetCompoundToken, token1, _compoundToBuyToken1);
             }
         }
@@ -136,12 +130,12 @@ contract StrategyPairWeightLp is StrategyBase {
         uint _amount0 = IERC20(_token0).balanceOf(address(this));
         uint _amount1 = IERC20(_token1).balanceOf(address(this));
         if (_amount0 > 0 && _amount1 > 0) {
-            IFirebirdRouter(firebirdRouter).addLiquidity(baseToken, _token0, _token1, _amount0, _amount1, 0, 0, address(this), block.timestamp + 1);
+            IUniswapV2Router(unirouter).addLiquidity(_token0, _token1, _amount0, _amount1, 0, 0, address(this), block.timestamp + 1);
         }
     }
 
     function balanceOfPool() public override view returns (uint) {
-        (uint amount,) = IRewardPool(farmPool).userInfo(poolId, address(this));
+        uint amount = IQuickStakingRewards(farmPool).balanceOf(address(this));
         return amount;
     }
 
@@ -149,12 +143,12 @@ contract StrategyPairWeightLp is StrategyBase {
         farmToken = new address[](1);
         totalDistributedValue = new uint[](1);
         farmToken[0] = farmingToken;
-        totalDistributedValue[0] = IRewardPool(farmPool).pendingReward(poolId, address(this));
+        totalDistributedValue[0] = IQuickStakingRewards(farmPool).earned(address(this));
     }
 
     function claimable_token() external override view returns (address farmToken, uint totalDistributedValue) {
         farmToken = farmingToken;
-        totalDistributedValue = IRewardPool(farmPool).pendingReward(poolId, address(this));
+        totalDistributedValue = IQuickStakingRewards(farmPool).earned(address(this));
     }
 
     function getTargetFarm() external override view returns (address) {
@@ -162,7 +156,7 @@ contract StrategyPairWeightLp is StrategyBase {
     }
 
     function getTargetPoolId() external override view returns (uint) {
-        return poolId;
+        return 0;
     }
 
     /**
@@ -170,7 +164,8 @@ contract StrategyPairWeightLp is StrategyBase {
      * vault, ready to be migrated to the new strat.
      */
     function retireStrat() external onlyStrategist {
-        IRewardPool(farmPool).emergencyWithdraw(poolId);
+        uint _stakedAmount = IQuickStakingRewards(farmPool).balanceOf(address(this));
+        IQuickStakingRewards(farmPool).withdraw(_stakedAmount);
 
         uint256 baseBal = IERC20(baseToken).balanceOf(address(this));
         IERC20(baseToken).safeTransfer(address(vault), baseBal);
@@ -185,14 +180,8 @@ contract StrategyPairWeightLp is StrategyBase {
         IERC20(baseToken).approve(farmPool, type(uint256).max);
     }
 
-    function setPoolId(uint _poolId) external onlyStrategist {
-        poolId = _poolId;
-    }
-
-    function setTokenLp(address _token0, address _token1, uint _token0Weight) external onlyStrategist {
+    function setTokenLp(address _token0, address _token1) external onlyStrategist {
         token0 = _token0;
-        token0Weight = _token0Weight;
-        token1Weight = 100 - _token0Weight;
         token1 = _token1;
 
         if (token0 != farmingToken && token0 != targetCompoundToken) {

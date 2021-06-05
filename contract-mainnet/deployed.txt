@@ -1,15 +1,29 @@
 Deployer                    : 0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c
 
-VaultMaster                 :
+VaultMaster                 : 0x439392419b8bEEe085A3Fd913eF04e116cE99870
 VaultCreator                :
 ControllerCreator           :
 
 
-//vault
-BaseToken                   :
-Vault                       :
-Controller                  :
-Strategy                    :
+//btc-eth sushi
+BaseToken                   : 0xe62ec2e799305e0d367b0cc3ee2cda135bf89816
+Vault                       : 0x984742Be1901fcbed70d7B5847bee5BE006d91C8
+Controller                  : 0xbBE84CaAF62DBA7081E1f1cC2C1F83F156587114
+Strategy                    : 0x8116e20351775dA9330E9a630cEB2b0222AB50A6
+
+
+//btc-eth quick
+BaseToken                   : 0xdc9232e2df177d7a12fdff6ecbab114e2231198d
+Vault                       : 0x086b61A52c4A4558DAb222968560A6D48F8Fa204
+Controller                  : 0xEE010AC8050d9fda06C905874e659A0b661744d1
+Strategy                    : 0xD87d91BDa6c6ba5118191Eed285d514E70B0b489
+
+
+//a3crv
+BaseToken                   : 0xE7a24EF0C5e95Ffb0f6684b813A78F2a3AD7D171
+Vault                       : 0xaCd881B86621D6eEC239C81B32Ab572580d62C5C
+Controller                  : 0x94CA290CACEcB00ac234f91CE1d46543351573A1
+Strategy                    : 0x86a8678c3E3A57DA4FfD42eCFA41a131b3e6D291
 
 
 
@@ -19,8 +33,9 @@ min                         : 0x0000000000000000000000000000000000000000
 1 ether                     : 1000000000000000000
 optimize                    : 999999
 
-busd                        :
-wbnb                        :
+usdc                        : 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174
+usdt                        : 0xc2132D05D31c914a87C6611C10748AEb04B58e8F
+wmatic                      : 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270
 
 
 
