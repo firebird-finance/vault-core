@@ -136,7 +136,7 @@ contract StrategyPairWeightLp is StrategyBase {
         uint _amount0 = IERC20(_token0).balanceOf(address(this));
         uint _amount1 = IERC20(_token1).balanceOf(address(this));
         if (_amount0 > 0 && _amount1 > 0) {
-            IFirebirdRouter(firebirdRouter).addLiquidity(baseToken, _token0, _token1, _amount0, _amount1, 0, 0, address(this), block.timestamp + 1);
+            IFirebirdRouter(firebirdRouter).addLiquidity(baseToken, _token0, _token1, _amount0, _amount1, 1, 1, address(this), block.timestamp + 1);
         }
     }
 

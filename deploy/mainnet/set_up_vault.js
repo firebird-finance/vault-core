@@ -9,7 +9,7 @@ let vaultMasterAddress = '0x439392419b8bEEe085A3Fd913eF04e116cE99870';
 let baseToken = '0xE7a24EF0C5e95Ffb0f6684b813A78F2a3AD7D171';
 let vaultAddress = '0xaCd881B86621D6eEC239C81B32Ab572580d62C5C';
 let controllerAddress = '0x94CA290CACEcB00ac234f91CE1d46543351573A1';
-let strategyAddress = '0x86a8678c3E3A57DA4FfD42eCFA41a131b3e6D291';
+let strategyAddress = '0x8a1892Ea79dd34aDFB1160A3b1836F4776126896';
 
 let vaultName = 'Vault:am3CRV';
 let vaultSymbol = 'vaultA3CRV';

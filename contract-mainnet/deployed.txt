@@ -23,7 +23,7 @@ Strategy                    : 0xD87d91BDa6c6ba5118191Eed285d514E70B0b489
 BaseToken                   : 0xE7a24EF0C5e95Ffb0f6684b813A78F2a3AD7D171
 Vault                       : 0xaCd881B86621D6eEC239C81B32Ab572580d62C5C
 Controller                  : 0x94CA290CACEcB00ac234f91CE1d46543351573A1
-Strategy                    : 0x86a8678c3E3A57DA4FfD42eCFA41a131b3e6D291
+Strategy                    : 0x8a1892Ea79dd34aDFB1160A3b1836F4776126896
 
 
 

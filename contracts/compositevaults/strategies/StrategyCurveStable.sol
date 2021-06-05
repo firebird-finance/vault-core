@@ -102,7 +102,7 @@ contract StrategyCurveStable is StrategyBase {
         if (_targetCompoundBal > 0) {
             uint256[3] memory amounts;
             amounts[targetCompoundIndex] = _targetCompoundBal;
-            ICurveLP(curveLp).add_liquidity(amounts, 0);
+            ICurveLP(curveLp).add_liquidity(amounts, 1, true);
         }
     }
 
@@ -115,12 +115,14 @@ contract StrategyCurveStable is StrategyBase {
         farmToken = new address[](1);
         totalDistributedValue = new uint[](1);
         farmToken[0] = farmingToken;
-        totalDistributedValue[0] = ICurveGauge(gauge).claimable_reward(address(this), farmingToken);
+        ICurveGauge _gauge = ICurveGauge(gauge);
+        totalDistributedValue[0] = _gauge.integrate_fraction(address(this)).sub(TokenMinter(_gauge.minter()).minted(address(this), gauge));
     }
 
     function claimable_token() external override view returns (address farmToken, uint totalDistributedValue) {
         farmToken = farmingToken;
-        totalDistributedValue = ICurveGauge(gauge).claimable_reward(address(this), farmingToken);
+        ICurveGauge _gauge = ICurveGauge(gauge);
+        totalDistributedValue = _gauge.integrate_fraction(address(this)).sub(TokenMinter(_gauge.minter()).minted(address(this), gauge));
     }
 
     function getTargetFarm() external override view returns (address) {
