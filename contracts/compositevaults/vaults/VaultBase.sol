@@ -299,7 +299,7 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
     }
 
     // No rebalance implementation for lower fees and faster swaps
-    function withdrawFor(address _account, uint _shares, uint _min_output_amount) public override _non_reentrant_ returns (uint _output_amount) {
+    function withdrawFor(address _account, uint _shares, uint _min_output_amount) public override _non_reentrant_ checkContract(_account) checkContract(msg.sender) returns (uint _output_amount) {
         require(!withdrawPaused, "withdraw paused");
         // Check that no mint has been made in the same block from the same EOA
         require(keccak256(abi.encodePacked(tx.origin, block.number)) != _minterBlock, "REENTR MINT-BURN");

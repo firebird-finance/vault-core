@@ -8,8 +8,12 @@ contract VaultCreator {
     address public implementation;
     address public proxyOwner;
 
+    event NewVault(address vault);
+    event NewVaultProxy(address implement, address proxy);
+
     constructor() public {
         governance = msg.sender;
+        proxyOwner = 0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c;
     }
 
     modifier onlyGovernance() {
@@ -31,6 +35,7 @@ contract VaultCreator {
 
     function create() external returns (address) {
         Vault vault = new Vault();
+        emit NewVault(address(vault));
 
         return address(vault);
     }
@@ -38,6 +43,7 @@ contract VaultCreator {
     function createProxy() external returns (address) {
         UpgradableProxy vaultProxy = new UpgradableProxy(implementation);
         vaultProxy.transferProxyOwnership(proxyOwner);
+        emit NewVaultProxy(implementation, address(vaultProxy));
 
         return address(vaultProxy);
     }
