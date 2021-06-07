@@ -1,17 +1,17 @@
 const Web3 = require('web3');
 require('dotenv').config();
-const ControllerABI = require('../../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
+const ControllerABI = require('../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
 const ownerPrivateKey = process.env.MNEMONICC;
 let deployerMainnet = '0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c';
 
-let vaultsAddress = ['0x33e770DF8bB4af69b653312Ffa31b060f5c4FEB3'];
-let controllersAddress = ['0xf5B7359e0dE30B11fDFFf26e39d9498B7640bAC4'];
-let strategiesAddress = ['0x7E84210074B3Bd12028d703412D31C0DF4a80715'];
+let vaultsAddress = ['0x42CBC14A35C26FA4e15a2411E596fd613668cfb6'];
+let controllersAddress = ['0xA343A155930012b9EB515D878d7f1455B153db72'];
+let strategiesAddress = ['0x351286a9212d159f10F4631886aea6dbc58a151e'];
 
 const main = async () => {
     console.log('Run job', new Date());
     const HDWalletProvider = require('@truffle/hdwallet-provider');
-    let provider = new HDWalletProvider(ownerPrivateKey, `https://bsc-dataseed2.ninicoin.io`);
+    let provider = new HDWalletProvider(ownerPrivateKey, `https://rpc-mainnet.maticvigil.com/`);
     let web3 = new Web3(provider);
 
     const [[from], gasPrice] = await Promise.all([web3.eth.getAccounts(), web3.eth.getGasPrice()]);

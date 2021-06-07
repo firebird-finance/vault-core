@@ -42,6 +42,17 @@ const config: HardhatUserConfig = {
 				}
 			}
 		],
+		overrides: {
+			"contracts/proxy/UpgradableProxy.sol": {
+				version: '0.6.12',
+				settings: {
+					optimizer: {
+						enabled: true,
+						runs: 999999,
+					},
+				},
+			}
+		}
 	},
 
 	networks: {
@@ -74,6 +85,26 @@ const config: HardhatUserConfig = {
 			accounts,
 			loggingEnabled: true,
 			url: `https://kovan.infura.io/v3/${INFURA_API_KEY}`,
+		},
+		matic: {
+			tags: ['production'],
+			live: true,
+			saveDeployments: true,
+			accounts: [
+				process.env.MNEMONICC ?? 'test'
+			],
+			loggingEnabled: true,
+			url: `https://rpc-mainnet.maticvigil.com/`,
+		},
+		bsc: {
+			tags: ['production'],
+			live: true,
+			saveDeployments: true,
+			accounts: [
+				process.env.MNEMONICC ?? 'test'
+			],
+			loggingEnabled: true,
+			url: `https://bsc-dataseed.binance.org/`,
 		},
 		bsctestnet: {
 			tags: ['local', 'staging'],

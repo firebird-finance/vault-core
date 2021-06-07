@@ -40,6 +40,13 @@ Controller                  : 0xA343A155930012b9EB515D878d7f1455B153db72
 Strategy                    : 0x351286a9212d159f10F4631886aea6dbc58a151e
 
 
+//
+BaseToken                   :
+Vault                       : 0x0e3114417B7be1Ff9e73C27f32F8577A2f4eb124
+Controller                  : 0x9908ca2bd27C21fa354474c48B6C892c299edf88
+Strategy                    :
+
+
 
 ===================
 max                         : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
