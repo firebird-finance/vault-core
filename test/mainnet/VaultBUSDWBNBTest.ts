@@ -108,19 +108,19 @@ describe("StrategyBTCWBNB", function() {
         let strategy4 = await new StrategySushiLpFactory(deployerMainnet).deploy();
         await strategy4.connect(deployerMainnet).initialize(
           "0x2bbe0f728f4d5821f84eee0432d2a4be7c0cb7fc",
-          "0xaaa5b9e6c589642f98a1cda99b9d024b8407285a",
+          "0xaaa5b9e6c589642f98a1cda99b9d024b8407285a", //titan
           "0x65430393358e55A658BcdE6FF69AB28cF1CbB77a",
           2,
-          "0xd86b5923f3ad7b585ed81b448170ae026c65ae9a", //iron
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
           "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
           "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
           "0xd86b5923f3ad7b585ed81b448170ae026c65ae9a",
           controller.address
         );
-        //titan -> iron
-        await strategy4.connect(deployerMainnet).setFirebirdPairs("0xaaa5b9e6c589642f98a1cda99b9d024b8407285a", "0xd86b5923f3ad7b585ed81b448170ae026c65ae9a", ["0x35c1895dac1e2432b320e2927b4f71a0d995602f"]);
-        //iron -> usdc
-        await strategy4.connect(deployerMainnet).setFirebirdPairs("0xd86b5923f3ad7b585ed81b448170ae026c65ae9a", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x85de135ff062df790a5f20b79120f17d3da63b2d"]);
+        //titan -> usdc
+        await strategy4.connect(deployerMainnet).setFirebirdPairs("0xaaa5b9e6c589642f98a1cda99b9d024b8407285a", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x3AAcc8107FDfd2230262E48893B4BF21D588c87E"]);
+        //usdc -> iron
+        await strategy4.connect(deployerMainnet).setFirebirdPairs("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", "0xd86b5923f3ad7b585ed81b448170ae026c65ae9a", ["0x85de135ff062df790a5f20b79120f17d3da63b2d"]);
 
 
         //iron-usdc sushi
@@ -130,16 +130,16 @@ describe("StrategyBTCWBNB", function() {
           "0xaaa5b9e6c589642f98a1cda99b9d024b8407285a", //titan
           "0x65430393358e55A658BcdE6FF69AB28cF1CbB77a",
           1,
-          "0xd86b5923f3ad7b585ed81b448170ae026c65ae9a", //iron
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
           "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
           "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
           "0xd86b5923f3ad7b585ed81b448170ae026c65ae9a",
           controller.address
         );
-        //titan -> iron
-        await strategy3.connect(deployerMainnet).setFirebirdPairs("0xaaa5b9e6c589642f98a1cda99b9d024b8407285a", "0xd86b5923f3ad7b585ed81b448170ae026c65ae9a", ["0x35c1895dac1e2432b320e2927b4f71a0d995602f"]);
-        //iron -> usdc
-        await strategy3.connect(deployerMainnet).setFirebirdPairs("0xd86b5923f3ad7b585ed81b448170ae026c65ae9a", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x2bbe0f728f4d5821f84eee0432d2a4be7c0cb7fc"]);
+        //titan -> usdc
+        await strategy3.connect(deployerMainnet).setFirebirdPairs("0xaaa5b9e6c589642f98a1cda99b9d024b8407285a", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x3AAcc8107FDfd2230262E48893B4BF21D588c87E"]);
+        //usdc -> iron
+        await strategy3.connect(deployerMainnet).setFirebirdPairs("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", "0xd86b5923f3ad7b585ed81b448170ae026c65ae9a", ["0x2bbe0f728f4d5821f84eee0432d2a4be7c0cb7fc"]);
 
 
         //am3crv

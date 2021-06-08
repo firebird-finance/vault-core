@@ -30,14 +30,16 @@ Strategy                    : 0x8a1892Ea79dd34aDFB1160A3b1836F4776126896
 BaseToken                   : 0x85de135ff062df790a5f20b79120f17d3da63b2d
 Vault                       : 0x7A6999B1aAe3F14A8669565dD48d68b7D6385F97
 Controller                  : 0x24A686b5d23eea9740cE2B9C5d76AF199609817f
-Strategy                    : 0x74cb6F3c260CEc6FAD071e759AfFf5F18Ab60865
+Strategy (deprecated)       : 0x74cb6F3c260CEc6FAD071e759AfFf5F18Ab60865
+Strategy                    : 0xcfDc3C88D3F7FEBe27d65baD36364512ed5A30d1
 
 
 //iron-usdc quick
 BaseToken                   : 0x2bbe0f728f4d5821f84eee0432d2a4be7c0cb7fc
 Vault                       : 0x42CBC14A35C26FA4e15a2411E596fd613668cfb6
 Controller                  : 0xA343A155930012b9EB515D878d7f1455B153db72
-Strategy                    : 0x351286a9212d159f10F4631886aea6dbc58a151e
+Strategy (deprecated)       : 0x351286a9212d159f10F4631886aea6dbc58a151e
+Strategy                    : 0xE13b3A6Fda5677A63ee0d5D4C6dd4Ca27b47188A
 
 
 //
