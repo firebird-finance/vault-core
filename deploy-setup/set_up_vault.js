@@ -1,19 +1,20 @@
 const Web3 = require('web3');
 require('dotenv').config();
+const BigNumber = require('bignumber.js');
 const VaultABI = require('../artifacts/contracts/compositevaults/vaults/Vault.sol/Vault.json').abi;
 const ControllerABI = require('../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
-const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategySushiLp.sol/StrategySushiLp.json').abi;
+const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategyHopeChefStableSwapLp.sol/StrategyHopeChefStableSwapLp.json').abi;
 const ownerPrivateKey = process.env.MNEMONICC;
 let vaultMasterAddress = '0x439392419b8bEEe085A3Fd913eF04e116cE99870';
 
-let baseToken = '0x2bbe0f728f4d5821f84eee0432d2a4be7c0cb7fc';
-let vaultAddress = '0x42CBC14A35C26FA4e15a2411E596fd613668cfb6';
-let controllerAddress = '0xA343A155930012b9EB515D878d7f1455B153db72';
-let strategyAddress = '0x351286a9212d159f10F4631886aea6dbc58a151e';
+let baseToken = '0xC45c1087a6eF7A956af96B0fEED5a7c270f5C901';
+let vaultAddress = '0x87064A143fC73Cff13690D63964F851be063ef99';
+let controllerAddress = '0xD673480b8a0ba784B76b82B763aDE3b55EAF7b78';
+let strategyAddress = '0xDdE02514796d3071929B21db069755a21ba0AeaF';
 
-let vaultName = 'Vault:QuickIRONUSDC';
-let vaultSymbol = 'vaultIRONUSDC';
-let controllerName = 'VaultController:QuickIRONUSDC';
+let vaultName = 'Vault:IRON3pool';
+let vaultSymbol = 'vaultIRON3pool';
+let controllerName = 'VaultController:IRON3pool';
 
 const main = async () => {
     console.log('Run job', new Date());
@@ -25,7 +26,8 @@ const main = async () => {
         .pow(web3.utils.toBN(256))
         .sub(web3.utils.toBN(1));
 
-    const [[from], gasPrice] = await Promise.all([web3.eth.getAccounts(), web3.eth.getGasPrice()]);
+    let [[from], gasPrice] = await Promise.all([web3.eth.getAccounts(), web3.eth.getGasPrice()]);
+    gasPrice = BigNumber(gasPrice).times(2);
     let method;
     let txReceipt;
     let vaultContract = new web3.eth.Contract(VaultABI, vaultAddress);
@@ -46,26 +48,30 @@ const main = async () => {
 
     // strategy
     method = strategyContract.methods.initialize(
-        '0x2bbe0f728f4d5821f84eee0432d2a4be7c0cb7fc',
-        '0xaaa5b9e6c589642f98a1cda99b9d024b8407285a',
-        '0x65430393358e55A658BcdE6FF69AB28cF1CbB77a',
-        2,
-        '0xd86b5923f3ad7b585ed81b448170ae026c65ae9a', //iron
+        '0xC45c1087a6eF7A956af96B0fEED5a7c270f5C901',
+        '0xd78c475133731cd54dadcb430f7aae4f03c1e660',
+        '0xE9a8b6ea3e7431E6BefCa51258CB472Df2Dd21d4',
+        8,
         '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', //usdc
-        '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
-        '0xd86b5923f3ad7b585ed81b448170ae026c65ae9a',
+        '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', //usdc
+        '0x563E49a74fd6AB193751f6C616ce7Cf900D678E5',
+        '0x01C9475dBD36e46d1961572C8DE24b74616Bae9e',
+        1,
         controllerAddress
     );
     await method.estimateGas({from});
     txReceipt = await method.send({from, gas: 2000000, gasPrice});
     console.log('RECEIPT strategy init', new Date(), txReceipt.transactionHash);
 
-    method = strategyContract.methods.setFirebirdPairs('0xaaa5b9e6c589642f98a1cda99b9d024b8407285a', '0xd86b5923f3ad7b585ed81b448170ae026c65ae9a', ['0x35c1895dac1e2432b320e2927b4f71a0d995602f']);
+    method = strategyContract.methods.setFirebirdPairs('0xd78c475133731cd54dadcb430f7aae4f03c1e660', '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', [
+        '0xdd600F769a6BFe5Dac39f5DA23C18433E6d92CBa',
+        '0x39D736D2b254eE30796f43Ec665143010b558F82'
+    ]);
     await method.estimateGas({from});
     txReceipt = await method.send({from, gas: 2000000, gasPrice});
     console.log('RECEIPT strategy', new Date(), txReceipt.transactionHash);
 
-    method = strategyContract.methods.setFirebirdPairs('0xd86b5923f3ad7b585ed81b448170ae026c65ae9a', '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', ['0x85de135ff062df790a5f20b79120f17d3da63b2d']);
+    method = strategyContract.methods.setFirebirdPairs('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6', ['0x10F525CFbCe668815Da5142460af0fCfb5163C81']);
     await method.estimateGas({from});
     txReceipt = await method.send({from, gas: 2000000, gasPrice});
     console.log('RECEIPT strategy', new Date(), txReceipt.transactionHash);

@@ -5,7 +5,7 @@ import {BigNumber} from "ethers";
 const proxyAdmin = "0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c";
 const vaultImpl = "0x20B22B8013Fb28e1652b0428f669Ee162f4bd234";
 const controllerImp = "0xFAcd3C980D45F6Cf2Df08f3d96E003A8ed2f3442";
-const numVault = 1;
+const numVault = 6;
 
 const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
     const {deployments, getNamedAccounts} = hre;
@@ -19,7 +19,8 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
             skipIfAlreadyDeployed: false,
             from: deployer,
             args: [vaultImpl],
-            log: true
+            log: false,
+            gasPrice: "2"
         });
 
         const controllerProxy = await deploy(`ControllerProxy${i}`, {
@@ -27,11 +28,12 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
             skipIfAlreadyDeployed: false,
             from: deployer,
             args: [controllerImp],
-            log: true
+            log: false,
+            gasPrice: "2"
         });
 
-        await execute(`VaultProxy${i}`, {from: deployer, log: true}, "transferProxyOwnership", proxyAdmin);
-        await execute(`ControllerProxy${i}`, {from: deployer, log: true}, "transferProxyOwnership", proxyAdmin);
+        await execute(`VaultProxy${i}`, {from: deployer, log: false}, "transferProxyOwnership", proxyAdmin);
+        await execute(`ControllerProxy${i}`, {from: deployer, log: false}, "transferProxyOwnership", proxyAdmin);
 
         console.log("vault: ", vaultProxy.address);
         console.log("controller: ", controllerProxy.address);

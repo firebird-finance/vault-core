@@ -9,6 +9,7 @@ import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 
 import "./StrategyBase.sol";
 import "../../interfaces/IHopeChef.sol";
+import "../../interfaces/ISwap.sol";
 
 /*
 
@@ -24,16 +25,15 @@ import "../../interfaces/IHopeChef.sol";
 
 */
 
-contract StrategyPairWeightLp is StrategyBase {
+contract StrategyHopeChefStableSwap is StrategyBase {
     uint public blocksToReleaseCompound = 0; // disable
 
-    address public farmPool;
+    address public stakePool;
     uint public poolId;
 
-    address public token0;
-    address public token1;
-    uint public token0Weight; //max 100
-    uint public token1Weight; //max 100
+    address public basePoolSwap;
+    uint public baseCompoundIndex; //index to add lp
+    uint public baseLength = 2;
 
     // baseToken       = 0xf98313f818c53E40Bd758C5276EF4B434463Bec4 (BUSDWBNB-LP)
     // farmingToken = 0x4f0ed527e8A95ecAA132Af214dFd41F30b361600 (CAKE)
@@ -42,30 +42,24 @@ contract StrategyPairWeightLp is StrategyBase {
     // token1 = 0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56 (BUSD)
     function initialize(
         address _baseToken, address _farmingToken,
-        address _farmPool, uint _poolId, address _targetCompound, address _targetProfit, uint _token0Weight, address _token0, address _token1,
+        address _stakePool, uint _poolId, address _targetCompound, address _targetProfit,
+        address _basePoolSwap, uint _baseCompoundIndex,
         address _controller
     ) public nonReentrant initializer {
         initialize(_baseToken, _farmingToken, _controller, _targetCompound, _targetProfit);
-        farmPool = _farmPool;
+        stakePool = _stakePool;
         poolId = _poolId;
-        token0 = _token0;
-        token0Weight = _token0Weight;
-        token1Weight = 100 - _token0Weight;
-        token1 = _token1;
+        basePoolSwap = _basePoolSwap;
+        baseCompoundIndex = _baseCompoundIndex;
 
-        IERC20(baseToken).approve(address(farmPool), type(uint256).max);
-        if (token0 != farmingToken && token0 != targetCompoundToken) {
-            IERC20(token0).approve(address(unirouter), type(uint256).max);
-            IERC20(token0).approve(address(firebirdRouter), type(uint256).max);
-        }
-        if (token1 != farmingToken && token1 != targetCompoundToken && token1 != token0) {
-            IERC20(token1).approve(address(unirouter), type(uint256).max);
-            IERC20(token1).approve(address(firebirdRouter), type(uint256).max);
+        IERC20(baseToken).approve(stakePool, type(uint256).max);
+        if (targetCompoundToken != address(0)) {
+            IERC20(targetCompoundToken).approve(basePoolSwap, type(uint256).max);
         }
     }
 
     function getName() public override pure returns (string memory) {
-        return "StrategyPairWeightLp";
+        return "StrategyStableSwap";
     }
 
     function deposit() public override nonReentrant {
@@ -75,19 +69,19 @@ contract StrategyPairWeightLp is StrategyBase {
     function _deposit() internal {
         uint _baseBal = IERC20(baseToken).balanceOf(address(this));
         if (_baseBal > 0) {
-            IHopeChef(farmPool).depositWithRef(poolId, _baseBal, vaultMaster.reserveFund());
+            IHopeChef(stakePool).depositWithRef(poolId, _baseBal, vaultMaster.reserveFund());
             emit Deposit(baseToken, _baseBal);
         }
     }
 
     function _withdrawSome(uint _amount) internal override returns (uint) {
-        (uint _stakedAmount,) = IHopeChef(farmPool).userInfo(poolId, address(this));
+        (uint _stakedAmount,) = IHopeChef(stakePool).userInfo(poolId, address(this));
         if (_amount > _stakedAmount) {
             _amount = _stakedAmount;
         }
 
         uint _before = IERC20(baseToken).balanceOf(address(this));
-        IHopeChef(farmPool).withdraw(poolId, _amount);
+        IHopeChef(stakePool).withdraw(poolId, _amount);
         uint _after = IERC20(baseToken).balanceOf(address(this));
         _amount = _after.sub(_before);
 
@@ -95,27 +89,14 @@ contract StrategyPairWeightLp is StrategyBase {
     }
 
     function _withdrawAll() internal override {
-        IHopeChef(farmPool).withdrawAll(poolId);
+        IHopeChef(stakePool).withdrawAll(poolId);
     }
 
     function claimReward() public override {
-        IHopeChef(farmPool).deposit(poolId, 0);
+        IHopeChef(stakePool).deposit(poolId, 0);
     }
 
     function _buyWantAndReinvest() internal override {
-        {
-            address _targetCompoundToken = targetCompoundToken;
-            uint256 _targetCompoundBal = IERC20(_targetCompoundToken).balanceOf(address(this));
-            if (_targetCompoundToken != token0) {
-                uint256 _compoundToBuyToken0 = _targetCompoundBal.mul(token0Weight).div(100);
-                _swapTokens(_targetCompoundToken, token0, _compoundToBuyToken0);
-            }
-            if (_targetCompoundToken != token1) {
-                uint256 _compoundToBuyToken1 = _targetCompoundBal.mul(token1Weight).div(100);
-                _swapTokens(_targetCompoundToken, token1, _compoundToBuyToken1);
-            }
-        }
-
         address _baseToken = baseToken;
         uint _before = IERC20(_baseToken).balanceOf(address(this));
         _addLiquidity();
@@ -130,17 +111,17 @@ contract StrategyPairWeightLp is StrategyBase {
     }
 
     function _addLiquidity() internal {
-        address _token0 = token0;
-        address _token1 = token1;
-        uint _amount0 = IERC20(_token0).balanceOf(address(this));
-        uint _amount1 = IERC20(_token1).balanceOf(address(this));
-        if (_amount0 > 0 && _amount1 > 0) {
-            IFirebirdRouter(firebirdRouter).addLiquidity(baseToken, _token0, _token1, _amount0, _amount1, 1, 1, address(this), block.timestamp + 1);
+        uint256 targetCompoundBal = IERC20(targetCompoundToken).balanceOf(address(this));
+        if (targetCompoundBal > 0) {
+            uint256[] memory amounts = new uint256[](baseLength);
+            amounts[baseCompoundIndex] = targetCompoundBal;
+
+            ISwap(basePoolSwap).addLiquidity(amounts, 1, block.timestamp);
         }
     }
 
     function balanceOfPool() public override view returns (uint) {
-        (uint amount,) = IHopeChef(farmPool).userInfo(poolId, address(this));
+        (uint amount,) = IHopeChef(stakePool).userInfo(poolId, address(this));
         return amount;
     }
 
@@ -148,16 +129,16 @@ contract StrategyPairWeightLp is StrategyBase {
         farmToken = new address[](1);
         totalDistributedValue = new uint[](1);
         farmToken[0] = farmingToken;
-        totalDistributedValue[0] = IHopeChef(farmPool).pendingReward(poolId, address(this));
+        totalDistributedValue[0] = IHopeChef(stakePool).pendingReward(poolId, address(this));
     }
 
     function claimable_token() external override view returns (address farmToken, uint totalDistributedValue) {
         farmToken = farmingToken;
-        totalDistributedValue = IHopeChef(farmPool).pendingReward(poolId, address(this));
+        totalDistributedValue = IHopeChef(stakePool).pendingReward(poolId, address(this));
     }
 
     function getTargetFarm() external override view returns (address) {
-        return farmPool;
+        return stakePool;
     }
 
     function getTargetPoolId() external override view returns (uint) {
@@ -169,7 +150,7 @@ contract StrategyPairWeightLp is StrategyBase {
      * vault, ready to be migrated to the new strat.
      */
     function retireStrat() external onlyStrategist {
-        IHopeChef(farmPool).emergencyWithdraw(poolId);
+        IHopeChef(stakePool).emergencyWithdraw(poolId);
 
         uint256 baseBal = IERC20(baseToken).balanceOf(address(this));
         IERC20(baseToken).safeTransfer(address(vault), baseBal);
@@ -179,28 +160,17 @@ contract StrategyPairWeightLp is StrategyBase {
         blocksToReleaseCompound = _blocks;
     }
 
-    function setFarmPoolContract(address _farmPool) external onlyStrategist {
-        farmPool = _farmPool;
-        IERC20(baseToken).approve(farmPool, type(uint256).max);
+    function setStakePoolContract(address _stakePool) external onlyStrategist {
+        stakePool = _stakePool;
+        IERC20(baseToken).approve(stakePool, type(uint256).max);
     }
 
-    function setPoolId(uint _poolId) external onlyStrategist {
-        poolId = _poolId;
+    function setStableLpInfo(address _basePoolSwap, uint _baseCompoundIndex) external onlyStrategist {
+        basePoolSwap = _basePoolSwap;
+        baseCompoundIndex = _baseCompoundIndex;
     }
 
-    function setTokenLp(address _token0, address _token1, uint _token0Weight) external onlyStrategist {
-        token0 = _token0;
-        token0Weight = _token0Weight;
-        token1Weight = 100 - _token0Weight;
-        token1 = _token1;
-
-        if (token0 != farmingToken && token0 != targetCompoundToken) {
-            IERC20(token0).approve(address(unirouter), type(uint256).max);
-            IERC20(token0).approve(address(firebirdRouter), type(uint256).max);
-        }
-        if (token1 != farmingToken && token1 != targetCompoundToken && token1 != token0) {
-            IERC20(token1).approve(address(unirouter), type(uint256).max);
-            IERC20(token1).approve(address(firebirdRouter), type(uint256).max);
-        }
+    function setStableLength(uint _baseLength) external onlyStrategist {
+        baseLength = _baseLength;
     }
 }

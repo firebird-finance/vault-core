@@ -54,7 +54,11 @@ contract StrategyCurveStable is StrategyBase {
         return "StrategyCurveStable";
     }
 
-    function deposit() public override {
+    function deposit() public override nonReentrant {
+        _deposit();
+    }
+
+    function _deposit() internal {
         uint _baseBal = IERC20(baseToken).balanceOf(address(this));
         if (_baseBal > 0) {
             ICurveGauge(gauge).deposit(_baseBal);
@@ -93,7 +97,7 @@ contract StrategyCurveStable is StrategyBase {
                 vault.addNewCompound(_after, blocksToReleaseCompound);
             }
 
-            deposit();
+            _deposit();
         }
     }
 

@@ -1,8 +1,7 @@
 Deployer                    : 0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c
 
 VaultMaster                 : 0x439392419b8bEEe085A3Fd913eF04e116cE99870
-VaultCreator                : 0x9D0a56c5d3231729f34c2ed6bd63b705D7264855
-ControllerCreator           :
+VaultProxyCreator           :
 
 
 //btc-eth sushi
@@ -42,11 +41,67 @@ Strategy (deprecated)       : 0x351286a9212d159f10F4631886aea6dbc58a151e
 Strategy                    : 0xE13b3A6Fda5677A63ee0d5D4C6dd4Ca27b47188A
 
 
-//
-BaseToken                   :
+//matic-hope firebird
+BaseToken                   : 0x5E9cd0861F927ADEccfEB2C0124879b277Dd66aC
+Vault                       : 0xCee6f7B0F7d988d2E12a33895B6a0F0DA0Bc6952
+Controller                  : 0x1cD700242Ff9a4f011e261666a9b6B239B968A1e
+Strategy                    : 0x1987029589DFb819dF2ac6B1Cc19982f45f7Ba1F
+
+
+//weth-hope firebird
+BaseToken                   : 0xdd600F769a6BFe5Dac39f5DA23C18433E6d92CBa
 Vault                       : 0x0e3114417B7be1Ff9e73C27f32F8577A2f4eb124
 Controller                  : 0x9908ca2bd27C21fa354474c48B6C892c299edf88
-Strategy                    :
+Strategy                    : 0x249514d42677E8654f939376385F300ea191a078
+
+
+//titan-usdc firebird
+BaseToken                   : 0x3AAcc8107FDfd2230262E48893B4BF21D588c87E
+Vault                       : 0x519F5dA05B41e2c104C5Bfc5DA37a94604e4fCf6
+Controller                  : 0xF2EAbEd5aaB16f1d1B396F3AB8549Fd6538Ed817
+Strategy                    : 0x694a0f93C57cE665Aeff915a369DDC71A7f99F80
+
+
+//matic-usdc firebird
+BaseToken                   : 0xCe2cB67b11ec0399E39AF20433927424f9033233
+Vault                       : 0xd01b5f04fFA705dBF2081bdB13c2B5811906E534
+Controller                  : 0xCb424bDff63d24d92Cad64c2d1B85aE780C0231f
+Strategy                    : 0xAa90d785094ba991A211EeAC443DE48663cc0F1C
+
+
+//matic-weth firebird
+BaseToken                   : 0x7887a048a2E5995CcFC3B1F2E9c23Ab2EcA40BCF
+Vault                       : 0xa17F6dC61E37Eb8A1EA12Dd6aABdfA364168e104
+Controller                  : 0x962C79880205C9ad718475070E25CD7Ed19262EB
+Strategy                    : 0x50Ec3E9461824206ACFea14567CD8D39c1916409
+
+
+//weth-usdc firebird
+BaseToken                   : 0x39D736D2b254eE30796f43Ec665143010b558F82
+Vault                       : 0xc18FF119615B46937fc486068cB2CD979667B255
+Controller                  : 0x02b83aA4cF7f87ab9E15Ce8fF55C14e7e99253a4
+Strategy                    : 0x2c6e9ba03a7040B82f81A5E40904cB39E5e09642
+
+
+//wbtc-weth firebird
+BaseToken                   : 0x10F525CFbCe668815Da5142460af0fCfb5163C81
+Vault                       : 0xBab7E2E13cbb991cC56CA2C3cCA05729b2bC9506
+Controller                  : 0x7F231070D8bc2c5106731302bAa945cCC3163B8B
+Strategy                    : 0x1A5620331D7a0a7F7f07a0e0Fe23796984974BDB
+
+
+//3fbird
+BaseToken                   : 0x4a592De6899fF00fBC2c99d7af260B5E7F88D1B4
+Vault                       : 0x51760079f74a491e4a0B65ce7CEb3F8149C2f168
+Controller                  : 0x9211d69E06d359162fb52ea9B8e8fE95F7Aa9ca4
+Strategy                    : 0x607a2b80BbF85e936d09900d5cCc8a4dbeA1f32A
+
+
+//IRON3pool
+BaseToken                   : 0xC45c1087a6eF7A956af96B0fEED5a7c270f5C901
+Vault                       : 0x87064A143fC73Cff13690D63964F851be063ef99
+Controller                  : 0xD673480b8a0ba784B76b82B763aDE3b55EAF7b78
+Strategy                    : 0xDdE02514796d3071929B21db069755a21ba0AeaF
 
 
 

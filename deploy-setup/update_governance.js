@@ -1,5 +1,6 @@
 const Web3 = require('web3');
 require('dotenv').config();
+const BigNumber = require('bignumber.js');
 const ControllerABI = require('../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
 const ownerPrivateKey = process.env.MNEMONICC;
 let deployerMainnet = '0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c';
@@ -14,7 +15,8 @@ const main = async () => {
     let provider = new HDWalletProvider(ownerPrivateKey, `https://rpc-mainnet.maticvigil.com/`);
     let web3 = new Web3(provider);
 
-    const [[from], gasPrice] = await Promise.all([web3.eth.getAccounts(), web3.eth.getGasPrice()]);
+    let [[from], gasPrice] = await Promise.all([web3.eth.getAccounts(), web3.eth.getGasPrice()]);
+    gasPrice = BigNumber(gasPrice).times(2);
     let method, txReceipt;
 
     // vault governance
