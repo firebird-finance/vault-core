@@ -34,9 +34,9 @@ contract StrategyStakePoolStableSwapLp is StrategyBase {
     address public basePoolSwap;
     uint public baseCompoundIndex; //index to add lp
     uint public metaLength = 2;
-    uint public baseLength = 4;
+    uint public baseLength = 3;
 
-    IStableSwapRouter public stableSwapRouter = IStableSwapRouter(0xC437B8D65EcdD43Cda92739E09ebd68BBE1965e1);
+    IStableSwapRouter public stableSwapRouter = IStableSwapRouter(0x9f197f9ff460355A40B3c9A10f7d1Ca65f365b83);
 
     // baseToken       = 0xf98313f818c53E40Bd758C5276EF4B434463Bec4 (BUSDWBNB-LP)
     // farmingToken = 0x4f0ed527e8A95ecAA132Af214dFd41F30b361600 (CAKE)

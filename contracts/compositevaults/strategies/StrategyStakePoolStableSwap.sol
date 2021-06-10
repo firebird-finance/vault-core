@@ -31,7 +31,7 @@ contract StrategyStakePoolStableSwap is StrategyBase {
     address public stakePool;
     address public basePoolSwap;
     uint public baseCompoundIndex; //index to add lp
-    uint public baseLength = 2;
+    uint public baseLength = 3;
 
     // baseToken       = 0xf98313f818c53E40Bd758C5276EF4B434463Bec4 (BUSDWBNB-LP)
     // farmingToken = 0x4f0ed527e8A95ecAA132Af214dFd41F30b361600 (CAKE)
