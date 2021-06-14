@@ -25,7 +25,7 @@ import "../../interfaces/IStakePool.sol";
 */
 
 contract StrategyStakePoolPairWeightLp is StrategyBase {
-    uint public blocksToReleaseCompound = 0; // disable
+    uint public blocksToReleaseCompound = 900; // 0 to disable
 
     address public stakePool;
 

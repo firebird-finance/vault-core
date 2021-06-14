@@ -26,7 +26,7 @@ import "../../interfaces/IMDexSwapMining.sol";
 */
 
 contract StrategyMDexLp is StrategyBase {
-    uint public blocksToReleaseCompound = 0; // disable
+    uint public blocksToReleaseCompound = 900; // 0 to disable
 
     address public farmPool = 0x0895196562C7868C5Be92459FaE7f877ED450452;
     IMDexSwapMining public swapMinting = IMDexSwapMining(0x782395303692aBeD877d2737Aa7982345eB44c11);

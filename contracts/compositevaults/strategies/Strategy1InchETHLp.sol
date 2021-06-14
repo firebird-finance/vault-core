@@ -27,7 +27,7 @@ import "../../interfaces/IWETH.sol";
 */
 
 contract Strategy1InchETHLp is StrategyBase {
-    uint public blocksToReleaseCompound = 0; // disable
+    uint public blocksToReleaseCompound = 900; // 0 to disable
 
     address public rewardPool  = 0x5D0EC1F843c1233D304B96DbDE0CAB9Ec04D71EF;
     address public referral = address(this);

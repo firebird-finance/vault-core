@@ -4,7 +4,7 @@ import {BigNumber} from "ethers";
 
 const proxyAdmin = "0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c";
 const vaultImpl = "0x20B22B8013Fb28e1652b0428f669Ee162f4bd234";
-const controllerImp = "0xFAcd3C980D45F6Cf2Df08f3d96E003A8ed2f3442";
+const controllerImp = "0x088A7406a521ef5E70dfDa7e49edB51f972295fE";
 const numVault = 6;
 
 const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {

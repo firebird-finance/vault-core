@@ -27,7 +27,7 @@ import "../../interfaces/IStratX.sol";
 */
 
 contract StrategyAutoCake is StrategyBase {
-    uint public blocksToReleaseCompound = 0; // disable
+    uint public blocksToReleaseCompound = 900; // 0 to disable
 
     address public autoFarm = 0x0895196562C7868C5Be92459FaE7f877ED450452;
     //PancakeSwap MasterChef contract

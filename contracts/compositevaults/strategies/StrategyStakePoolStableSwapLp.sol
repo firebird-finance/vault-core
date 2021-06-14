@@ -26,7 +26,7 @@ import "../../interfaces/IStableSwapRouter.sol";
 */
 
 contract StrategyStakePoolStableSwapLp is StrategyBase {
-    uint public blocksToReleaseCompound = 0; // disable
+    uint public blocksToReleaseCompound = 900; // 0 to disable
 
     address public stakePool;
 

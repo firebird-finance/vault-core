@@ -26,7 +26,7 @@ import "../../interfaces/ICurveGauge.sol";
 */
 
 contract StrategyCurveStable is StrategyBase {
-    uint public blocksToReleaseCompound = 0; // disable
+    uint public blocksToReleaseCompound = 900; // 0 to disable
 
     address public gauge = 0x0895196562C7868C5Be92459FaE7f877ED450452;
     address public curveLp = 0xf157A4799bE445e3808592eDd7E7f72150a7B050;

@@ -98,7 +98,7 @@ contract VaultController is IController, ReentrancyGuard {
     }
 
     function setWithdrawalFee(uint _withdrawalFee) external onlyGovernance {
-        require(_withdrawalFee < 10000, "withdrawalFee too high");
+        require(_withdrawalFee <= 100, "withdrawalFee over 1%");
         withdrawalFee = _withdrawalFee;
     }
 
