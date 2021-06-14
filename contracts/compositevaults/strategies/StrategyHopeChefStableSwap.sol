@@ -26,7 +26,7 @@ import "../../interfaces/ISwap.sol";
 */
 
 contract StrategyHopeChefStableSwap is StrategyBase {
-    uint public blocksToReleaseCompound = 900; // 0 to disable
+    uint public timeToReleaseCompound = 30 minutes; // 0 to disable
 
     address public stakePool;
     uint public poolId;
@@ -104,7 +104,7 @@ contract StrategyHopeChefStableSwap is StrategyBase {
         if (_after > 0) {
             if (_after > _before && vaultMaster.isStrategy(address(this))) {
                 uint _compound = _after.sub(_before);
-                vault.addNewCompound(_compound, blocksToReleaseCompound);
+                vault.addNewCompound(_compound, timeToReleaseCompound);
             }
             _deposit();
         }
@@ -156,8 +156,8 @@ contract StrategyHopeChefStableSwap is StrategyBase {
         IERC20(baseToken).safeTransfer(address(vault), baseBal);
     }
 
-    function setBlocksToReleaseCompound(uint _blocks) external onlyStrategist {
-        blocksToReleaseCompound = _blocks;
+    function setTimeToReleaseCompound(uint _timeSeconds) external onlyStrategist {
+        timeToReleaseCompound = _timeSeconds;
     }
 
     function setStakePoolContract(address _stakePool) external onlyStrategist {

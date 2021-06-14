@@ -27,7 +27,7 @@ import "../../interfaces/IWETH.sol";
 */
 
 contract Strategy1InchETHLp is StrategyBase {
-    uint public blocksToReleaseCompound = 900; // 0 to disable
+    uint public timeToReleaseCompound = 30 minutes; // 0 to disable
 
     address public rewardPool  = 0x5D0EC1F843c1233D304B96DbDE0CAB9Ec04D71EF;
     address public referral = address(this);
@@ -168,7 +168,7 @@ contract Strategy1InchETHLp is StrategyBase {
         if (_after > 0) {
             if (_after > _before && vaultMaster.isStrategy(address(this))) {
                 uint _compound = _after.sub(_before);
-                vault.addNewCompound(_compound, blocksToReleaseCompound);
+                vault.addNewCompound(_compound, timeToReleaseCompound);
             }
             _deposit();
         }
@@ -236,8 +236,8 @@ contract Strategy1InchETHLp is StrategyBase {
         }
     }
 
-    function setBlocksToReleaseCompound(uint _blocks) external onlyStrategist {
-        blocksToReleaseCompound = _blocks;
+    function setTimeToReleaseCompound(uint _timeSeconds) external onlyStrategist {
+        timeToReleaseCompound = _timeSeconds;
     }
 
     function setRewardPoolContract(address _rewardPool) external onlyStrategist {

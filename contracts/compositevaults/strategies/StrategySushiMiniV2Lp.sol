@@ -26,7 +26,7 @@ import "../../interfaces/IRewarder.sol";
 */
 
 contract StrategySushiMiniV2Lp is StrategyBase {
-    uint public blocksToReleaseCompound = 900; // 0 to disable
+    uint public timeToReleaseCompound = 30 minutes; // 0 to disable
 
     address public farmPool = 0x0895196562C7868C5Be92459FaE7f877ED450452;
     uint public poolId;
@@ -135,7 +135,7 @@ contract StrategySushiMiniV2Lp is StrategyBase {
         if (_after > 0) {
             if (_after > _before && vaultMaster.isStrategy(address(this))) {
                 uint _compound = _after.sub(_before);
-                vault.addNewCompound(_compound, blocksToReleaseCompound);
+                vault.addNewCompound(_compound, timeToReleaseCompound);
             }
             _deposit();
         }
@@ -194,8 +194,8 @@ contract StrategySushiMiniV2Lp is StrategyBase {
         IERC20(baseToken).safeTransfer(address(vault), baseBal);
     }
 
-    function setBlocksToReleaseCompound(uint _blocks) external onlyStrategist {
-        blocksToReleaseCompound = _blocks;
+    function setTimeToReleaseCompound(uint _timeSeconds) external onlyStrategist {
+        timeToReleaseCompound = _timeSeconds;
     }
 
     function setFarmPoolContract(address _farmPool) external onlyStrategist {

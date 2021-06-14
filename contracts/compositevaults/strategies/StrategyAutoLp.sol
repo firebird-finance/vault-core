@@ -26,7 +26,7 @@ import "../../interfaces/IStratX.sol";
 */
 
 contract StrategyAutoLp is StrategyBase {
-    uint public blocksToReleaseCompound = 900; // 0 to disable
+    uint public timeToReleaseCompound = 30 minutes; // 0 to disable
 
     address public autoFarm = 0x0895196562C7868C5Be92459FaE7f877ED450452;
     address public autoStrat;
@@ -129,7 +129,7 @@ contract StrategyAutoLp is StrategyBase {
         if (_after > 0) {
             if (_after > _before && vaultMaster.isStrategy(address(this))) {
                 uint _compound = _after.sub(_before);
-                vault.addNewCompound(_compound, blocksToReleaseCompound);
+                vault.addNewCompound(_compound, timeToReleaseCompound);
             }
             _deposit();
         }
@@ -181,8 +181,8 @@ contract StrategyAutoLp is StrategyBase {
         IERC20(baseToken).safeTransfer(address(vault), baseBal);
     }
 
-    function setBlocksToReleaseCompound(uint _blocks) external onlyStrategist {
-        blocksToReleaseCompound = _blocks;
+    function setTimeToReleaseCompound(uint _timeSeconds) external onlyStrategist {
+        timeToReleaseCompound = _timeSeconds;
     }
 
     function setAutoFarmContract(address _autoFarm) external onlyStrategist {

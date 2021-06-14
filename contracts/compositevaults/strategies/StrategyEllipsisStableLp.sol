@@ -27,7 +27,7 @@ import "../../interfaces/IMultiFeeDistribution.sol";
 */
 
 contract StrategyEllipsisStableLp is StrategyBase {
-    uint public blocksToReleaseCompound = 900; // 0 to disable
+    uint public timeToReleaseCompound = 30 minutes; // 0 to disable
 
     address public lpTokenStaker = 0xcce949De564fE60e7f96C85e55177F8B9E4CF61b;
     address public ellipsisSwap = 0x160CAed03795365F3A589f10C379FfA7d75d4E76;
@@ -102,7 +102,7 @@ contract StrategyEllipsisStableLp is StrategyBase {
         uint _after = IERC20(baseToken).balanceOf(address(this));
         if (_after > 0) {
             if (vaultMaster.isStrategy(address(this))) {
-                vault.addNewCompound(_after, blocksToReleaseCompound);
+                vault.addNewCompound(_after, timeToReleaseCompound);
             }
 
             _deposit();
@@ -156,8 +156,8 @@ contract StrategyEllipsisStableLp is StrategyBase {
         IERC20(baseToken).safeTransfer(address(vault), baseBal);
     }
 
-    function setBlocksToReleaseCompound(uint _blocks) external onlyStrategist {
-        blocksToReleaseCompound = _blocks;
+    function setTimeToReleaseCompound(uint _timeSeconds) external onlyStrategist {
+        timeToReleaseCompound = _timeSeconds;
     }
 
     function setLPTokenStakerContract(address _lpTokenStaker) external onlyStrategist {

@@ -40,8 +40,8 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
     bytes32 private _minterBlock;
 
     uint public totalPendingCompound;
-    uint public startReleasingCompoundBlk;
-    uint public endReleasingCompoundBlk;
+    uint public startReleasingCompoundTime;
+    uint public endReleasingCompoundTime;
 
     //earnBefore: avoid deposit fee in farm, not to use with farm has bonus received when deposit
     //!earnBefore: avoid bonus received when deposit to farm, not to use with farm has deposit fee
@@ -123,22 +123,22 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
         return _input == address(basedToken);
     }
 
-    function addNewCompound(uint _newCompound, uint _blocksToReleaseCompound) external override {
+    function addNewCompound(uint _newCompound, uint _timeToReleaseCompound) external override {
         require(msg.sender == governance || vaultMaster.isStrategy(msg.sender), "!authorized");
-        if (_blocksToReleaseCompound == 0) {
+        if (_timeToReleaseCompound == 0) {
             totalPendingCompound = 0;
-            startReleasingCompoundBlk = 0;
-            endReleasingCompoundBlk = 0;
+            startReleasingCompoundTime = 0;
+            endReleasingCompoundTime = 0;
         } else {
             totalPendingCompound = pendingCompound().add(_newCompound);
-            startReleasingCompoundBlk = block.number;
-            endReleasingCompoundBlk = block.number.add(_blocksToReleaseCompound);
+            startReleasingCompoundTime = block.timestamp;
+            endReleasingCompoundTime = block.timestamp.add(_timeToReleaseCompound);
         }
     }
 
     function pendingCompound() public view returns (uint) {
-        if (totalPendingCompound == 0 || endReleasingCompoundBlk <= block.number) return 0;
-        return totalPendingCompound.mul(endReleasingCompoundBlk.sub(block.number)).div(endReleasingCompoundBlk.sub(startReleasingCompoundBlk).add(1));
+        if (totalPendingCompound == 0 || endReleasingCompoundTime <= block.timestamp) return 0;
+        return totalPendingCompound.mul(endReleasingCompoundTime.sub(block.timestamp)).div(endReleasingCompoundTime.sub(startReleasingCompoundTime).add(1));
     }
 
     function balance() public override view returns (uint _balance) {
