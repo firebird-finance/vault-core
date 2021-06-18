@@ -25,7 +25,7 @@ import "../../interfaces/IHopeChef.sol";
 */
 
 contract StrategyPairWeightLp is StrategyBase {
-    uint public timeToReleaseCompound = 30 minutes; // 0 to disable
+    uint public timeToReleaseCompound = 0; // 0 to disable
 
     address public farmPool;
     uint public poolId;

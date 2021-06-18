@@ -26,7 +26,7 @@ import "../../interfaces/IStratVLEV.sol";
 */
 
 contract StrategyAutoVenus is StrategyBase {
-    uint public timeToReleaseCompound = 30 minutes; // 0 to disable
+    uint public timeToReleaseCompound = 0; // 0 to disable
 
     address public autoFarm = 0x0895196562C7868C5Be92459FaE7f877ED450452;
     address public autoStrat;

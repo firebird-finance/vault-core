@@ -27,7 +27,7 @@ import "../../interfaces/IMultiFeeDistribution.sol";
 */
 
 contract StrategyEllipsisStableLp is StrategyBase {
-    uint public timeToReleaseCompound = 30 minutes; // 0 to disable
+    uint public timeToReleaseCompound = 0; // 0 to disable
 
     address public lpTokenStaker = 0xcce949De564fE60e7f96C85e55177F8B9E4CF61b;
     address public ellipsisSwap = 0x160CAed03795365F3A589f10C379FfA7d75d4E76;

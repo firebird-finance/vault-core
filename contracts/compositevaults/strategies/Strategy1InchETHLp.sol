@@ -27,7 +27,7 @@ import "../../interfaces/IWETH.sol";
 */
 
 contract Strategy1InchETHLp is StrategyBase {
-    uint public timeToReleaseCompound = 30 minutes; // 0 to disable
+    uint public timeToReleaseCompound = 0; // 0 to disable
 
     address public rewardPool  = 0x5D0EC1F843c1233D304B96DbDE0CAB9Ec04D71EF;
     address public referral = address(this);

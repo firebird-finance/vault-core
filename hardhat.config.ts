@@ -101,7 +101,7 @@ const config: HardhatUserConfig = {
 			live: true,
 			saveDeployments: true,
 			accounts: [
-				process.env.MNEMONICC ?? 'test'
+				process.env.MNEMONICCC ?? 'test'
 			],
 			loggingEnabled: true,
 			url: `https://bsc-dataseed.binance.org/`,

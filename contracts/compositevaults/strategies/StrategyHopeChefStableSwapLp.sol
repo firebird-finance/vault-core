@@ -26,7 +26,7 @@ import "../../interfaces/IStableSwapRouter.sol";
 */
 
 contract StrategyHopeChefStableSwapLp is StrategyBase {
-    uint public timeToReleaseCompound = 30 minutes; // 0 to disable
+    uint public timeToReleaseCompound = 0; // 0 to disable
 
     address public stakePool;
     uint public poolId;
