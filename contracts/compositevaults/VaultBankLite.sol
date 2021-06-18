@@ -30,7 +30,7 @@ contract VaultBankLite is ContextUpgradeSafe, ReentrancyGuard {
     }
 
     modifier onlyGovernance() {
-        require(msg.sender == governance, "!governance");
+        require(msg.sender == governance, "Bank: !governance");
         _;
     }
 
@@ -39,7 +39,7 @@ contract VaultBankLite is ContextUpgradeSafe, ReentrancyGuard {
      */
     modifier checkContract() {
         if (!acceptContractDepositor && !whitelistedContract[msg.sender]) {
-            require(!address(msg.sender).isContract() && msg.sender == tx.origin, "contract not support");
+            require(!address(msg.sender).isContract() && msg.sender == tx.origin, "Bank: contract not support");
         }
         _;
     }
@@ -83,14 +83,14 @@ contract VaultBankLite is ContextUpgradeSafe, ReentrancyGuard {
     }
 
     // No rebalance implementation for lower fees and faster swaps
-    function withdraw(address _vault, uint _shares, uint _min_output_amount) public nonReentrant {
+    function withdraw(address _vault, uint _shares, uint _min_output_amount) public checkContract nonReentrant {
         uint _wdAmt = _withdraw(_vault, _shares);
         IVault(_vault).withdrawFor(msg.sender, _wdAmt, _min_output_amount);
     }
 
     function _withdraw(address _vault, uint _shares) internal returns (uint) {
         uint _userBal = IERC20(address(_vault)).balanceOf(msg.sender);
-        require(_userBal >= _shares, "_userBal < _shares");
+        require(_userBal >= _shares, "Bank: _userBal < _shares");
 
         uint _before = IERC20(address(_vault)).balanceOf(address(this));
         IERC20(address(_vault)).safeTransferFrom(msg.sender, address(this), _shares);
@@ -104,14 +104,14 @@ contract VaultBankLite is ContextUpgradeSafe, ReentrancyGuard {
 
     function harvestStrategy(IVault _vault, address _strategy) external nonReentrant {
         if (!_vault.openHarvest()) {
-            require(msg.sender == strategist || msg.sender == governance, "!strategist");
+            require(msg.sender == strategist || msg.sender == governance, "Bank: !strategist");
         }
         _vault.harvestStrategy(_strategy);
     }
 
     function harvestAllStrategies(IVault _vault) external nonReentrant {
         if (!_vault.openHarvest()) {
-            require(msg.sender == strategist || msg.sender == governance, "!strategist");
+            require(msg.sender == strategist || msg.sender == governance, "Bank: !strategist");
         }
         _vault.harvestAllStrategies();
     }
@@ -120,9 +120,8 @@ contract VaultBankLite is ContextUpgradeSafe, ReentrancyGuard {
      * This function allows governance to take unsupported tokens out of the contract. This is in an effort to make someone whole, should they seriously mess up.
      * There is no guarantee governance will vote to return these. It also allows for removal of airdropped tokens.
      */
-    function governanceRecoverUnsupported(IERC20 _token, uint amount, address to) external {
-        require(msg.sender == governance, "!governance");
-        require(!vaultMaster.isVault(address(_token)), "vaultToken");
+    function governanceRecoverUnsupported(IERC20 _token, uint amount, address to) external onlyGovernance {
+        require(!vaultMaster.isVault(address(_token)), "Bank: vault token");
         _token.safeTransfer(to, amount);
     }
 }
