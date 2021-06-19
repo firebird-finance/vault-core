@@ -240,24 +240,24 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
     }
 
     function deposit(uint _amount, uint _min_mint_amount) external override returns (uint) {
-        return depositFor(msg.sender, msg.sender, _amount, _min_mint_amount);
+        return depositFor(msg.sender, _amount, _min_mint_amount);
     }
 
-    function depositFor(address _account, address _to, uint _amount, uint _min_mint_amount) public override checkContract(_account) checkContract(msg.sender) _non_reentrant_ returns (uint _mint_amount) {
+    function depositFor(address _to, uint _amount, uint _min_mint_amount) public override checkContract(msg.sender) _non_reentrant_ returns (uint _mint_amount) {
         require(!depositPaused, "deposit paused");
-        require(whitelistedDepositor[_account], "!depositor");
+        require(whitelistedDepositor[msg.sender], "!depositor");
         if (controller != address(0)) {
             IController(controller).beforeDeposit();
         }
 
         uint _pool = balance();
         require(totalDepositCap == 0 || _pool <= totalDepositCap, ">totalDepositCap");
-        _mint_amount = _deposit(_account, _to, _pool, _amount);
+        _mint_amount = _deposit(_to, _pool, _amount);
         require(_mint_amount >= _min_mint_amount, "slippage");
     }
 
-    function _deposit(address _account, address _mintTo, uint _pool, uint _amount) internal returns (uint _shares) {
-        basedToken.safeTransferFrom(_account, address(this), _amount);
+    function _deposit(address _mintTo, uint _pool, uint _amount) internal returns (uint _shares) {
+        basedToken.safeTransferFrom(msg.sender, address(this), _amount);
         uint256 _after = balance();
         _amount = _after.sub(_pool); // additional check for deflationary tokens
         require(depositLimit == 0 || _amount <= depositLimit, ">depositLimit");

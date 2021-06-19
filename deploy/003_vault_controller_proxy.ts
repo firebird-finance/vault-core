@@ -13,8 +13,10 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
     const {deployer} = await getNamedAccounts();
 
     console.log("----------deployer: ", deployer);
+    let timestamp;
     for (let i = 0; i < numVault; i++) {
-        const vaultProxy = await deploy(`VaultProxy${i}`, {
+        timestamp = Date.now();
+        const vaultProxy = await deploy(`VaultProxy${timestamp}`, {
             contract: "UpgradableProxy",
             skipIfAlreadyDeployed: false,
             from: deployer,
@@ -23,7 +25,7 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
             gasPrice: "2"
         });
 
-        const controllerProxy = await deploy(`ControllerProxy${i}`, {
+        const controllerProxy = await deploy(`ControllerProxy${timestamp}`, {
             contract: "UpgradableProxy",
             skipIfAlreadyDeployed: false,
             from: deployer,
@@ -32,8 +34,8 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
             gasPrice: "2"
         });
 
-        await execute(`VaultProxy${i}`, {from: deployer, log: false}, "transferProxyOwnership", proxyAdmin);
-        await execute(`ControllerProxy${i}`, {from: deployer, log: false}, "transferProxyOwnership", proxyAdmin);
+        await execute(`VaultProxy${timestamp}`, {from: deployer, log: false}, "transferProxyOwnership", proxyAdmin);
+        await execute(`ControllerProxy${timestamp}`, {from: deployer, log: false}, "transferProxyOwnership", proxyAdmin);
 
         console.log("vault: ", vaultProxy.address);
         console.log("controller: ", controllerProxy.address);

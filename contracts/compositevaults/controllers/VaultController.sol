@@ -19,6 +19,7 @@ contract VaultController is IController, ReentrancyGuard {
 
     address public governance;
     address public strategist;
+    address public timelock = address(0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c);
 
     struct StrategyInfo {
         address strategy;
@@ -45,6 +46,8 @@ contract VaultController is IController, ReentrancyGuard {
     uint public withdrawalFee = 0; // over 10000
     bool internal _initialized = false;
 
+    event ExecuteTransaction(address indexed target, uint value, string signature, bytes data);
+
     function initialize(IVault _vault, string memory _name) public {
         require(_initialized == false, "Strategy: Initialize must be false.");
         require(address(_vault) != address(0), "!_vault");
@@ -54,6 +57,11 @@ contract VaultController is IController, ReentrancyGuard {
         strategist = msg.sender;
         name = _name;
         _initialized = true;
+    }
+
+    modifier onlyTimelock() {
+        require(msg.sender == timelock, "!timelock");
+        _;
     }
 
     modifier onlyGovernance() {
@@ -71,7 +79,7 @@ contract VaultController is IController, ReentrancyGuard {
         _;
     }
 
-    function setVault(IVault _vault) external onlyGovernance {
+    function setVault(IVault _vault) external onlyTimelock {
         require(address(_vault) != address(0), "!_vault");
         vault = _vault;
         want = vault.token();
@@ -79,6 +87,10 @@ contract VaultController is IController, ReentrancyGuard {
 
     function setName(string memory _name) external onlyGovernance {
         name = _name;
+    }
+
+    function setTimelock(address _timelock) external onlyTimelock {
+        timelock = _timelock;
     }
 
     function setGovernance(address _governance) external onlyGovernance {
@@ -215,7 +227,7 @@ contract VaultController is IController, ReentrancyGuard {
         lastHarvestAllTimeStamp = block.timestamp;
     }
 
-    function switchFund(IStrategy _srcStrat, IStrategy _destStrat, uint _amount) external onlyStrategist {
+    function switchFund(IStrategy _srcStrat, IStrategy _destStrat, uint _amount) external onlyTimelock {
         require(approvedStrategies[address(_destStrat)], "!approved");
         require(_srcStrat.baseToken() == want, "!_srcStrat.baseToken");
         require(_destStrat.baseToken() == want, "!_destStrat.baseToken");
@@ -247,5 +259,26 @@ contract VaultController is IController, ReentrancyGuard {
             _toWithdraw = _toWithdraw.sub(_stratBal);
         }
         return _withdrawFee;
+    }
+
+    /**
+     * @dev This is from Timelock contract, the governance should be a Timelock contract before calling this emergency function
+     */
+    function executeTransaction(address target, uint value, string memory signature, bytes memory data) public onlyTimelock returns (bytes memory) {
+        bytes memory callData;
+
+        if (bytes(signature).length == 0) {
+            callData = data;
+        } else {
+            callData = abi.encodePacked(bytes4(keccak256(bytes(signature))), data);
+        }
+
+        // solium-disable-next-line security/no-call-value
+        (bool success, bytes memory returnData) = target.call{value : value}(callData);
+        require(success, string(abi.encodePacked(name, "::executeTransaction: Transaction execution reverted.")));
+
+        emit ExecuteTransaction(target, value, signature, data);
+
+        return returnData;
     }
 }

@@ -86,6 +86,11 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
         }
     }
 
+    modifier onlyTimelock() {
+        require(msg.sender == timelock, "!timelock");
+        _;
+    }
+
     modifier onlyGovernance() {
         require(msg.sender == governance, "!governance");
         _;
@@ -103,11 +108,11 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
 
     function getName() public virtual pure returns (string memory);
 
-    function approveForSpender(IERC20 _token, address _spender, uint _amount) external onlyGovernance {
+    function approveForSpender(IERC20 _token, address _spender, uint _amount) external onlyTimelock {
         _token.approve(_spender, _amount);
     }
 
-    function setUnirouter(IUniswapV2Router _unirouter) external onlyGovernance {
+    function setUnirouter(IUniswapV2Router _unirouter) external onlyTimelock {
         unirouter = _unirouter;
         if (farmingToken != address(0)) {
             IERC20(farmingToken).approve(address(unirouter), type(uint256).max);
@@ -119,7 +124,7 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
         }
     }
 
-    function setFirebirdRouter(IFirebirdRouter _firebirdRouter) external onlyGovernance {
+    function setFirebirdRouter(IFirebirdRouter _firebirdRouter) external onlyTimelock {
         firebirdRouter = _firebirdRouter;
         if (farmingToken != address(0)) {
             IERC20(farmingToken).approve(address(firebirdRouter), type(uint256).max);
@@ -311,8 +316,7 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
         governance = _governance;
     }
 
-    function setTimelock(address _timelock) external {
-        require(msg.sender == timelock, "!timelock");
+    function setTimelock(address _timelock) external onlyTimelock {
         timelock = _timelock;
     }
 
@@ -320,7 +324,7 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
         strategist = _strategist;
     }
 
-    function setController(address _controller) external onlyGovernance {
+    function setController(address _controller) external onlyTimelock {
         controller = _controller;
         vault = IVault(IController(_controller).vault());
         require(address(vault) != address(0), "!vault");
@@ -355,9 +359,7 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
     /**
      * @dev This is from Timelock contract.
      */
-    function executeTransaction(address target, uint value, string memory signature, bytes memory data) public returns (bytes memory) {
-        require(msg.sender == timelock, "!timelock");
-
+    function executeTransaction(address target, uint value, string memory signature, bytes memory data) public onlyTimelock returns (bytes memory) {
         bytes memory callData;
 
         if (bytes(signature).length == 0) {

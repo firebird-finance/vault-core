@@ -22,7 +22,7 @@ interface IVault {
     function getPricePerFullShare() external view returns (uint);
 
     function deposit(uint _amount, uint _min_mint_amount) external returns (uint);
-    function depositFor(address _account, address _to, uint _amount, uint _min_mint_amount) external returns (uint _mint_amount);
+    function depositFor(address _to, uint _amount, uint _min_mint_amount) external returns (uint _mint_amount);
     function withdraw(uint _shares, uint _min_output_amount) external returns (uint);
     function withdrawFor(address _account, uint _shares, uint _min_output_amount) external returns (uint _output_amount);
 
