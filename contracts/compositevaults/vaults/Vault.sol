@@ -12,7 +12,7 @@ contract Vault is VaultBase {
      * Periodically we will need this to claim BAL (for idle fund stay in Vault and not transferred to Strategy
      */
     function executeTransaction(address target, uint value, string memory signature, bytes memory data) public returns (bytes memory) {
-        require(msg.sender == governance, "!governance");
+        require(msg.sender == timelock, "!timelock");
 
         bytes memory callData;
 

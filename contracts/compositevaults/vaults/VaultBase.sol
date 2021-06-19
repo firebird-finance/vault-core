@@ -26,6 +26,7 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
     uint public depositLimit; // limit for each deposit (set 0 to disable)
     uint private totalDepositCap; // initial cap (set 0 to disable)
 
+    address public timelock = address(0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c);
     address public governance;
     address public controller;
 
@@ -150,6 +151,11 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
         governance = _governance;
     }
 
+    function setTimelock(address _timelock) external {
+        require(msg.sender == timelock, "!timelock");
+        timelock = _timelock;
+    }
+
     function setController(address _controller) external {
         require(msg.sender == governance, "!governance");
         require(IController(_controller).want() == address(basedToken), "!token");
@@ -234,10 +240,10 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
     }
 
     function deposit(uint _amount, uint _min_mint_amount) external override returns (uint) {
-        return depositFor(msg.sender, msg.sender, _amount, _min_mint_amount);
+        return depositFor(msg.sender, _amount, _min_mint_amount);
     }
 
-    function depositFor(address _account, address _to, uint _amount, uint _min_mint_amount) public override checkContract(_account) checkContract(msg.sender) _non_reentrant_ returns (uint _mint_amount) {
+    function depositFor(address _to, uint _amount, uint _min_mint_amount) public override checkContract(msg.sender) _non_reentrant_ returns (uint _mint_amount) {
         require(!depositPaused, "deposit paused");
         if (controller != address(0)) {
             IController(controller).beforeDeposit();
@@ -245,12 +251,12 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
 
         uint _pool = balance();
         require(totalDepositCap == 0 || _pool <= totalDepositCap, ">totalDepositCap");
-        _mint_amount = _deposit(_account, _to, _pool, _amount);
+        _mint_amount = _deposit(_to, _pool, _amount);
         require(_mint_amount >= _min_mint_amount, "slippage");
     }
 
-    function _deposit(address _account, address _mintTo, uint _pool, uint _amount) internal returns (uint _shares) {
-        basedToken.safeTransferFrom(_account, address(this), _amount);
+    function _deposit(address _mintTo, uint _pool, uint _amount) internal returns (uint _shares) {
+        basedToken.safeTransferFrom(msg.sender, address(this), _amount);
         if (earnBefore) {
             earn();
         }
