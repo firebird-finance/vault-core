@@ -72,14 +72,7 @@ contract VaultBankLite is ContextUpgradeSafe, ReentrancyGuard {
         IERC20(_vault.token()).safeTransferFrom(msg.sender, address(this), _amount);
         IERC20(_vault.token()).safeIncreaseAllowance(address(_vault), _amount);
 
-        uint _mint_amount = _depositToVault(_vault, _amount, _min_mint_amount);
-
-        IERC20(address(_vault)).safeTransfer(msg.sender, _mint_amount);
-    }
-
-    function _depositToVault(IVault _vault, uint _amount, uint _min_mint_amount) internal returns (uint _mint_amount) {
-        _mint_amount = _vault.deposit(_amount, _min_mint_amount);
-
+        _vault.depositFor(msg.sender, _amount, _min_mint_amount);
     }
 
     // No rebalance implementation for lower fees and faster swaps
