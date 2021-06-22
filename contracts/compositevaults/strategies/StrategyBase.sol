@@ -46,7 +46,7 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
     address public targetProfitToken; // compoundToken -> profit
 
     address public governance;
-    address public timelock = address(0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c);
+    address public timelock = address(0xe59511c0eF42FB3C419Ac2651406b7b8822328E1);
 
     address public controller;
     address public strategist;
@@ -61,6 +61,7 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
     uint public lastHarvestTimeStamp;
 
     function initialize(address _baseToken, address _farmingToken, address _controller, address _targetCompoundToken, address _targetProfitToken) internal {
+        timelock = address(0xe59511c0eF42FB3C419Ac2651406b7b8822328E1);
         baseToken = _baseToken;
         farmingToken = _farmingToken;
         targetCompoundToken = _targetCompoundToken;
