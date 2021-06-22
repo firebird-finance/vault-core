@@ -13,7 +13,7 @@ contract VaultCreator {
 
     constructor() public {
         governance = msg.sender;
-        proxyOwner = 0xe59511c0eF42FB3C419Ac2651406b7b8822328E1;
+        proxyOwner = 0xF76b15ED18c487d8528a295171Dbec24E4A7A0De;
     }
 
     modifier onlyGovernance() {

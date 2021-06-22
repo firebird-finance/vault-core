@@ -19,7 +19,7 @@ contract VaultController is IController, ReentrancyGuard {
 
     address public governance;
     address public strategist;
-    address public timelock = address(0xe59511c0eF42FB3C419Ac2651406b7b8822328E1);
+    address public timelock = address(0xF76b15ED18c487d8528a295171Dbec24E4A7A0De);
 
     struct StrategyInfo {
         address strategy;
@@ -56,7 +56,7 @@ contract VaultController is IController, ReentrancyGuard {
         governance = msg.sender;
         strategist = msg.sender;
         name = _name;
-        timelock = address(0xe59511c0eF42FB3C419Ac2651406b7b8822328E1);
+        timelock = address(0xF76b15ED18c487d8528a295171Dbec24E4A7A0De);
         _initialized = true;
     }
 
