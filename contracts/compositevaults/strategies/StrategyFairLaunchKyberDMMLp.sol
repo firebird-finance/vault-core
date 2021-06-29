@@ -190,12 +190,14 @@ contract StrategyFairLaunchKyberDMMLp is StrategyBase {
 
     function getKyberDMMTokenWeight(address token) internal view returns (uint256) {
         IDMMPool dmmPool = IDMMPool(baseToken);
-        (uint112 _reserve0, uint112 _reserve1, uint112 _vReserve0, uint112 _vReserve1,) = dmmPool.getTradeInfo();
+        (uint256 _reserve0, uint256 _reserve1, uint256 _vReserve0, uint256 _vReserve1,) = dmmPool.getTradeInfo();
 
         if (token == dmmPool.token0()) {
-            return (_reserve0 / _vReserve0 * 100) / (_reserve0 / _vReserve0 + _reserve1 / _vReserve1);
+            // (r0/v0) / (r0/v0 + r1/v1)
+            return (_reserve0.div(_vReserve0).mul(100)) / ((_reserve0.div(_vReserve0)).add(_reserve1.div(_vReserve1)));
         } else if (token == dmmPool.token1()) {
-            return (_reserve1 / _vReserve1 * 100) / (_reserve0 / _vReserve0 + _reserve1 / _vReserve1);
+            // (r1/v1) / (r0/v0 + r1/v1)
+            return (_reserve1.div(_vReserve1).mul(100)) / ((_reserve0.div(_vReserve0)).add(_reserve1.div(_vReserve1)));
         } else {
             revert("not belong to pool");
         }
