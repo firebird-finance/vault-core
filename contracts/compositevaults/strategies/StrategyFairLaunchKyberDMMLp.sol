@@ -108,6 +108,10 @@ contract StrategyFairLaunchKyberDMMLp is StrategyBase {
         IKyberFairLaunch(farmPool).withdrawAll(poolId);
     }
 
+    function claimRewardToLock() public {
+        IKyberFairLaunch(farmPool).harvest(poolId);
+    }
+
     function claimReward() public override {
         IKyberFairLaunch(farmPool).harvest(poolId);
         address rewardLocker = IKyberFairLaunch(farmPool).rewardLocker();
@@ -194,10 +198,10 @@ contract StrategyFairLaunchKyberDMMLp is StrategyBase {
 
         if (token == dmmPool.token0()) {
             // (r0/v0) / (r0/v0 + r1/v1)
-            return (_reserve0.div(_vReserve0).mul(100)) / ((_reserve0.div(_vReserve0)).add(_reserve1.div(_vReserve1)));
+            return (_reserve0.mul(100).mul(1e18).div(_vReserve0)) / ((_reserve0.mul(1e18).div(_vReserve0)).add(_reserve1.mul(1e18).div(_vReserve1)));
         } else if (token == dmmPool.token1()) {
             // (r1/v1) / (r0/v0 + r1/v1)
-            return (_reserve1.div(_vReserve1).mul(100)) / ((_reserve0.div(_vReserve0)).add(_reserve1.div(_vReserve1)));
+            return (_reserve1.mul(100).mul(1e18).div(_vReserve1)) / ((_reserve0.mul(1e18).div(_vReserve0)).add(_reserve1.mul(1e18).div(_vReserve1)));
         } else {
             revert("not belong to pool");
         }

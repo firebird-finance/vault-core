@@ -104,6 +104,48 @@ Controller                  : 0xD673480b8a0ba784B76b82B763aDE3b55EAF7b78
 Strategy                    : 0xDdE02514796d3071929B21db069755a21ba0AeaF
 
 
+//matic-dai dmm
+BaseToken                   : 0x45963db838a070cF7BE8e7046fD63e23d376c665
+Vault                       : 0x9b14f4407e5e732d6482f628Be841C6063337729
+Controller                  : 0xEe0a78Ee1B07640473134694c432cF9981eDCba9
+Strategy                    : 0x96680A83DEc348E31C4BB2ba9175035B01E995e0
+
+
+//matic-knc dmm
+BaseToken                   : 0x37e6449B0e99BeFD2A708eA048d970F4FF4dC65d
+Vault                       : 0x0ce197AFD399dFD3FF395F1473A37B8A7415541b
+Controller                  : 0xc27a73105FD4E2018994d4D59888449332c29e67
+Strategy                    : 0xF2142807068C48aB4a01e3aD2291c05A0D1B7BB1
+
+
+//usdc-usdt dmm
+BaseToken                   : 0x3904aC366D348636694CB6720aa1540e76441b1B
+Vault                       : 0x0895f5b05ae748f4D74CCB2F1199405533AEBa3c
+Controller                  : 0x90fBb7802E8aDDCc9fDb131732D10BF66B1c728A
+Strategy                    : 0xACAfc41AdE9Ff56cCB3CB177a011b5A2D5f6B739
+
+
+//usdc-dai dmm
+BaseToken                   : 0x7018C0bd73255C8966d0B26634E0BC0c7595D255
+Vault                       : 0x9915373f183f5dD1258B40c6dc0ed6f48F79cf9F
+Controller                  : 0x5228c6E8FD08eF6f5C34937f24F622Be1D7C7601
+Strategy                    : 0x78baE547fd6764De5F855837005758e062D8DF62
+
+
+//usdc-weth dmm
+BaseToken                   : 0x95D708e9eE04b0136b98579141624d19c89B9d68
+Vault                       : 0x81CcC4D21Cac7567bF7A05bbb1661b2a6d4a071e
+Controller                  : 0x3E0D0eF49BB79AA516cFf24253BcF6587a21ef60
+Strategy                    : 0x32303E915E5B3853532979aff2918823ee46513B
+
+
+//knc-eth dmm
+BaseToken                   : 0xd8B9E9444fCBF26BEA4BAdd6142dD6a962BCA86A
+Vault                       : 0x6494f4f91F7d38b3E23cF3590d7884396c2A5A02
+Controller                  : 0x9A1891f5Bbf111B0D06D8dDAebdb12e82F4C6fB6
+Strategy                    : 0xfd3f69a02B33417fCF3AFaB062006D3eC8abEcbf
+
+
 
 ===================
 max                         : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff

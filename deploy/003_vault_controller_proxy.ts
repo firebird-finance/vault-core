@@ -3,8 +3,8 @@ import {DeployFunction} from "hardhat-deploy/types";
 import {BigNumber} from "ethers";
 
 const proxyAdmin = "0xe59511c0eF42FB3C419Ac2651406b7b8822328E1";
-const vaultImpl = "0x20B22B8013Fb28e1652b0428f669Ee162f4bd234";
-const controllerImp = "0x088A7406a521ef5E70dfDa7e49edB51f972295fE";
+const vaultImpl = "0xEfE0c4Aa0092BFddBc6fF24a37f8A57192E8cCe2";
+const controllerImp = "0xE77F5AAFB0823b0BC07ce03be639604e337775C2";
 const numVault = 6;
 
 const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
@@ -14,6 +14,7 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
 
     console.log("----------deployer: ", deployer);
     let timestamp;
+    let gasPrice = BigNumber.from("8000000000");
     for (let i = 0; i < numVault; i++) {
         timestamp = Date.now();
         const vaultProxy = await deploy(`VaultProxy${timestamp}`, {
@@ -22,7 +23,7 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
             from: deployer,
             args: [vaultImpl],
             log: false,
-            gasPrice: "2"
+            gasPrice
         });
 
         const controllerProxy = await deploy(`ControllerProxy${timestamp}`, {
@@ -31,11 +32,20 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
             from: deployer,
             args: [controllerImp],
             log: false,
-            gasPrice: "2"
+            gasPrice
         });
 
-        await execute(`VaultProxy${timestamp}`, {from: deployer, log: false}, "transferProxyOwnership", proxyAdmin);
-        await execute(`ControllerProxy${timestamp}`, {from: deployer, log: false}, "transferProxyOwnership", proxyAdmin);
+        await execute(
+            `VaultProxy${timestamp}`,
+            {
+                from: deployer,
+                log: false,
+                gasPrice
+            },
+            "transferProxyOwnership",
+            proxyAdmin
+        );
+        await execute(`ControllerProxy${timestamp}`, {from: deployer, log: false, gasPrice}, "transferProxyOwnership", proxyAdmin);
 
         console.log("vault: ", vaultProxy.address);
         console.log("controller: ", controllerProxy.address);

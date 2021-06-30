@@ -33,6 +33,7 @@ import {
     StrategyHopeChefStableSwapFactory,
     StrategyHopeChefStableSwapLpFactory,
     StrategyCurveStableFactory,
+    StrategyFairLaunchKyberDmmLpFactory,
 } from "../../typechain";
 
 import {SignerWithAddress} from "hardhat-deploy-ethers/dist/src/signer-with-address";
@@ -105,6 +106,121 @@ describe("StrategyBTCWBNB", function() {
 
         await strategy.setFirebirdPairs(busd.address, btc.address, ["0xf98313f818c53E40Bd758C5276EF4B434463Bec4"]);
         await strategy.setFirebirdPairs(cakeAddress, busd.address, ["0xC99E3abe7729a3869d5cAd631bcbB90e3d389AA2"]);
+
+
+        //knc-eth dmm lp
+        let strategy19 = await new StrategyFairLaunchKyberDmmLpFactory(deployerMainnet).deploy();
+        await strategy19.initialize(
+          "0xd8B9E9444fCBF26BEA4BAdd6142dD6a962BCA86A",
+          "0x3add3034fcf921f20c74c6149fb44921709595b1",
+          3,
+          "0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c", //knc
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+          "0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c",
+          controller.address
+        );
+        await strategy19.setApproveKyberRouterForToken("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", maxUint256);
+        //knc -> eth
+        await strategy19.setKyberPaths("0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0xd8B9E9444fCBF26BEA4BAdd6142dD6a962BCA86A"], ["0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619"]);
+
+
+        //usdc-weth dmm lp
+        let strategy18 = await new StrategyFairLaunchKyberDmmLpFactory(deployerMainnet).deploy();
+        await strategy18.initialize(
+          "0x95D708e9eE04b0136b98579141624d19c89B9d68",
+          "0x3add3034fcf921f20c74c6149fb44921709595b1",
+          2,
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+          controller.address
+        );
+        await strategy18.setApproveKyberRouterForToken("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", maxUint256);
+        await strategy18.setApproveKyberRouterForToken("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", maxUint256);
+        //knc -> eth
+        await strategy18.setKyberPaths("0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0xd8B9E9444fCBF26BEA4BAdd6142dD6a962BCA86A"], ["0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619"]);
+        //eth -> usdc
+        await strategy18.setFirebirdPairs("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x39D736D2b254eE30796f43Ec665143010b558F82"]);
+
+
+        //usdc-dai dmm lp
+        let strategy17 = await new StrategyFairLaunchKyberDmmLpFactory(deployerMainnet).deploy();
+        await strategy17.initialize(
+          "0x7018C0bd73255C8966d0B26634E0BC0c7595D255",
+          "0x3add3034fcf921f20c74c6149fb44921709595b1",
+          1,
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          controller.address
+        );
+        await strategy17.setApproveKyberRouterForToken("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", maxUint256);
+        await strategy17.setApproveKyberRouterForToken("0x8f3cf7ad23cd3cadbd9735aff958023239c6a063", maxUint256);
+        //knc -> usdc
+        await strategy17.setKyberPaths("0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0xd8B9E9444fCBF26BEA4BAdd6142dD6a962BCA86A", "0x95D708e9eE04b0136b98579141624d19c89B9d68"], ["0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174"]);
+        //usdc -> dai
+        await strategy17.setKyberPaths("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063", ["0x7018C0bd73255C8966d0B26634E0BC0c7595D255"], ["0x2791bca1f2de4661ed88a30c99a7a9449aa84174", "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063"]);
+
+
+        //usdc-usdt dmm lp
+        let strategy16 = await new StrategyFairLaunchKyberDmmLpFactory(deployerMainnet).deploy();
+        await strategy16.initialize(
+          "0x3904aC366D348636694CB6720aa1540e76441b1B",
+          "0x3add3034fcf921f20c74c6149fb44921709595b1",
+          0,
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+          controller.address
+        );
+        await strategy16.setApproveKyberRouterForToken("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", maxUint256);
+        await strategy16.setApproveKyberRouterForToken("0xc2132d05d31c914a87c6611c10748aeb04b58e8f", maxUint256);
+        //knc -> usdc
+        await strategy16.setKyberPaths("0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0xd8B9E9444fCBF26BEA4BAdd6142dD6a962BCA86A", "0x95D708e9eE04b0136b98579141624d19c89B9d68"], ["0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174"]);
+        //usdc -> usdt
+        await strategy16.setKyberPaths("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", ["0x3904aC366D348636694CB6720aa1540e76441b1B"], ["0x2791bca1f2de4661ed88a30c99a7a9449aa84174", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"]);
+
+
+        //matic-knc dmm lp
+        let strategy15 = await new StrategyFairLaunchKyberDmmLpFactory(deployerMainnet).deploy();
+        await strategy15.initialize(
+          "0x37e6449B0e99BeFD2A708eA048d970F4FF4dC65d",
+          "0x829c27fd3013b944cbe76e92c3d6c45767c0c789",
+          1,
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", //matic
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", //matic
+          "0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c",
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+          controller.address
+        );
+        //knc -> matic
+        await strategy15.setKyberPaths("0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0x37e6449B0e99BeFD2A708eA048d970F4FF4dC65d"], ["0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270"]);
+        //matic -> knc
+        await strategy15.setKyberPaths("0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", "0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c", ["0x37e6449B0e99BeFD2A708eA048d970F4FF4dC65d"], ["0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", "0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c"]);
+
+
+        //matic-dai dmm lp
+        let strategy14 = await new StrategyFairLaunchKyberDmmLpFactory(deployerMainnet).deploy();
+        await strategy14.initialize(
+          "0x45963db838a070cF7BE8e7046fD63e23d376c665",
+          "0x829c27fd3013b944cbE76E92c3D6c45767c0C789",
+          0,
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", //matic
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", //matic
+          "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+          controller.address
+        );
+        await strategy14.setApproveKyberRouterForToken("0x8f3cf7ad23cd3cadbd9735aff958023239c6a063", maxUint256);
+        //knc -> matic
+        await strategy14.setKyberPaths("0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0x37e6449B0e99BeFD2A708eA048d970F4FF4dC65d"], ["0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270"]);
+        //matic -> dai
+        await strategy14.setKyberPaths("0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063", ["0x45963db838a070cF7BE8e7046fD63e23d376c665"], ["0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063"]);
+
 
         //IRON3pool
         let strategy13 = await new StrategyHopeChefStableSwapLpFactory(deployerMainnet).deploy();
