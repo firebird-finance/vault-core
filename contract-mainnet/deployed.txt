@@ -2,6 +2,8 @@ Deployer                    : 0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c
 
 VaultMaster                 : 0x439392419b8bEEe085A3Fd913eF04e116cE99870
 VaultBank                   : 0xa1a57957f965ffFC09D3866C73F5024da46c8Cbf
+VaultCreator                : 0xb35De1B18A1D590f1C89e67567413629C3a84871
+VaultControllerCreator      : 0x3f1d66091cB7823D06A45761deEA7c304885DEaa
 
 
 //btc-eth sushi
@@ -106,44 +108,44 @@ Strategy                    : 0xDdE02514796d3071929B21db069755a21ba0AeaF
 
 //matic-dai dmm
 BaseToken                   : 0x45963db838a070cF7BE8e7046fD63e23d376c665
-Vault                       : 0x9b14f4407e5e732d6482f628Be841C6063337729
-Controller                  : 0xEe0a78Ee1B07640473134694c432cF9981eDCba9
-Strategy                    : 0x96680A83DEc348E31C4BB2ba9175035B01E995e0
+Vault                       : 0x8c46693ae3B32051504D2BB5b89E76d3195bDd14
+Controller                  : 0x1799D7b3951114a6AD8889526aD6676c0462D76E
+Strategy                    : 0xdc3Df08673d63a90bF3c1ee2B7869f98E6D006C8
 
 
 //matic-knc dmm
 BaseToken                   : 0x37e6449B0e99BeFD2A708eA048d970F4FF4dC65d
-Vault                       : 0x0ce197AFD399dFD3FF395F1473A37B8A7415541b
-Controller                  : 0xc27a73105FD4E2018994d4D59888449332c29e67
-Strategy                    : 0xF2142807068C48aB4a01e3aD2291c05A0D1B7BB1
+Vault                       : 0x90b0317b73a7BEF3dCcF8A31D30fF42FaE139902
+Controller                  : 0x8f81fE764aC1CDbCf62b07e8D06cb0C4a45eDbf6
+Strategy                    : 0xD2fA5380bE099ab52c54EbD558285738AA53313a
 
 
 //usdc-usdt dmm
 BaseToken                   : 0x3904aC366D348636694CB6720aa1540e76441b1B
-Vault                       : 0x0895f5b05ae748f4D74CCB2F1199405533AEBa3c
-Controller                  : 0x90fBb7802E8aDDCc9fDb131732D10BF66B1c728A
-Strategy                    : 0xACAfc41AdE9Ff56cCB3CB177a011b5A2D5f6B739
+Vault                       : 0x1B58FDaad43e8C2849355B5A932c0A58CBe0A033
+Controller                  : 0x7dAc0fe4EbB321Ac6E84813Cd4DdB7a31BF8A177
+Strategy                    : 0xE51c4C83d2E237414812282dD9711C7427bF5d02
 
 
 //usdc-dai dmm
 BaseToken                   : 0x7018C0bd73255C8966d0B26634E0BC0c7595D255
-Vault                       : 0x9915373f183f5dD1258B40c6dc0ed6f48F79cf9F
-Controller                  : 0x5228c6E8FD08eF6f5C34937f24F622Be1D7C7601
-Strategy                    : 0x78baE547fd6764De5F855837005758e062D8DF62
+Vault                       : 0x3f12986517711BA37f1AD7CFf7d619B8FaDA2596
+Controller                  : 0x6C5572375D466Edbe38B821cbCC8BdE1d3e8845A
+Strategy                    : 0x620167b0b361d98D6e48ec72550a135E1B57613f
 
 
 //usdc-weth dmm
 BaseToken                   : 0x95D708e9eE04b0136b98579141624d19c89B9d68
-Vault                       : 0x81CcC4D21Cac7567bF7A05bbb1661b2a6d4a071e
-Controller                  : 0x3E0D0eF49BB79AA516cFf24253BcF6587a21ef60
-Strategy                    : 0x32303E915E5B3853532979aff2918823ee46513B
+Vault                       : 0xEE5a3512549ab76D94d614244321a272Cff56bAF
+Controller                  : 0x26B87187114d5aF8FBfD2Ce64643d38C62dA51B8
+Strategy                    : 0x716058066105158236B3D804CdfB6Ce73cFea55C
 
 
 //knc-eth dmm
 BaseToken                   : 0xd8B9E9444fCBF26BEA4BAdd6142dD6a962BCA86A
-Vault                       : 0x6494f4f91F7d38b3E23cF3590d7884396c2A5A02
-Controller                  : 0x9A1891f5Bbf111B0D06D8dDAebdb12e82F4C6fB6
-Strategy                    : 0xfd3f69a02B33417fCF3AFaB062006D3eC8abEcbf
+Vault                       : 0x46469849216Cf96267b97384839f47EeD2428921
+Controller                  : 0x57174B45Fc7eFB83D1F77D648185976C074F9e6b
+Strategy                    : 0x94Bb298D7aD3b407e2B077a690807952c384F909
 
 
 
