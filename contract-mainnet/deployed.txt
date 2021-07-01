@@ -1,7 +1,7 @@
 Deployer                    : 0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c
 
 VaultMaster                 : 0x439392419b8bEEe085A3Fd913eF04e116cE99870
-VaultBank                   : 0xa1a57957f965ffFC09D3866C73F5024da46c8Cbf
+VaultBank                   : 0x8294B42C8acFF8e819064e8755a55D038060731E
 VaultCreator                : 0xb35De1B18A1D590f1C89e67567413629C3a84871
 VaultControllerCreator      : 0x3f1d66091cB7823D06A45761deEA7c304885DEaa
 
