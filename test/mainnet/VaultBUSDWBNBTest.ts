@@ -107,6 +107,96 @@ describe("StrategyBTCWBNB", function() {
         await strategy.setFirebirdPairs(busd.address, btc.address, ["0xf98313f818c53E40Bd758C5276EF4B434463Bec4"]);
         await strategy.setFirebirdPairs(cakeAddress, busd.address, ["0xC99E3abe7729a3869d5cAd631bcbB90e3d389AA2"]);
 
+        //fish-usdc apeswap lp
+        let strategy24 = await new StrategySushiLpFactory(deployerMainnet).deploy();
+        await strategy24.initialize(
+          "0x3ab5dcf8e7ab97543Dac941fA2343c527837d329",
+          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
+          "0x8cfd1b9b7478e7b0422916b72d1db6a9d513d734",
+          25,
+          "0x3a3df212b7aa91aa0402b9035b098891d276572b", //fish
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
+          // "0xC0788A3aD43d79aa53B09c2EaCc313A787d1d607",
+          controller.address
+        );
+        //fish -> usdc
+        await strategy24.setFirebirdPairs("0x3a3df212b7aa91aa0402b9035b098891d276572b", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x326E00705b2e742426623dAb0aCe2CeecbbD6067"]);
+
+
+        //fish-matic firebird lp
+        let strategy23 = await new StrategySushiLpFactory(deployerMainnet).deploy();
+        await strategy23.initialize(
+          "0x46c8BE37Ff8CEdf09B88E457369033876087197e",
+          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
+          "0x8cfd1b9b7478e7b0422916b72d1db6a9d513d734",
+          26,
+          "0x3a3df212b7aa91aa0402b9035b098891d276572b", //fish
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", //matic
+          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+          controller.address
+        );
+        //fish -> matic
+        await strategy23.setFirebirdPairs("0x3a3df212b7aa91aa0402b9035b098891d276572b", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0x46c8BE37Ff8CEdf09B88E457369033876087197e"]);
+
+
+        //fish-matic dfyn lp
+        let strategy22 = await new StrategySushiLpFactory(deployerMainnet).deploy();
+        await strategy22.initialize(
+          "0x9e2Fbb31fBd68472f6cd54A1635b8cd64d78FC1C",
+          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
+          "0x8cfd1b9b7478e7b0422916b72d1db6a9d513d734",
+          21,
+          "0x3a3df212b7aa91aa0402b9035b098891d276572b", //fish
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", //matic
+          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
+          "0x4c28f48448720e9000907BC2611F73022fdcE1fA",
+          // "0xA102072A4C07F06EC3B4900FDC4C7B80b6c57429",
+          controller.address
+        );
+        //fish -> matic
+        await strategy23.setFirebirdPairs("0x3a3df212b7aa91aa0402b9035b098891d276572b", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0x46c8BE37Ff8CEdf09B88E457369033876087197e"]);
+        //fish -> weth (wmatic)
+        await strategy22.setFirebirdPairs("0x3a3df212b7aa91aa0402b9035b098891d276572b", "0x4c28f48448720e9000907BC2611F73022fdcE1fA", ["0x9e2Fbb31fBd68472f6cd54A1635b8cd64d78FC1C"]);
+
+
+        //fish-matic sushi lp
+        let strategy21 = await new StrategySushiLpFactory(deployerMainnet).deploy();
+        await strategy21.initialize(
+          "0xcBF6f78981e63Ef813cb71852d72A060b583EECF",
+          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
+          "0x8cfd1b9b7478e7b0422916b72d1db6a9d513d734",
+          13,
+          "0x3a3df212b7aa91aa0402b9035b098891d276572b", //fish
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", //matic
+          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+          // "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506",
+          controller.address
+        );
+        //fish -> matic
+        await strategy21.setFirebirdPairs("0x3a3df212b7aa91aa0402b9035b098891d276572b", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0x46c8BE37Ff8CEdf09B88E457369033876087197e"]);
+
+
+        //fish-matic quick lp
+        let strategy20 = await new StrategySushiLpFactory(deployerMainnet).deploy();
+        await strategy20.initialize(
+          "0x289cf2B63c5Edeeeab89663639674d9233E8668E",
+          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
+          "0x8cfd1b9b7478e7b0422916b72d1db6a9d513d734",
+          0,
+          "0x3a3df212b7aa91aa0402b9035b098891d276572b", //fish
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", //matic
+          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+          // "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff",
+          controller.address
+        );
+        //fish -> matic
+        await strategy20.setFirebirdPairs("0x3a3df212b7aa91aa0402b9035b098891d276572b", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0x46c8BE37Ff8CEdf09B88E457369033876087197e"]);
+
 
         //knc-eth dmm lp
         let strategy19 = await new StrategyFairLaunchKyberDmmLpFactory(deployerMainnet).deploy();

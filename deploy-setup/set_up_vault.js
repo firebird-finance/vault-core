@@ -3,23 +3,23 @@ require('dotenv').config();
 const BigNumber = require('bignumber.js');
 const VaultABI = require('../artifacts/contracts/compositevaults/vaults/Vault.sol/Vault.json').abi;
 const ControllerABI = require('../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
-const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategyFairLaunchKyberDMMLp.sol/StrategyFairLaunchKyberDMMLp.json').abi;
+const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategySushiLp.sol/StrategySushiLp.json').abi;
 const ownerPrivateKey = process.env.MNEMONICC;
 let vaultMasterAddress = '0x439392419b8bEEe085A3Fd913eF04e116cE99870';
 
-let baseToken = '0xd8B9E9444fCBF26BEA4BAdd6142dD6a962BCA86A';
-let vaultAddress = '0x46469849216Cf96267b97384839f47EeD2428921';
-let controllerAddress = '0x57174B45Fc7eFB83D1F77D648185976C074F9e6b';
-let strategyAddress = '0x94Bb298D7aD3b407e2B077a690807952c384F909';
+let baseToken = '0x46c8BE37Ff8CEdf09B88E457369033876087197e';
+let vaultAddress = '0x5F09B9d8757c0Ce1EE6aAdd45323f28e154d3996';
+let controllerAddress = '0xF2134dBa5c2bd6640f65B68438F623D28FA6dB68';
+let strategyAddress = '0xeeeE220d1a0943d77b7237425418186817ecF288';
 
-let vaultName = 'Vault:KyberDMMKNCWETH';
-let vaultSymbol = 'vaultKNCWETH';
-let controllerName = 'VaultController:KyberDMMKNCWETH';
+let vaultName = 'Vault:FirebirdFISHWMATIC';
+let vaultSymbol = 'vaultFISHWMATIC';
+let controllerName = 'VaultController:FirebirdFISHWMATIC';
 
 const main = async () => {
     console.log('Run job', new Date());
     const HDWalletProvider = require('@truffle/hdwallet-provider');
-    let provider = new HDWalletProvider(ownerPrivateKey, `https://rpc-mainnet.matic.quiknode.pro`);
+    let provider = new HDWalletProvider(ownerPrivateKey, `http://18.116.97.120:8545/`);
     let web3 = new Web3(provider);
     const maxUint256 = web3.utils
         .toBN(2)
@@ -27,7 +27,7 @@ const main = async () => {
         .sub(web3.utils.toBN(1));
 
     let [[from], gasPrice] = await Promise.all([web3.eth.getAccounts(), web3.eth.getGasPrice()]);
-    gasPrice = BigNumber(gasPrice).times(14);
+    gasPrice = BigNumber(gasPrice).times(10);
     let method;
     let txReceipt;
     let vaultContract = new web3.eth.Contract(VaultABI, vaultAddress);
@@ -48,40 +48,21 @@ const main = async () => {
 
     // strategy
     method = strategyContract.methods.initialize(
-        '0xd8B9E9444fCBF26BEA4BAdd6142dD6a962BCA86A',
-        '0x3add3034fcf921f20c74c6149fb44921709595b1',
-        3,
-        '0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c', //knc
-        '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', //eth
-        '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
-        '0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c',
+        '0x46c8BE37Ff8CEdf09B88E457369033876087197e',
+        '0x3a3df212b7aa91aa0402b9035b098891d276572b',
+        '0x8cfd1b9b7478e7b0422916b72d1db6a9d513d734',
+        26,
+        '0x3a3df212b7aa91aa0402b9035b098891d276572b', //fish
+        '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', //matic
+        '0x3a3df212b7aa91aa0402b9035b098891d276572b',
+        '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
         controllerAddress
     );
     await method.estimateGas({from});
     txReceipt = await method.send({from, gas: 900000, gasPrice});
     console.log('RECEIPT strategy init', new Date(), txReceipt.transactionHash);
 
-    method = strategyContract.methods.setApproveKyberRouterForToken('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', maxUint256);
-    await method.estimateGas({from});
-    txReceipt = await method.send({from, gas: 900000, gasPrice});
-    console.log('RECEIPT strategy', new Date(), txReceipt.transactionHash);
-
-    method = strategyContract.methods.setApproveKyberRouterForToken('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', maxUint256);
-    await method.estimateGas({from});
-    txReceipt = await method.send({from, gas: 900000, gasPrice});
-    console.log('RECEIPT strategy', new Date(), txReceipt.transactionHash);
-
-    method = strategyContract.methods.setKyberPaths(
-        '0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c',
-        '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
-        ['0xd8B9E9444fCBF26BEA4BAdd6142dD6a962BCA86A'],
-        ['0x1c954e8fe737f99f68fa1ccda3e51ebdb291948c', '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619']
-    );
-    await method.estimateGas({from});
-    txReceipt = await method.send({from, gas: 900000, gasPrice});
-    console.log('RECEIPT strategy', new Date(), txReceipt.transactionHash);
-
-    method = strategyContract.methods.setFirebirdPairs('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', ['0x39D736D2b254eE30796f43Ec665143010b558F82']);
+    method = strategyContract.methods.setFirebirdPairs('0x3a3df212b7aa91aa0402b9035b098891d276572b', '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', ['0x46c8BE37Ff8CEdf09B88E457369033876087197e']);
     await method.estimateGas({from});
     txReceipt = await method.send({from, gas: 900000, gasPrice});
     console.log('RECEIPT strategy', new Date(), txReceipt.transactionHash);

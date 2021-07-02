@@ -45,6 +45,9 @@ contract StrategyFairLaunchKyberDMMLp is StrategyBase {
     address public wmatic = 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270;
     address public matic = 0x0000000000000000000000000000000000000000;
 
+    uint public lastClaimRewardTimestamp;
+    uint public limitTimeToClaimReward = 12 hours;
+
     // baseToken       = 0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6 (CAKEBNB-CAKELP)
     // farmingToken = 0x4f47a0d15c1e53f3d94c069c7d16977c29f9cb6b (RAMEN)
     // targetCompound = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c (BNB)
@@ -86,7 +89,7 @@ contract StrategyFairLaunchKyberDMMLp is StrategyBase {
     function _deposit() internal {
         uint _baseBal = IERC20(baseToken).balanceOf(address(this));
         if (_baseBal > 0) {
-            IKyberFairLaunch(farmPool).deposit(poolId, _baseBal, true);
+            IKyberFairLaunch(farmPool).deposit(poolId, _baseBal, false);
         }
     }
 
@@ -101,19 +104,24 @@ contract StrategyFairLaunchKyberDMMLp is StrategyBase {
         uint _after = IERC20(baseToken).balanceOf(address(this));
         _amount = _after.sub(_before);
 
+        lastClaimRewardTimestamp = block.timestamp;
         return _amount;
     }
 
     function _withdrawAll() internal override {
         IKyberFairLaunch(farmPool).withdrawAll(poolId);
+        lastClaimRewardTimestamp = block.timestamp;
     }
 
     function claimRewardToLock() public {
-        IKyberFairLaunch(farmPool).harvest(poolId);
+        if (block.timestamp > lastClaimRewardTimestamp + limitTimeToClaimReward) {
+            IKyberFairLaunch(farmPool).harvest(poolId);
+            lastClaimRewardTimestamp = block.timestamp;
+        }
     }
 
     function claimReward() public override {
-        IKyberFairLaunch(farmPool).harvest(poolId);
+        claimRewardToLock();
         address rewardLocker = IKyberFairLaunch(farmPool).rewardLocker();
 
         for (uint i=0; i<farmingTokens.length; i++) {
@@ -185,7 +193,7 @@ contract StrategyFairLaunchKyberDMMLp is StrategyBase {
         } else { // use Uniswap
             path = uniswapPaths[_input][_output];
             if (path.length == 0) {
-                revert("not found path");
+                revert("!path");
             }
             unirouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(_amount, 1, path, address(this), block.timestamp);
         }
@@ -203,7 +211,7 @@ contract StrategyFairLaunchKyberDMMLp is StrategyBase {
             // (r1/v1) / (r0/v0 + r1/v1)
             return (_reserve1.mul(100).mul(1e18).div(_vReserve1)) / ((_reserve0.mul(1e18).div(_vReserve0)).add(_reserve1.mul(1e18).div(_vReserve1)));
         } else {
-            revert("not belong to pool");
+            revert("!poolToken");
         }
     }
 
@@ -268,5 +276,9 @@ contract StrategyFairLaunchKyberDMMLp is StrategyBase {
 
     function setKyberRouter(IDMMRouter _kyberRouter) external onlyTimelock {
         kyberRouter = _kyberRouter;
+    }
+
+    function setLimitTimeToClaimReward(uint _limitTimeToClaimReward) external onlyStrategist {
+        limitTimeToClaimReward = _limitTimeToClaimReward;
     }
 }

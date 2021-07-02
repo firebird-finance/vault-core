@@ -5,18 +5,18 @@ const ControllerABI = require('../artifacts/contracts/compositevaults/controller
 const ownerPrivateKey = process.env.MNEMONICC;
 let deployerMainnet = '0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c';
 
-let vaultsAddress = ['0x42CBC14A35C26FA4e15a2411E596fd613668cfb6'];
-let controllersAddress = ['0xA343A155930012b9EB515D878d7f1455B153db72'];
-let strategiesAddress = ['0x351286a9212d159f10F4631886aea6dbc58a151e'];
+let vaultsAddress = [];
+let controllersAddress = [];
+let strategiesAddress = [];
 
 const main = async () => {
     console.log('Run job', new Date());
     const HDWalletProvider = require('@truffle/hdwallet-provider');
-    let provider = new HDWalletProvider(ownerPrivateKey, `https://rpc-mainnet.maticvigil.com/`);
+    let provider = new HDWalletProvider(ownerPrivateKey, `http://18.116.97.120:8545/`);
     let web3 = new Web3(provider);
 
     let [[from], gasPrice] = await Promise.all([web3.eth.getAccounts(), web3.eth.getGasPrice()]);
-    gasPrice = BigNumber(gasPrice).times(2);
+    gasPrice = BigNumber(gasPrice).times(10);
     let method, txReceipt;
 
     // vault governance
@@ -46,10 +46,10 @@ const main = async () => {
     // strategy
     for (const strategyAddress of strategiesAddress) {
         let strategyContract = new web3.eth.Contract(ControllerABI, strategyAddress);
-        method = strategyContract.methods.setStrategist(deployerMainnet);
-        await method.estimateGas({from});
-        txReceipt = await method.send({from, gas: 200000, gasPrice});
-        console.log('RECEIPT strategy', new Date(), txReceipt.transactionHash);
+        // method = strategyContract.methods.setStrategist(deployerMainnet);
+        // await method.estimateGas({from});
+        // txReceipt = await method.send({from, gas: 200000, gasPrice});
+        // console.log('RECEIPT strategy', new Date(), txReceipt.transactionHash);
 
         // governance
         method = strategyContract.methods.setGovernance(deployerMainnet);

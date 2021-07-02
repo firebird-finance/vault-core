@@ -110,42 +110,77 @@ Strategy                    : 0xDdE02514796d3071929B21db069755a21ba0AeaF
 BaseToken                   : 0x45963db838a070cF7BE8e7046fD63e23d376c665
 Vault                       : 0x8c46693ae3B32051504D2BB5b89E76d3195bDd14
 Controller                  : 0x1799D7b3951114a6AD8889526aD6676c0462D76E
-Strategy                    : 0xdc3Df08673d63a90bF3c1ee2B7869f98E6D006C8
+Strategy                    : 0xb4fD9836A326431d279De5477da0b65E359e74b6
 
 
 //matic-knc dmm
 BaseToken                   : 0x37e6449B0e99BeFD2A708eA048d970F4FF4dC65d
 Vault                       : 0x90b0317b73a7BEF3dCcF8A31D30fF42FaE139902
 Controller                  : 0x8f81fE764aC1CDbCf62b07e8D06cb0C4a45eDbf6
-Strategy                    : 0xD2fA5380bE099ab52c54EbD558285738AA53313a
+Strategy                    : 0x7ADc208D416537Ec3623Cf990F3a6f38bC85F1BD
 
 
 //usdc-usdt dmm
 BaseToken                   : 0x3904aC366D348636694CB6720aa1540e76441b1B
 Vault                       : 0x1B58FDaad43e8C2849355B5A932c0A58CBe0A033
 Controller                  : 0x7dAc0fe4EbB321Ac6E84813Cd4DdB7a31BF8A177
-Strategy                    : 0xE51c4C83d2E237414812282dD9711C7427bF5d02
+Strategy                    : 0x462f3E6d267615EA3cC78cd990A502dd226d813A
 
 
 //usdc-dai dmm
 BaseToken                   : 0x7018C0bd73255C8966d0B26634E0BC0c7595D255
 Vault                       : 0x3f12986517711BA37f1AD7CFf7d619B8FaDA2596
 Controller                  : 0x6C5572375D466Edbe38B821cbCC8BdE1d3e8845A
-Strategy                    : 0x620167b0b361d98D6e48ec72550a135E1B57613f
+Strategy                    : 0x3c339fE612C8E6722be490f4EBF72C56a20f0bBD
 
 
 //usdc-weth dmm
 BaseToken                   : 0x95D708e9eE04b0136b98579141624d19c89B9d68
 Vault                       : 0xEE5a3512549ab76D94d614244321a272Cff56bAF
 Controller                  : 0x26B87187114d5aF8FBfD2Ce64643d38C62dA51B8
-Strategy                    : 0x716058066105158236B3D804CdfB6Ce73cFea55C
+Strategy                    : 0x430116D118Df7cd0Cd613459A1760255A4E6ce72
 
 
 //knc-eth dmm
 BaseToken                   : 0xd8B9E9444fCBF26BEA4BAdd6142dD6a962BCA86A
 Vault                       : 0x46469849216Cf96267b97384839f47EeD2428921
 Controller                  : 0x57174B45Fc7eFB83D1F77D648185976C074F9e6b
-Strategy                    : 0x94Bb298D7aD3b407e2B077a690807952c384F909
+Strategy                    : 0xEa75Fb740775b295C72f01969072ebFAbB1cae71
+
+
+//fish-matic quick
+BaseToken                   : 0x289cf2B63c5Edeeeab89663639674d9233E8668E
+Vault                       : 0x7CfE46FbC58e350c1f9cE087969CAe6A13BD7104
+Controller                  : 0x402f466B48d4b5b1168e8A9012c7b24cC587696C
+Strategy                    : 0xBC05bA5e938C7a6058260D8D5BDd07D49c288fDf
+
+
+//fish-matic sushi
+BaseToken                   : 0xcBF6f78981e63Ef813cb71852d72A060b583EECF
+Vault                       : 0x23FE9971C2c566c5Bf1E0baA4BfB727D44c52A9d
+Controller                  : 0x0A68d3F19c6aFB4f9af3699eD02b275D2B1D8a06
+Strategy                    : 0xd3789187EbC0CEF76C566021637A307316aCCb2D
+
+
+//fish-matic dfyn
+BaseToken                   : 0x9e2Fbb31fBd68472f6cd54A1635b8cd64d78FC1C
+Vault                       : 0x093cEc58D5D3E6e73be59Db3D97c6D397bFa160c
+Controller                  : 0xF3ECC550BD1178D8EB9513c0859e3aD7EBE14575
+Strategy                    : 0xaA55eB853f1427B450D67D625032D22291326b04
+
+
+//fish-matic firebird
+BaseToken                   : 0x46c8BE37Ff8CEdf09B88E457369033876087197e
+Vault                       : 0x5F09B9d8757c0Ce1EE6aAdd45323f28e154d3996
+Controller                  : 0xF2134dBa5c2bd6640f65B68438F623D28FA6dB68
+Strategy                    : 0xeeeE220d1a0943d77b7237425418186817ecF288
+
+
+//fish-usdc apeswap
+BaseToken                   : 0x3ab5dcf8e7ab97543Dac941fA2343c527837d329
+Vault                       : 0x469827Dd89410B877099d4A196DA5F87fd2221Cf
+Controller                  : 0x5573723d2C2C56E331564394d250BA9bf494c25C
+Strategy                    : 0x949d00F7F31841D3F8c82C2789648373D6D9aE80
 
 
 

@@ -321,7 +321,7 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
         timelock = _timelock;
     }
 
-    function setStrategist(address _strategist) external onlyGovernance {
+    function setStrategist(address _strategist) external onlyStrategist {
         strategist = _strategist;
     }
 
