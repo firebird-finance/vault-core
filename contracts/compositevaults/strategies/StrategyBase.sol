@@ -77,11 +77,11 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
             IERC20(farmingToken).approve(address(unirouter), type(uint256).max);
             IERC20(farmingToken).approve(address(firebirdRouter), type(uint256).max);
         }
-        if (targetCompoundToken != address(0) && targetCompoundToken != farmingToken) {
+        if (targetCompoundToken != farmingToken) {
             IERC20(targetCompoundToken).approve(address(unirouter), type(uint256).max);
             IERC20(targetCompoundToken).approve(address(firebirdRouter), type(uint256).max);
         }
-        if (targetProfitToken != address(0) && targetProfitToken != targetCompoundToken && targetProfitToken != farmingToken) {
+        if (targetProfitToken != targetCompoundToken && targetProfitToken != farmingToken) {
             IERC20(targetProfitToken).approve(address(unirouter), type(uint256).max);
             IERC20(targetProfitToken).approve(address(firebirdRouter), type(uint256).max);
         }
@@ -137,17 +137,17 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
         }
     }
 
-    function setUnirouterPath(address _input, address _output, address [] memory _path) public onlyStrategist {
+    function setUnirouterPath(address _input, address _output, address [] memory _path) external onlyStrategist {
         uniswapPaths[_input][_output] = _path;
     }
 
-    function setFirebirdPairs(address _input, address _output, address [] memory _pair) public onlyStrategist {
+    function setFirebirdPairs(address _input, address _output, address [] memory _pair) external onlyStrategist {
         firebirdPairs[_input][_output] = _pair;
     }
 
     function beforeDeposit() external override virtual onlyAuthorized {}
 
-    function deposit() public override virtual;
+    function deposit() external override virtual;
 
     function skim() external override {
         IERC20(baseToken).safeTransfer(controller, IERC20(baseToken).balanceOf(address(this)));
@@ -284,7 +284,7 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
     }
 
     // Only allows to earn some extra yield from non-core tokens
-    function earnExtra(address _token) public {
+    function earnExtra(address _token) external {
         require(msg.sender == address(this) || msg.sender == controller || msg.sender == strategist || msg.sender == governance, "!authorized");
         require(address(_token) != address(baseToken), "token");
         uint _amount = IERC20(_token).balanceOf(address(this));
@@ -333,24 +333,26 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
         baseToken = vault.token();
     }
 
-    function setPerformanceFee(uint256 _performanceFee) public onlyGovernance {
+    function setPerformanceFee(uint256 _performanceFee) external onlyGovernance {
         require(_performanceFee < 10000, "performanceFee too high");
         performanceFee = _performanceFee;
     }
 
-    function setFarmingToken(address _farmingToken) public onlyStrategist {
+    function setFarmingToken(address _farmingToken) external onlyStrategist {
         farmingToken = _farmingToken;
     }
 
-    function setTargetCompoundToken(address _targetCompoundToken) public onlyStrategist {
+    function setTargetCompoundToken(address _targetCompoundToken) external onlyStrategist {
+        require(_targetCompoundToken != address(0), "!targetCompoundToken");
         targetCompoundToken = _targetCompoundToken;
     }
 
-    function setTargetProfitToken(address _targetProfitToken) public onlyStrategist {
+    function setTargetProfitToken(address _targetProfitToken) external onlyStrategist {
+        require(_targetProfitToken != address(0), "!targetProfitToken");
         targetProfitToken = _targetProfitToken;
     }
 
-    function setApproveRouterForToken(address _token, uint _amount) public onlyStrategist {
+    function setApproveRouterForToken(address _token, uint _amount) external onlyStrategist {
         IERC20(_token).approve(address(unirouter), _amount);
         IERC20(_token).approve(address(firebirdRouter), _amount);
     }
@@ -360,7 +362,7 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
     /**
      * @dev This is from Timelock contract.
      */
-    function executeTransaction(address target, uint value, string memory signature, bytes memory data) public onlyTimelock returns (bytes memory) {
+    function executeTransaction(address target, uint value, string memory signature, bytes memory data) external onlyTimelock returns (bytes memory) {
         bytes memory callData;
 
         if (bytes(signature).length == 0) {

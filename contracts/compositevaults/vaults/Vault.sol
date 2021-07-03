@@ -11,7 +11,7 @@ contract Vault is VaultBase {
      * @dev This is from Timelock contract, the governance should be a Timelock contract before calling this emergency function
      * Periodically we will need this to claim BAL (for idle fund stay in Vault and not transferred to Strategy
      */
-    function executeTransaction(address target, uint value, string memory signature, bytes memory data) public onlyTimelock returns (bytes memory) {
+    function executeTransaction(address target, uint value, string memory signature, bytes memory data) external onlyTimelock returns (bytes memory) {
         bytes memory callData;
 
         if (bytes(signature).length == 0) {

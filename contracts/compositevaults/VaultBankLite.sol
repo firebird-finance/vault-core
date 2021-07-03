@@ -23,6 +23,8 @@ contract VaultBankLite is ContextUpgradeSafe, ReentrancyGuard {
     bool public acceptContractDepositor = false;
     mapping(address => bool) public whitelistedContract;
 
+    event LogNewGovernance(address governance);
+
     function initialize(IVaultMaster _vaultMaster) public initializer {
         vaultMaster = _vaultMaster;
         governance = msg.sender;
@@ -58,6 +60,7 @@ contract VaultBankLite is ContextUpgradeSafe, ReentrancyGuard {
 
     function setGovernance(address _governance) external onlyGovernance {
         governance = _governance;
+        emit LogNewGovernance(governance);
     }
 
     function setStrategist(address _strategist) external onlyGovernance {
@@ -68,7 +71,7 @@ contract VaultBankLite is ContextUpgradeSafe, ReentrancyGuard {
         vaultMaster = _vaultMaster;
     }
 
-    function deposit(IVault _vault, uint _amount, uint _min_mint_amount) public checkContract nonReentrant {
+    function deposit(IVault _vault, uint _amount, uint _min_mint_amount) external checkContract nonReentrant {
         IERC20(_vault.token()).safeTransferFrom(msg.sender, address(this), _amount);
         IERC20(_vault.token()).safeIncreaseAllowance(address(_vault), _amount);
 

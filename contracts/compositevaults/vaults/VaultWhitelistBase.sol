@@ -8,8 +8,6 @@ import "@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol";
 import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/SafeERC20.sol";
 
-import "../../interfaces/Converter.sol";
-
 import "../IVault.sol";
 import "../IVaultMaster.sol";
 import "../IController.sol";
@@ -30,7 +28,6 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
     address public controller;
 
     IVaultMaster vaultMaster;
-    mapping(address => address) public converterMap; // non-core token => converter
 
     bool public acceptContractDepositor = false;
     mapping(address => bool) public whitelistedContract;
@@ -162,11 +159,6 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
         controller = _controller;
     }
 
-    function setConverterMap(address _token, address _converter) external {
-        require(msg.sender == governance, "!governance");
-        converterMap[_token] = _converter;
-    }
-
     function setVaultMaster(IVaultMaster _vaultMaster) external {
         require(msg.sender == governance, "!governance");
         vaultMaster = _vaultMaster;
@@ -208,18 +200,6 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
                 }
             }
         }
-    }
-
-    // Only allows to earn some extra yield from non-core tokens
-    function earnExtra(address _token) external {
-        require(msg.sender == governance, "!governance");
-        require(converterMap[_token] != address(0), "!converter");
-        require(address(_token) != address(basedToken), "token");
-        require(address(_token) != address(this), "share");
-        uint _amount = IERC20(_token).balanceOf(address(this));
-        address _converter = converterMap[_token];
-        IERC20(_token).safeTransfer(_converter, _amount);
-        Converter(_converter).convert(_token);
     }
 
     function withdraw_fee(uint _shares) public override view returns (uint) {

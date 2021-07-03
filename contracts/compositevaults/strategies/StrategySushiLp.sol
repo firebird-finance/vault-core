@@ -64,7 +64,7 @@ contract StrategySushiLp is StrategyBase {
         return "StrategySushiLp";
     }
 
-    function deposit() public override nonReentrant {
+    function deposit() external override nonReentrant {
         _deposit();
     }
 
@@ -177,6 +177,7 @@ contract StrategySushiLp is StrategyBase {
     }
 
     function setFarmPoolContract(address _farmPool) external onlyStrategist {
+        require(_farmPool != address(0), "!farmPool");
         farmPool = _farmPool;
         IERC20(baseToken).approve(farmPool, type(uint256).max);
     }
@@ -186,6 +187,7 @@ contract StrategySushiLp is StrategyBase {
     }
 
     function setTokenLp(address _token0, address _token1) external onlyStrategist {
+        require(_token0 != address(0) && _token1 != address(0), "!token");
         token0 = _token0;
         token1 = _token1;
 

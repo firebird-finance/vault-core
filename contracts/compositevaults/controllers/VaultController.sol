@@ -47,6 +47,10 @@ contract VaultController is IController, ReentrancyGuard {
     bool internal _initialized = false;
 
     event ExecuteTransaction(address indexed target, uint value, string signature, bytes data);
+    event LogNewWithdrawalFee(uint withdrawalFee);
+    event LogNewGovernance(address governance);
+    event LogNewStrategist(address strategist);
+    event LogNewTimelock(address timelock);
 
     function initialize(IVault _vault, string memory _name) public {
         require(_initialized == false, "Strategy: Initialize must be false.");
@@ -92,14 +96,17 @@ contract VaultController is IController, ReentrancyGuard {
 
     function setTimelock(address _timelock) external onlyTimelock {
         timelock = _timelock;
+        emit LogNewTimelock(timelock);
     }
 
     function setGovernance(address _governance) external onlyGovernance {
         governance = _governance;
+        emit LogNewGovernance(governance);
     }
 
     function setStrategist(address _strategist) external onlyGovernance {
         strategist = _strategist;
+        emit LogNewStrategist(strategist);
     }
 
     function approveStrategy(address _strategy) external onlyGovernance {
@@ -113,6 +120,7 @@ contract VaultController is IController, ReentrancyGuard {
     function setWithdrawalFee(uint _withdrawalFee) external onlyGovernance {
         require(_withdrawalFee <= 100, "withdrawalFee over 1%");
         withdrawalFee = _withdrawalFee;
+        emit LogNewWithdrawalFee(withdrawalFee);
     }
 
     function setStrategyLength(uint _length) external onlyStrategist {
