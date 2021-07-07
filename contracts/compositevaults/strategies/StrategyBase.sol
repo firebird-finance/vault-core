@@ -38,7 +38,7 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
     using SafeMath for uint;
 
     IUniswapV2Router public unirouter = IUniswapV2Router(0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506);
-    IFirebirdRouter public firebirdRouter = IFirebirdRouter(0xF6fa9Ea1f64f1BBfA8d71f7f43fAF6D45520bfac);
+    IFirebirdRouter public firebirdRouter = IFirebirdRouter(0x6466CDC2615f111dc6Dbd0Ef6fDD209F5Ff8d184);
 
     address public override baseToken;
     address public farmingToken;
@@ -217,7 +217,8 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
         address[] memory path = firebirdPairs[_input][_output];
         uint before = IERC20(_output).balanceOf(address(this));
         if (path.length > 0) { // use firebird
-            firebirdRouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(_input, _output, _amount, 1, path, address(this), now.add(1));
+            uint8[] memory dexIds = new uint8[](path.length);
+            firebirdRouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(_input, _output, _amount, 1, path, dexIds, address(this), now.add(1));
         } else { // use Uniswap
             path = uniswapPaths[_input][_output];
             if (path.length == 0) {

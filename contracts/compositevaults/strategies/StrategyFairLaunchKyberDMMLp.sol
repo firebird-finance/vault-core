@@ -185,7 +185,8 @@ contract StrategyFairLaunchKyberDMMLp is StrategyBase {
 
         uint before = IERC20(_output).balanceOf(address(this));
         if (path.length > 0) { // use firebird
-            firebirdRouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(_input, _output, _amount, 1, path, address(this), block.timestamp);
+            uint8[] memory dexIds = new uint8[](path.length);
+            firebirdRouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(_input, _output, _amount, 1, path, dexIds, address(this), block.timestamp);
         } else if (kyberPoolPath.length > 0) { //use kyber DMM
             kyberRouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(_amount, 1, kyberPoolPath, kyberPaths[_input][_output], address(this), block.timestamp);
         } else { // use Uniswap
