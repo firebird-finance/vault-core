@@ -29,8 +29,6 @@ import "../../interfaces/IWETH.sol";
 */
 
 contract StrategyFairLaunchKyberDMMLp is StrategyBase {
-    uint public timeToReleaseCompound = 30 minutes; // 0 to disable
-
     IDMMRouter public kyberRouter = IDMMRouter(0x546C79662E028B661dFB4767664d0273184E4dD1);
 
     address public farmPool = 0x0895196562C7868C5Be92459FaE7f877ED450452;
@@ -242,7 +240,7 @@ contract StrategyFairLaunchKyberDMMLp is StrategyBase {
      * @dev Function that has to be called as part of strat migration. It sends all the available funds back to the
      * vault, ready to be migrated to the new strat.
      */
-    function retireStrat() external onlyStrategist {
+    function retireStrat() external override onlyStrategist {
         IKyberFairLaunch(farmPool).emergencyWithdraw(poolId);
 
         IERC20(baseToken).safeTransfer(address(vault), IERC20(baseToken).balanceOf(address(this)));
@@ -252,10 +250,6 @@ contract StrategyFairLaunchKyberDMMLp is StrategyBase {
         if (address(this).balance > 0) {
             IWETH(wmatic).deposit{value: address(this).balance}();
         }
-    }
-
-    function setTimeToReleaseCompound(uint _timeSeconds) external onlyStrategist {
-        timeToReleaseCompound = _timeSeconds;
     }
 
     function setKyberPaths(address _input, address _output, address [] memory _poolPath, address [] memory _path) public onlyStrategist {

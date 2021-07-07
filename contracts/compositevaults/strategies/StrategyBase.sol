@@ -46,6 +46,7 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
     address public targetProfitToken; // compoundToken -> profit
 
     address public governance;
+    uint public timeToReleaseCompound = 30 minutes; // 0 to disable
     address public timelock = address(0xe59511c0eF42FB3C419Ac2651406b7b8822328E1);
 
     address public controller;
@@ -61,7 +62,6 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
     uint public lastHarvestTimeStamp;
 
     function initialize(address _baseToken, address _farmingToken, address _controller, address _targetCompoundToken, address _targetProfitToken) internal {
-        timelock = address(0xe59511c0eF42FB3C419Ac2651406b7b8822328E1);
         baseToken = _baseToken;
         farmingToken = _farmingToken;
         targetCompoundToken = _targetCompoundToken;
@@ -210,6 +210,8 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
 
     function claimReward() public virtual;
 
+    function retireStrat() external virtual;
+
     function _swapTokens(address _input, address _output, uint256 _amount) internal virtual returns (uint) {
         if (_input == _output || _amount == 0) return _amount;
         address[] memory path = firebirdPairs[_input][_output];
@@ -336,6 +338,10 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
     function setPerformanceFee(uint256 _performanceFee) external onlyGovernance {
         require(_performanceFee < 10000, "performanceFee too high");
         performanceFee = _performanceFee;
+    }
+
+    function setTimeToReleaseCompound(uint _timeSeconds) external onlyStrategist {
+        timeToReleaseCompound = _timeSeconds;
     }
 
     function setFarmingToken(address _farmingToken) external onlyStrategist {

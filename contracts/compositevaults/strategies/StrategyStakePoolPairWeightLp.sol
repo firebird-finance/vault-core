@@ -25,8 +25,6 @@ import "../../interfaces/IStakePool.sol";
 */
 
 contract StrategyStakePoolPairWeightLp is StrategyBase {
-    uint public timeToReleaseCompound = 30 minutes; // 0 to disable
-
     address public stakePool;
 
     address public token0;
@@ -192,15 +190,11 @@ contract StrategyStakePoolPairWeightLp is StrategyBase {
      * @dev Function that has to be called as part of strat migration. It sends all the available funds back to the
      * vault, ready to be migrated to the new strat.
      */
-    function retireStrat() external onlyStrategist {
+    function retireStrat() external override onlyStrategist {
         IStakePool(stakePool).emergencyWithdraw();
 
         uint256 baseBal = IERC20(baseToken).balanceOf(address(this));
         IERC20(baseToken).safeTransfer(address(vault), baseBal);
-    }
-
-    function setTimeToReleaseCompound(uint _timeSeconds) external onlyStrategist {
-        timeToReleaseCompound = _timeSeconds;
     }
 
     function setStakePoolContract(address _stakePool) external onlyStrategist {

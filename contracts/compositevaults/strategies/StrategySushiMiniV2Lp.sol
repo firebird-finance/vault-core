@@ -26,8 +26,6 @@ import "../../interfaces/IRewarder.sol";
 */
 
 contract StrategySushiMiniV2Lp is StrategyBase {
-    uint public timeToReleaseCompound = 30 minutes; // 0 to disable
-
     address public farmPool = 0x0895196562C7868C5Be92459FaE7f877ED450452;
     uint public poolId;
     address[] public farmingTokens;
@@ -187,15 +185,11 @@ contract StrategySushiMiniV2Lp is StrategyBase {
      * @dev Function that has to be called as part of strat migration. It sends all the available funds back to the
      * vault, ready to be migrated to the new strat.
      */
-    function retireStrat() external onlyStrategist {
+    function retireStrat() external override onlyStrategist {
         IMiniChefV2(farmPool).emergencyWithdraw(poolId, address(this));
 
         uint256 baseBal = IERC20(baseToken).balanceOf(address(this));
         IERC20(baseToken).safeTransfer(address(vault), baseBal);
-    }
-
-    function setTimeToReleaseCompound(uint _timeSeconds) external onlyStrategist {
-        timeToReleaseCompound = _timeSeconds;
     }
 
     function setFarmPoolContract(address _farmPool) external onlyStrategist {
