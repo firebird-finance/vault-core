@@ -164,6 +164,13 @@ contract StrategyPancakeCake is StrategyBase {
             _amount = _swapTokens(_baseToken, _targetProfitToken, _amount);
             IERC20(_targetProfitToken).safeTransfer(_performanceReward, _amount);
         }
+
+        if (_rewardBal > 0) {
+            if (vaultMaster.isStrategy(address(this))) {
+                vault.addNewCompound(_rewardBal, timeToReleaseCompound);
+            }
+        }
+
         emit Harvest(0, 0, _baseToken, _rewardBal, _targetProfitToken, _reserveFundAmount);
     }
 
@@ -184,11 +191,7 @@ contract StrategyPancakeCake is StrategyBase {
 
     function balanceOfPool() public override view returns (uint) {
         (uint amount,) = ICakeMasterChef(farmPool).userInfo(0, address(this));
-        return amount.add(balanceOfPoolPending());
-    }
-
-    function balanceOfPoolPending() public view returns (uint256) {
-        return ICakeMasterChef(farmPool).pendingCake(0, address(this));
+        return amount;
     }
 
     function claimable_tokens() external override view returns (address[] memory farmToken, uint[] memory totalDistributedValue) {

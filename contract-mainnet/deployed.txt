@@ -2,8 +2,8 @@ Deployer                    : 0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c
 
 VaultMaster                 : 0x439392419b8bEEe085A3Fd913eF04e116cE99870
 VaultBank                   : 0x8294B42C8acFF8e819064e8755a55D038060731E
-VaultCreator                : 0xb35De1B18A1D590f1C89e67567413629C3a84871
-VaultControllerCreator      : 0x3f1d66091cB7823D06A45761deEA7c304885DEaa
+VaultCreator                : 0x0e31784A94D0f3A48a1D44A46F886bBB34A0F8D1
+VaultControllerCreator      : 0x540D8C9084acea67305d2fdB8440529419864a43
 
 
 //btc-eth sushi
@@ -181,6 +181,76 @@ BaseToken                   : 0x3ab5dcf8e7ab97543Dac941fA2343c527837d329
 Vault                       : 0x469827Dd89410B877099d4A196DA5F87fd2221Cf
 Controller                  : 0x5573723d2C2C56E331564394d250BA9bf494c25C
 Strategy                    : 0x949d00F7F31841D3F8c82C2789648373D6D9aE80
+
+
+//pWINGS
+BaseToken                   : 0x845E76A8691423fbc4ECb8Dd77556Cb61c09eE25
+Vault                       : 0x9ef45A5F717b9315917105C3Ea920c593A591Ea3
+Controller                  : 0xef29E0a545aF5Dfc34af78DAfae19E0FCeA4bD5C
+Strategy                    : 0x54445AeC60E59803FEC402acb5760B39940df7e1
+
+
+//pWINGS-USDC jetswap
+BaseToken                   : 0xaf623E96d38191038C48990Df298e07Fb77b56c3
+Vault                       : 0x9Ae0d39A27F9951C106de71E49dD66e9F8434bb6
+Controller                  : 0x6EdD21c7572d9aA69972b7cfA8bB6a179E2B9bFC
+Strategy                    : 0x1B1bB428CD10508CB81D8078e95DB6634355E36B
+
+
+//pWINGS-USDT jetswap
+BaseToken                   : 0xA39a7640790907D4865a74c1F9715715DBd00431
+Vault                       : 0xE5d03Ea8d1CF512Fd04584d998825B4BF12E7dA7
+Controller                  : 0x5d3A1a0b66F0fE62fBCFe8BFc72078b29BdB0ba5
+Strategy                    : 0xfa0803cCF87f5aa8d4B9168Fec4A8bF60765014e
+
+
+//pWINGS-MATIC jetswap
+BaseToken                   : 0xA0A6e9A5185d5737CF6F7920CB417EA2F07F03B3
+Vault                       : 0x70E9BbD10cC3ea9018e563e2fA50e920A18c47fa
+Controller                  : 0xDA0DA44510A72F29678db60d043109f1A16D23fa
+Strategy                    : 0x9594162dFcC60884C619F95DD51093cb81804187
+
+
+//BTC-ETH jetswap
+BaseToken                   : 0x173E90f2a94Af3b075DeEC7e64Df4d70EfB4Ac3D
+Vault                       : 0x6c8856089b3447923D0AA28823569ec548DB2ba0
+Controller                  : 0xBA0C787C6c28403674824153438cB74065aF3b90
+Strategy                    : 0xFcB4445132e1Ea91ffAB505E35295d3D11d6E313
+
+
+//USDC-USDT jetswap
+BaseToken                   : 0x20BF018FDDBa3b352f3d913FE1c81b846fE0F490
+Vault                       : 0x435950d271b92c895898BE1C78D3aCA3ca0a6254
+Controller                  : 0x04CfAe7548AC5F2eCC38ac6C3D7F0B0E107d2019
+Strategy                    : 0x25b961F079E2C35aB068f8DCCD2E383603c21bF2
+
+
+//USDC-DAI jetswap
+BaseToken                   : 0x4A53119dd905fD39ccC532C68e69505dfB47fc2C
+Vault                       : 0xF39D32a32fbb9f935EB062a3CF755D1093F8C00D
+Controller                  : 0x2437CAC1490468587E1aA981EB164875E54C0f05
+Strategy                    : 0x1559d73ab8720b792E233D3ffCe62545bA732802
+
+
+//ETH-MATIC jetswap
+BaseToken                   : 0x951E38875a93df95bbd24fe31f409b7933B35BED
+Vault                       : 0x3E0eA70175f774a8FEB026e97940532e7ebd086B
+Controller                  : 0x06B74D6Ad4EAc44d90b668c79bDE229839Ff4783
+Strategy                    : 0x83Fe1D1f9017b2E6AEE9C405865e325cb1bF738a
+
+
+//USDC-MATIC jetswap
+BaseToken                   : 0x5E58e0CeD3a272CAeb8bA00F4A4C2805Df6BE495
+Vault                       : 0x921D2A4215141162836FbA351C6c18f7C913AA6f
+Controller                  : 0x0c97BBab34689dcE1fc9241610681a2bB2f499Ad
+Strategy                    : 0x32d5cB44eB877f7331D1357Aaa290633a1753B9D
+
+
+//USDT-MATIC jetswap
+BaseToken                   : 0x101640e107C4a72DeC79826768C239F1eB48cc85
+Vault                       : 0xf3d4977a8d546EdDFbE78a6855c507a6F61D326c
+Controller                  : 0x61d9d2bEED8a222bc862E1bb032Cd56383d99924
+Strategy                    : 0xb13F5914BD53B4657Eeb857a72a18a569e815fdd
 
 
 

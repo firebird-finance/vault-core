@@ -12,7 +12,7 @@ let strategiesAddress = [];
 const main = async () => {
     console.log('Run job', new Date());
     const HDWalletProvider = require('@truffle/hdwallet-provider');
-    let provider = new HDWalletProvider(ownerPrivateKey, `http://18.116.97.120:8545/`);
+    let provider = new HDWalletProvider(ownerPrivateKey, process.env.RPC_URL);
     let web3 = new Web3(provider);
 
     let [[from], gasPrice] = await Promise.all([web3.eth.getAccounts(), web3.eth.getGasPrice()]);
