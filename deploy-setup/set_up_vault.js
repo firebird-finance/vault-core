@@ -7,14 +7,14 @@ const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/S
 const ownerPrivateKey = process.env.MNEMONICC;
 let vaultMasterAddress = '0x439392419b8bEEe085A3Fd913eF04e116cE99870';
 
-let baseToken = '0x101640e107C4a72DeC79826768C239F1eB48cc85';
-let vaultAddress = '0xf3d4977a8d546EdDFbE78a6855c507a6F61D326c';
-let controllerAddress = '0x61d9d2bEED8a222bc862E1bb032Cd56383d99924';
-let strategyAddress = '0xb13F5914BD53B4657Eeb857a72a18a569e815fdd';
+let baseToken = '0x7641d6b873877007697D526EF3C50908779a6993';
+let vaultAddress = '0x92f402C61bB8c9A92dFf201D1514Dcf032794a45';
+let controllerAddress = '0x25839F820b72f3539CEd75705Ade6c5a4Ffb4369';
+let strategyAddress = '0x64658B0a236d59941e732eE3C4f8d476149e4A38';
 
-let vaultName = 'Vault:JetSwapUSDTWMATIC';
-let vaultSymbol = 'vaultUSDTWMATIC';
-let controllerName = 'VaultController:JetSwapUSDTWMATIC';
+let vaultName = 'Vault:JetSwapUSDTWBTC';
+let vaultSymbol = 'vaultUSDTWBTC';
+let controllerName = 'VaultController:JetSwapUSDTWBTC';
 
 const main = async () => {
     console.log('Run job', new Date());
@@ -48,14 +48,14 @@ const main = async () => {
 
     // strategy
     method = strategyContract.methods.initialize(
-        '0x101640e107C4a72DeC79826768C239F1eB48cc85',
+        '0x7641d6b873877007697D526EF3C50908779a6993',
         '0x845e76a8691423fbc4ecb8dd77556cb61c09ee25',
         '0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85',
-        11,
-        '0xc2132d05d31c914a87c6611c10748aeb04b58e8f', //usdt
+        12,
         '0xc2132d05d31c914a87c6611c10748aeb04b58e8f', //usdt
         '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
-        '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
+        '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+        '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6',
         controllerAddress
     );
     await method.estimateGas({from});
@@ -67,7 +67,7 @@ const main = async () => {
     txReceipt = await method.send({from, gas: 900000, gasPrice});
     console.log('RECEIPT strategy', new Date(), txReceipt.transactionHash);
 
-    method = strategyContract.methods.setFirebirdPairs('0xc2132d05d31c914a87c6611c10748aeb04b58e8f', '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', ['0x101640e107C4a72DeC79826768C239F1eB48cc85']);
+    method = strategyContract.methods.setFirebirdPairs('0xc2132d05d31c914a87c6611c10748aeb04b58e8f', '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6', ['0x7641d6b873877007697D526EF3C50908779a6993']);
     await method.estimateGas({from});
     txReceipt = await method.send({from, gas: 900000, gasPrice});
     console.log('RECEIPT strategy', new Date(), txReceipt.transactionHash);

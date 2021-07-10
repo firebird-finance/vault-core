@@ -253,6 +253,48 @@ Controller                  : 0x61d9d2bEED8a222bc862E1bb032Cd56383d99924
 Strategy                    : 0xb13F5914BD53B4657Eeb857a72a18a569e815fdd
 
 
+//pWINGS-BTC jetswap
+BaseToken                   : 0x44472e389C000a4c433F66A709eAF1068fADCfa9
+Vault                       : 0x8f699b8731E94015721E7f28DF2ffe3436BB210c
+Controller                  : 0xA3810Bc209cbe4A191c90F62b871c242148e054D
+Strategy                    : 0xC65bE6852830C65c30A1Aa636C631A9e7757cf7E
+
+
+//pWINGS-ETH jetswap
+BaseToken                   : 0xFa4218D03Ae852858C01505A7227EdCbe2f0b293
+Vault                       : 0x0A35118Aa0e55Bc895C3727e785b6052a8a08883
+Controller                  : 0x5674F29e81AD6D34A01faAcA6c2290AB17e4E3f4
+Strategy                    : 0xd206C7136475ea52452cb1327E75C5fAd7f51998
+
+
+//pWINGS-QUICK jetswap
+BaseToken                   : 0xE331666Df4F2618CfB18Ab930Ae554f8fc0a695e
+Vault                       : 0x6076a167Be91d1a225D3DAAe50aDEEBfa85d525C
+Controller                  : 0x7FE0Fd826b407eBA9376d58B13b609A62ef36644
+Strategy                    : 0xabB02AeDB6972b1C20e2609D59E570E3c3B9061B
+
+
+//ETH-USDC jetswap
+BaseToken                   : 0xFEFF91C350bB564cA5Dc7D6F7DcD12ac092F94FF
+Vault                       : 0x921F23d6169026aC1d5a6b5CA7A8F02edd28c501
+Controller                  : 0x0085bCd795C4E1D150915734cc1Ca59c115eC594
+Strategy                    : 0xd7C6c21EC7559F1cE665678eB0Cf189535644F27
+
+
+//ETH-USDT jetswap
+BaseToken                   : 0xc7f1B47F4ed069E9B34e6bD59792B8ABf5a66339
+Vault                       : 0x19Ca7b2FdD9e8D1030d25d15976f27c78cA63C02
+Controller                  : 0x47AA0360655ebeF45Ac4a694e6Dc0AC254F83C20
+Strategy                    : 0xC570FF7d51132f409eCF14388Dc21e72F9834133
+
+
+//BTC-USDT jetswap
+BaseToken                   : 0x7641d6b873877007697D526EF3C50908779a6993
+Vault                       : 0x92f402C61bB8c9A92dFf201D1514Dcf032794a45
+Controller                  : 0x25839F820b72f3539CEd75705Ade6c5a4Ffb4369
+Strategy                    : 0x64658B0a236d59941e732eE3C4f8d476149e4A38
+
+
 
 ===================
 max                         : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff

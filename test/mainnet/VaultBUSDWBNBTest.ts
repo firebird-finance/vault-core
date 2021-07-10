@@ -108,6 +108,116 @@ describe("StrategyBTCWBNB", function() {
         await strategy.setFirebirdPairs(busd.address, btc.address, ["0xf98313f818c53E40Bd758C5276EF4B434463Bec4"]);
         await strategy.setFirebirdPairs(cakeAddress, busd.address, ["0xC99E3abe7729a3869d5cAd631bcbB90e3d389AA2"]);
 
+        //BTC-USDT
+        let strategy40 = await new StrategySushiLpFactory(deployerMainnet).deploy();
+        await strategy40.initialize(
+          "0x7641d6b873877007697D526EF3C50908779a6993",
+          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
+          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
+          12,
+          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", //usdt
+          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+          "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6",
+          controller.address
+        );
+        //pWINGS -> USDT
+        await strategy40.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", ["0xA39a7640790907D4865a74c1F9715715DBd00431"]);
+        //usdt -> btc
+        await strategy40.setFirebirdPairs("0xc2132d05d31c914a87c6611c10748aeb04b58e8f", "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", ["0x7641d6b873877007697D526EF3C50908779a6993"]);
+
+
+        //ETH-USDT
+        let strategy39 = await new StrategySushiLpFactory(deployerMainnet).deploy();
+        await strategy39.initialize(
+          "0xc7f1B47F4ed069E9B34e6bD59792B8ABf5a66339",
+          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
+          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
+          9,
+          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", //usdt
+          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+          controller.address
+        );
+        //pWINGS -> USDT
+        await strategy39.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", ["0xA39a7640790907D4865a74c1F9715715DBd00431"]);
+        //usdt -> eth
+        await strategy39.setFirebirdPairs("0xc2132d05d31c914a87c6611c10748aeb04b58e8f", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0xc7f1B47F4ed069E9B34e6bD59792B8ABf5a66339"]);
+
+
+        //ETH-USDC
+        let strategy38 = await new StrategySushiLpFactory(deployerMainnet).deploy();
+        await strategy38.initialize(
+          "0xFEFF91C350bB564cA5Dc7D6F7DcD12ac092F94FF",
+          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
+          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
+          8,
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+          controller.address
+        );
+        //pWINGS -> USDC
+        await strategy38.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0xaf623E96d38191038C48990Df298e07Fb77b56c3"]);
+        //usdc -> eth
+        await strategy38.setFirebirdPairs("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0x39D736D2b254eE30796f43Ec665143010b558F82"]);
+
+
+        //pWINGS-QUICK
+        let strategy37 = await new StrategySushiLpFactory(deployerMainnet).deploy();
+        await strategy37.initialize(
+          "0xE331666Df4F2618CfB18Ab930Ae554f8fc0a695e",
+          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
+          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
+          6,
+          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", //pWings
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
+          "0x831753dd7087cac61ab5644b308642cc1c33dc13",
+          controller.address
+        );
+        //pWINGS -> USDC
+        await strategy37.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0xaf623E96d38191038C48990Df298e07Fb77b56c3"]);
+        //pWINGS -> QUICK
+        await strategy37.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0x831753dd7087cac61ab5644b308642cc1c33dc13", ["0xE331666Df4F2618CfB18Ab930Ae554f8fc0a695e"]);
+
+
+        //pWINGS-ETH
+        let strategy36 = await new StrategySushiLpFactory(deployerMainnet).deploy();
+        await strategy36.initialize(
+          "0xFa4218D03Ae852858C01505A7227EdCbe2f0b293",
+          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
+          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
+          4,
+          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", //pWings
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
+          controller.address
+        );
+        //pWINGS -> ETH
+        await strategy36.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0xFa4218D03Ae852858C01505A7227EdCbe2f0b293"]);
+
+
+        //pWINGS-BTC
+        let strategy35 = await new StrategySushiLpFactory(deployerMainnet).deploy();
+        await strategy35.initialize(
+          "0x44472e389C000a4c433F66A709eAF1068fADCfa9",
+          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
+          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
+          5,
+          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", //pWings
+          "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", //btc
+          "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6",
+          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
+          controller.address
+        );
+        //pWINGS -> BTC
+        await strategy35.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", ["0x44472e389C000a4c433F66A709eAF1068fADCfa9"]);
+
+
         //USDT-MATIC
         let strategy34 = await new StrategySushiLpFactory(deployerMainnet).deploy();
         await strategy34.initialize(
