@@ -295,6 +295,27 @@ Controller                  : 0x25839F820b72f3539CEd75705Ade6c5a4Ffb4369
 Strategy                    : 0x64658B0a236d59941e732eE3C4f8d476149e4A38
 
 
+//IS3USD
+BaseToken                   : 0xb4d09ff3dA7f9e9A2BA029cb0A81A989fd7B8f17
+Vault                       : 0x32B7d3A9Ab9Ef0412e055C8C6538E9F929f58b38
+Controller                  : 0x910C0eB6F11D867BADF20beb07209fc5c1A61C48
+Strategy                    : 0x320B720e6De5a706964376caCf89fC9C5E056402
+
+
+//ICE-USDC dfyn
+BaseToken                   : 0x34832D9AC4127a232C1919d840f7aaE0fcb7315B
+Vault                       : 0x851476ABFA4d497667Ed15Bf78Ae59a22565923D
+Controller                  : 0x79F01484ff7f3bb5B5439e40Ef6A5A290c5159B3
+Strategy                    : 0x35ae0Fdf7478AbB40FD926244c41981c637EAD83
+
+
+//ICE-ETH firebird
+BaseToken                   : 0xf1EE78544a1118F2efb87f7EaCd9f1E6e80e1ea5
+Vault                       : 0xc95dAdE0bF3aBEc85bc3185f643812e0575C052e
+Controller                  : 0x367Ab6A681Fb3293D7e5b7a1FF42CA009B514014
+Strategy                    : 0x885A5F41cf95D1f9920506cB15Fc1FB335dA1117
+
+
 
 ===================
 max                         : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff

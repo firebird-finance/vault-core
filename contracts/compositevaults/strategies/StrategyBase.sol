@@ -118,9 +118,9 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
         if (farmingToken != address(0)) {
             IERC20(farmingToken).approve(address(unirouter), type(uint256).max);
         }
-        if (targetCompoundToken != address(0) && targetCompoundToken != farmingToken)
+        if (targetCompoundToken != farmingToken)
             IERC20(targetCompoundToken).approve(address(unirouter), type(uint256).max);
-        if (targetProfitToken != address(0) && targetProfitToken != targetCompoundToken && targetProfitToken != farmingToken) {
+        if (targetProfitToken != targetCompoundToken && targetProfitToken != farmingToken) {
             IERC20(targetProfitToken).approve(address(unirouter), type(uint256).max);
         }
     }
@@ -130,9 +130,9 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
         if (farmingToken != address(0)) {
             IERC20(farmingToken).approve(address(firebirdRouter), type(uint256).max);
         }
-        if (targetCompoundToken != address(0) && targetCompoundToken != farmingToken)
+        if (targetCompoundToken != farmingToken)
             IERC20(targetCompoundToken).approve(address(firebirdRouter), type(uint256).max);
-        if (targetProfitToken != address(0) && targetProfitToken != targetCompoundToken && targetProfitToken != farmingToken) {
+        if (targetProfitToken != targetCompoundToken && targetProfitToken != farmingToken) {
             IERC20(targetProfitToken).approve(address(firebirdRouter), type(uint256).max);
         }
     }
@@ -217,8 +217,11 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
     }
 
     function _swapTokens(address _input, address _output, uint256 _amount, address _receiver) internal virtual returns (uint) {
-        if (_input == _output || _amount == 0) return _amount;
         if (_receiver == address(0)) _receiver = address(this);
+        if (_input == _output || _amount == 0) {
+            if (_receiver != address(this) && _amount != 0) IERC20(_input).safeTransfer(_receiver, _amount);
+            return _amount;
+        }
         address[] memory path = firebirdPairs[_input][_output];
         uint before = IERC20(_output).balanceOf(_receiver);
         if (path.length > 0) { // use firebird

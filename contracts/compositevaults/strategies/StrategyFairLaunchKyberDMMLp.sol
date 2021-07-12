@@ -179,8 +179,11 @@ contract StrategyFairLaunchKyberDMMLp is StrategyBase {
     }
 
     function _swapTokens(address _input, address _output, uint256 _amount, address _receiver) internal override returns (uint) {
-        if (_input == _output || _amount == 0) return _amount;
         if (_receiver == address(0)) _receiver = address(this);
+        if (_input == _output || _amount == 0) {
+            if (_receiver != address(this) && _amount != 0) IERC20(_input).safeTransfer(_receiver, _amount);
+            return _amount;
+        }
         address[] memory path = firebirdPairs[_input][_output];
         address[] memory kyberPoolPath = kyberPoolPaths[_input][_output];
 

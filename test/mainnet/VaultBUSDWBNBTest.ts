@@ -35,6 +35,7 @@ import {
     StrategyCurveStableFactory,
     StrategyFairLaunchKyberDmmLpFactory,
     StrategyPancakeCakeFactory,
+    StrategySushiMiniV2StableSwapFactory,
 } from "../../typechain";
 
 import {SignerWithAddress} from "hardhat-deploy-ethers/dist/src/signer-with-address";
@@ -107,6 +108,57 @@ describe("StrategyBTCWBNB", function() {
 
         await strategy.setFirebirdPairs(busd.address, btc.address, ["0xf98313f818c53E40Bd758C5276EF4B434463Bec4"]);
         await strategy.setFirebirdPairs(cakeAddress, busd.address, ["0xC99E3abe7729a3869d5cAd631bcbB90e3d389AA2"]);
+
+        //ICE-ETH firebird
+        let strategy43 = await new StrategySushiMiniV2LpFactory(deployerMainnet).deploy();
+        await strategy43.initialize(
+          "0xf1EE78544a1118F2efb87f7EaCd9f1E6e80e1ea5",
+          ["0x4A81f8796e0c6Ad4877A51C86693B0dE8093F2ef"],
+          "0x1fD1259Fa8CdC60c6E8C86cfA592CA1b8403DFaD",
+          1,
+          "0x4A81f8796e0c6Ad4877A51C86693B0dE8093F2ef", //ice
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
+          "0x4A81f8796e0c6Ad4877A51C86693B0dE8093F2ef",
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+          controller.address
+        );
+        //ice -> eth
+        await strategy43.setFirebirdPairs("0x4A81f8796e0c6Ad4877A51C86693B0dE8093F2ef", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0xf1EE78544a1118F2efb87f7EaCd9f1E6e80e1ea5"]);
+
+
+        //ICE-USDC dfyn
+        let strategy42 = await new StrategySushiMiniV2LpFactory(deployerMainnet).deploy();
+        await strategy42.initialize(
+          "0x34832D9AC4127a232C1919d840f7aaE0fcb7315B",
+          ["0x4A81f8796e0c6Ad4877A51C86693B0dE8093F2ef"],
+          "0x1fD1259Fa8CdC60c6E8C86cfA592CA1b8403DFaD",
+          2,
+          "0x4A81f8796e0c6Ad4877A51C86693B0dE8093F2ef", //ice
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          "0x4A81f8796e0c6Ad4877A51C86693B0dE8093F2ef",
+          controller.address
+        );
+        //ice -> usdc
+        await strategy42.setFirebirdPairs("0x4A81f8796e0c6Ad4877A51C86693B0dE8093F2ef", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x34832D9AC4127a232C1919d840f7aaE0fcb7315B"]);
+
+
+        //Iron3USD
+        let strategy41 = await new StrategySushiMiniV2StableSwapFactory(deployerMainnet).deploy();
+        await strategy41.initialize(
+          "0xb4d09ff3dA7f9e9A2BA029cb0A81A989fd7B8f17",
+          ["0x4A81f8796e0c6Ad4877A51C86693B0dE8093F2ef"],
+          "0x1fD1259Fa8CdC60c6E8C86cfA592CA1b8403DFaD",
+          0,
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0x837503e8A8753ae17fB8C8151B8e6f586defCb57",
+          0,
+          controller.address
+        );
+        //ice -> usdc
+        await strategy41.setFirebirdPairs("0x4A81f8796e0c6Ad4877A51C86693B0dE8093F2ef", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x34832D9AC4127a232C1919d840f7aaE0fcb7315B"]);
+
 
         //BTC-USDT
         let strategy40 = await new StrategySushiLpFactory(deployerMainnet).deploy();
