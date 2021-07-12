@@ -124,14 +124,11 @@ contract StrategyPancakeCake is StrategyBase {
                 address _targetProfitToken = targetProfitToken;
                 if (_performanceFee > 0 && _reserveFund != address(0)) {
                     _reserveFundAmount = _targetCompoundBal.mul(_performanceFee).div(10000);
-                    _reserveFundAmount = _swapTokens(_targetCompoundToken, _targetProfitToken, _reserveFundAmount);
-                    IERC20(_targetProfitToken).safeTransfer(_reserveFund, _reserveFundAmount);
+                    _reserveFundAmount = _swapTokens(_targetCompoundToken, _targetProfitToken, _reserveFundAmount, _reserveFund);
                 }
 
                 if (_gasFee > 0 && _performanceReward != address(0)) {
-                    uint256 _amount = _targetCompoundBal.mul(_gasFee).div(10000);
-                    _amount = _swapTokens(_targetCompoundToken, _targetProfitToken, _amount);
-                    IERC20(_targetProfitToken).safeTransfer(_performanceReward, _amount);
+                    _swapTokens(_targetCompoundToken, _targetProfitToken, _targetCompoundBal.mul(_gasFee).div(10000), _performanceReward);
                 }
 
                 _buyWantAndReinvest();
@@ -155,14 +152,11 @@ contract StrategyPancakeCake is StrategyBase {
         address _targetProfitToken = targetProfitToken;
         if (_performanceFee > 0 && _reserveFund != address(0)) {
             _reserveFundAmount = _rewardBal.mul(_performanceFee).div(10000);
-            _reserveFundAmount = _swapTokens(_baseToken, _targetProfitToken, _reserveFundAmount);
-            IERC20(_targetProfitToken).safeTransfer(_reserveFund, _reserveFundAmount);
+            _reserveFundAmount = _swapTokens(_baseToken, _targetProfitToken, _reserveFundAmount, _reserveFund);
         }
 
         if (_gasFee > 0 && _performanceReward != address(0)) {
-            uint256 _amount = _rewardBal.mul(_gasFee).div(10000);
-            _amount = _swapTokens(_baseToken, _targetProfitToken, _amount);
-            IERC20(_targetProfitToken).safeTransfer(_performanceReward, _amount);
+            _swapTokens(_baseToken, _targetProfitToken, _rewardBal.mul(_gasFee).div(10000), _performanceReward);
         }
 
         if (_rewardBal > 0) {

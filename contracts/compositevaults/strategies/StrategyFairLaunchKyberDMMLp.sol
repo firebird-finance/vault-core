@@ -178,25 +178,26 @@ contract StrategyFairLaunchKyberDMMLp is StrategyBase {
         }
     }
 
-    function _swapTokens(address _input, address _output, uint256 _amount) internal override returns (uint) {
+    function _swapTokens(address _input, address _output, uint256 _amount, address _receiver) internal override returns (uint) {
         if (_input == _output || _amount == 0) return _amount;
+        if (_receiver == address(0)) _receiver = address(this);
         address[] memory path = firebirdPairs[_input][_output];
         address[] memory kyberPoolPath = kyberPoolPaths[_input][_output];
 
-        uint before = IERC20(_output).balanceOf(address(this));
+        uint before = IERC20(_output).balanceOf(_receiver);
         if (path.length > 0) { // use firebird
             uint8[] memory dexIds = new uint8[](path.length);
-            firebirdRouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(_input, _output, _amount, 1, path, dexIds, address(this), block.timestamp);
+            firebirdRouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(_input, _output, _amount, 1, path, dexIds, _receiver, block.timestamp);
         } else if (kyberPoolPath.length > 0) { //use kyber DMM
-            kyberRouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(_amount, 1, kyberPoolPath, kyberPaths[_input][_output], address(this), block.timestamp);
+            kyberRouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(_amount, 1, kyberPoolPath, kyberPaths[_input][_output], _receiver, block.timestamp);
         } else { // use Uniswap
             path = uniswapPaths[_input][_output];
             if (path.length == 0) {
                 revert("!path");
             }
-            unirouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(_amount, 1, path, address(this), block.timestamp);
+            unirouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(_amount, 1, path, _receiver, block.timestamp);
         }
-        return IERC20(_output).balanceOf(address(this)).sub(before);
+        return IERC20(_output).balanceOf(_receiver).sub(before);
     }
 
     function getKyberDMMTokenWeight(address token) internal view returns (uint256) {

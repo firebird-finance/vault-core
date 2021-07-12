@@ -212,13 +212,18 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
 
     function retireStrat() external virtual;
 
-    function _swapTokens(address _input, address _output, uint256 _amount) internal virtual returns (uint) {
+    function _swapTokens(address _input, address _output, uint256 _amount) internal returns (uint) {
+        return _swapTokens(_input, _output, _amount, address(this));
+    }
+
+    function _swapTokens(address _input, address _output, uint256 _amount, address _receiver) internal virtual returns (uint) {
         if (_input == _output || _amount == 0) return _amount;
+        if (_receiver == address(0)) _receiver = address(this);
         address[] memory path = firebirdPairs[_input][_output];
-        uint before = IERC20(_output).balanceOf(address(this));
+        uint before = IERC20(_output).balanceOf(_receiver);
         if (path.length > 0) { // use firebird
             uint8[] memory dexIds = new uint8[](path.length);
-            firebirdRouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(_input, _output, _amount, 1, path, dexIds, address(this), now.add(1));
+            firebirdRouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(_input, _output, _amount, 1, path, dexIds, _receiver, block.timestamp);
         } else { // use Uniswap
             path = uniswapPaths[_input][_output];
             if (path.length == 0) {
@@ -227,9 +232,9 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
                 path[0] = _input;
                 path[1] = _output;
             }
-            unirouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(_amount, 1, path, address(this), now.add(1));
+            unirouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(_amount, 1, path, _receiver, block.timestamp);
         }
-        return IERC20(_output).balanceOf(address(this)).sub(before);
+        return IERC20(_output).balanceOf(_receiver).sub(before);
     }
 
     function _buyWantAndReinvest() internal virtual;
@@ -266,14 +271,11 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
                 address _targetProfitToken = targetProfitToken;
                 if (_performanceFee > 0 && _reserveFund != address(0)) {
                     _reserveFundAmount = _targetCompoundBal.mul(_performanceFee).div(10000);
-                    _reserveFundAmount = _swapTokens(_targetCompoundToken, _targetProfitToken, _reserveFundAmount);
-                    IERC20(_targetProfitToken).safeTransfer(_reserveFund, _reserveFundAmount);
+                    _reserveFundAmount = _swapTokens(_targetCompoundToken, _targetProfitToken, _reserveFundAmount, _reserveFund);
                 }
 
                 if (_gasFee > 0 && _performanceReward != address(0)) {
-                    uint256 _amount = _targetCompoundBal.mul(_gasFee).div(10000);
-                    _amount = _swapTokens(_targetCompoundToken, _targetProfitToken, _amount);
-                    IERC20(_targetProfitToken).safeTransfer(_performanceReward, _amount);
+                    _swapTokens(_targetCompoundToken, _targetProfitToken, _targetCompoundBal.mul(_gasFee).div(10000), _performanceReward);
                 }
 
                 _buyWantAndReinvest();
