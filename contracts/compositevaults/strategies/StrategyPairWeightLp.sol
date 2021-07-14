@@ -66,7 +66,7 @@ contract StrategyPairWeightLp is StrategyBase {
         return "StrategyPairWeightLp";
     }
 
-    function deposit() public override nonReentrant {
+    function deposit() external override nonReentrant {
         _deposit();
     }
 
@@ -174,6 +174,7 @@ contract StrategyPairWeightLp is StrategyBase {
     }
 
     function setFarmPoolContract(address _farmPool) external onlyStrategist {
+        require(_farmPool != address(0), "!farmPool");
         farmPool = _farmPool;
         IERC20(baseToken).approve(farmPool, type(uint256).max);
     }
@@ -183,6 +184,7 @@ contract StrategyPairWeightLp is StrategyBase {
     }
 
     function setTokenLp(address _token0, address _token1, uint _token0Weight) external onlyStrategist {
+        require(_token0 != address(0) && _token1 != address(0), "!token");
         token0 = _token0;
         token0Weight = _token0Weight;
         token1Weight = 100 - _token0Weight;

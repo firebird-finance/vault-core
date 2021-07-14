@@ -316,6 +316,20 @@ Controller                  : 0x367Ab6A681Fb3293D7e5b7a1FF42CA009B514014
 Strategy                    : 0x885A5F41cf95D1f9920506cB15Fc1FB335dA1117
 
 
+//ICE-DFYN dfyn
+BaseToken                   : 0x9bb608dc0F9308B9beCA2F7c80865454d02E74cA
+Vault                       : 0xE81D2a96f3313223DAb5475042fC7BB7f1108187
+Controller                  : 0x400433c20ae18d86C54156D2D0bFD1e7D2624885
+Strategy                    : 0x03482158cA5473FB18ee5158984c12Ae46345d02
+
+
+//ICE-HOPE firebird
+BaseToken                   : 0xEe26d8b6548Ac0368100FB3C74231B88e67A282F
+Vault                       : 0x6745ABe768838b1b4138973d49d2aEc139bF61A2
+Controller                  : 0xDA865DCda08CC2580EdC53696Bd9d4D57abD1809
+Strategy                    : 0x9b6fB874F5b9de9A811EcEd3ffc132758281679e
+
+
 
 ===================
 max                         : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff

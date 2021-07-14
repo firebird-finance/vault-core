@@ -109,6 +109,42 @@ describe("StrategyBTCWBNB", function() {
         await strategy.setFirebirdPairs(busd.address, btc.address, ["0xf98313f818c53E40Bd758C5276EF4B434463Bec4"]);
         await strategy.setFirebirdPairs(cakeAddress, busd.address, ["0xC99E3abe7729a3869d5cAd631bcbB90e3d389AA2"]);
 
+        //ICE-HOPE firebird
+        let strategy45 = await new StrategyPairWeightLpFactory(deployerMainnet).deploy();
+        await strategy45.initialize(
+          "0xEe26d8b6548Ac0368100FB3C74231B88e67A282F",
+          "0xd78c475133731cd54dadcb430f7aae4f03c1e660",
+          "0xE9a8b6ea3e7431E6BefCa51258CB472Df2Dd21d4",
+          36,
+          "0xd78c475133731cd54dadcb430f7aae4f03c1e660", //hope
+          "0xd78c475133731cd54dadcb430f7aae4f03c1e660", //hope
+          "50",
+          "0xd78c475133731cd54dadcb430f7aae4f03c1e660",
+          "0x4a81f8796e0c6ad4877a51c86693b0de8093f2ef",
+          controller.address
+        );
+        //hope -> ice
+        await strategy45.setFirebirdPairs("0xd78c475133731cd54dadcb430f7aae4f03c1e660", "0x4a81f8796e0c6ad4877a51c86693b0de8093f2ef", ["0xEe26d8b6548Ac0368100FB3C74231B88e67A282F"]);
+
+
+        //ICE-DFYN dfyn
+        let strategy44 = await new StrategyQuickLpFactory(deployerMainnet).deploy();
+        await strategy44.initialize(
+          "0x9bb608dc0F9308B9beCA2F7c80865454d02E74cA",
+          "0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97",
+          "0xD854E7339840F7D1E12B54FD75235eBc0bB6BfAC",
+          "0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97", //dfyn
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97",
+          "0x4a81f8796e0c6ad4877a51c86693b0de8093f2ef",
+          controller.address
+        );
+        //dfyn -> usdc
+        await strategy44.setFirebirdPairs("0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x4c38938E21cB9796932B0B0Cc3f8a088f07b49B0"]);
+        //dfyn -> ice
+        await strategy44.setFirebirdPairs("0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97", "0x4a81f8796e0c6ad4877a51c86693b0de8093f2ef", ["0x9bb608dc0F9308B9beCA2F7c80865454d02E74cA"]);
+
+
         //ICE-ETH firebird
         let strategy43 = await new StrategySushiMiniV2LpFactory(deployerMainnet).deploy();
         await strategy43.initialize(
