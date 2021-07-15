@@ -2,11 +2,11 @@
 
 pragma solidity 0.6.12;
 
-import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/SafeERC20.sol";
-import "@openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol";
+import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
+import "@openzeppelin/contracts-upgradeable/GSN/ContextUpgradeable.sol";
 import "./IVaultMaster.sol";
 
-contract VaultMaster is IVaultMaster, ContextUpgradeSafe {
+contract VaultMaster is IVaultMaster, ContextUpgradeable {
     using SafeERC20 for IERC20;
 
     address public governance;

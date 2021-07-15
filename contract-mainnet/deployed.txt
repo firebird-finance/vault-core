@@ -330,6 +330,20 @@ Controller                  : 0xDA865DCda08CC2580EdC53696Bd9d4D57abD1809
 Strategy                    : 0x9b6fB874F5b9de9A811EcEd3ffc132758281679e
 
 
+//sMatic-sdo firebird
+BaseToken                   : 0xa14B83FbB32C5207ab84370a28d01E4720B9C348
+Vault                       : 0x8EE0d10b21f93772484c57148E54d8a01C3Eb4C3
+Controller                  : 0x47DF256c619Fb0d02014776f2E0f1513Cc0CA291
+Strategy                    : 0x17507E3Bdd632394a89A7EB8f0Eac4E7FD7Ab9dc
+
+
+//sMatic-matic firebird
+BaseToken                   : 0xB949de02e5bB30DaC57460a61aBd4Fcd9c256f18
+Vault                       : 0xc19B182a24823F05f112265789C97A1D1eA74F0b
+Controller                  : 0xAae6556f8F28303DdBd99eC760DD61246392e329
+Strategy                    : 0x2465E2bCEB7b82992f7b3D855621B7Eb069cE405
+
+
 
 ===================
 max                         : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff

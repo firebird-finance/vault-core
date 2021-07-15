@@ -5,12 +5,12 @@ pragma solidity 0.6.12;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
-import "@openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol";
+import "@openzeppelin/contracts-upgradeable/GSN/ContextUpgradeable.sol";
 
 import "./IVaultMaster.sol";
 import "./IVault.sol";
 
-contract VaultBank is ContextUpgradeSafe {
+contract VaultBank is ContextUpgradeable {
     using Address for address;
     using SafeMath for uint;
     using SafeERC20 for IERC20;

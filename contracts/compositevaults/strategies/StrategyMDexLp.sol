@@ -53,14 +53,10 @@ contract StrategyMDexLp is StrategyBase {
         token1 = _token1;
 
         IERC20(baseToken).approve(address(farmPool), type(uint256).max);
-        if (token0 != farmingToken && token0 != targetCompoundToken) {
-            IERC20(token0).approve(address(unirouter), type(uint256).max);
-            IERC20(token0).approve(address(firebirdRouter), type(uint256).max);
-        }
-        if (token1 != farmingToken && token1 != targetCompoundToken && token1 != token0) {
-            IERC20(token1).approve(address(unirouter), type(uint256).max);
-            IERC20(token1).approve(address(firebirdRouter), type(uint256).max);
-        }
+        IERC20(token0).approve(address(unirouter), type(uint256).max);
+        IERC20(token0).approve(address(firebirdRouter), type(uint256).max);
+        IERC20(token1).approve(address(unirouter), type(uint256).max);
+        IERC20(token1).approve(address(firebirdRouter), type(uint256).max);
         for (uint i=0; i<farmingTokens.length; i++) {
             IERC20(farmingTokens[i]).approve(address(unirouter), type(uint256).max);
             IERC20(farmingTokens[i]).approve(address(firebirdRouter), type(uint256).max);
