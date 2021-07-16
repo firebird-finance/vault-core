@@ -33,7 +33,7 @@ const main = async () => {
     let vaultContract = new web3.eth.Contract(VaultABI, vaultAddress);
     let controllerContract = new web3.eth.Contract(ControllerABI, controllerAddress);
     let strategyContract = new web3.eth.Contract(StrategyABI, strategyAddress);
-    console.log('Current nonce', await web3.eth.getTransactionCount(from), await web3.eth.getTransactionCount(from, 'pending'), gasPrice.toString());
+    console.log('Current nonce', await web3.eth.getTransactionCount(from), await web3.eth.getTransactionCount(from, 'pending'), gasPrice.div(1e9).toString(), 'Gwei');
 
     //vault
     method = vaultContract.methods.initialize(baseToken, vaultMasterAddress, vaultName, vaultSymbol);
