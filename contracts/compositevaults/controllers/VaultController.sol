@@ -129,10 +129,16 @@ contract VaultController is IController, ReentrancyGuard {
 
     // stratId => StrategyInfo
     function setStrategyInfo(uint _sid, address _strategy, uint _quota, uint _percent) external onlyStrategist {
-        require(approvedStrategies[_strategy], "!approved");
-        strategies[_sid].strategy = _strategy;
-        strategies[_sid].quota = _quota;
-        strategies[_sid].percent = _percent;
+        _setStrategyInfo(_sid, _strategy, _quota, _percent);
+    }
+
+    function setStrategiesInfo(uint[] calldata _sids, address[] calldata _strategies, uint[] calldata _quotas, uint[] calldata _percents) external onlyStrategist {
+        require(_sids.length == _strategies.length, "!length");
+        require(_strategies.length == _quotas.length, "!length");
+        require(_quotas.length == _percents.length, "!length");
+        for (uint i=0; i < _sids.length; i++) {
+            _setStrategyInfo(_sids[i], _strategies[i], _quotas[i], _percents[i]);
+        }
     }
 
     function setInvestDisabled(bool _investDisabled) external onlyStrategist {
@@ -268,6 +274,13 @@ contract VaultController is IController, ReentrancyGuard {
             _toWithdraw = _toWithdraw.sub(_stratBal);
         }
         return _withdrawFee;
+    }
+
+    function _setStrategyInfo(uint _sid, address _strategy, uint _quota, uint _percent) internal {
+        require(approvedStrategies[_strategy], "!approved");
+        strategies[_sid].strategy = _strategy;
+        strategies[_sid].quota = _quota;
+        strategies[_sid].percent = _percent;
     }
 
     /**
