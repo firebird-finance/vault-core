@@ -344,6 +344,76 @@ Controller                  : 0xAae6556f8F28303DdBd99eC760DD61246392e329
 Strategy                    : 0x2465E2bCEB7b82992f7b3D855621B7Eb069cE405
 
 
+//sds-usdc quick
+BaseToken                   : 0x46A30dFece0E0fc0977eefd15bd0595fdDe15a10
+Vault                       : 0xA9fD172259eDA84875A9945e6202f2C2b75dc11b
+Controller                  : 0x44985b75f35C7bDc2a10511Cb62BA8e2493571E0
+Strategy                    : 0xFcbFb2445643068d7F36fA2896F1498b688F158f
+
+
+//sdo-usdc quick
+BaseToken                   : 0x6649F12E210862e0045B3dFe7E6eA1F8F0565049
+Vault                       : 0x1De6a83Dd3c8E5536E8fe21aE766ec21e5b7eDb3
+Controller                  : 0x0BFcE88909199519F29EB8890db43c5662E38b1b
+Strategy                    : 0x7Fa10981F72d4FF74C51Af3fC409546EC375546d
+
+
+//sUsdc-usdc quick
+BaseToken                   : 0x08e57E45b190d7b05003E6f80BA7cFdCA762cfb8
+Vault                       : 0xf3eaaFA21262FA4Ff49890378217C965E308b8C2
+Controller                  : 0x7BB44c651551941533f9cAC88De09276d0D5f77A
+Strategy                    : 0x06f7D3fc1195C24DA8ffce6BbC76592Dac322554
+
+
+//USDC-MiMATIC quick
+BaseToken                   : 0x160532D2536175d65C03B97b0630A9802c274daD
+Vault                       : 0x5f48Da06Fac9CB55Da0b32Ee02C196A04830c315
+Controller                  : 0xBfb5be1A372683D9d4DE42650B4fB4c7e0476B92
+Strategy                    : 0x5c021414fa178cEA492Cc187A931714F549dab7D
+
+
+//USDC-USDT quick
+BaseToken                   : 0x2cF7252e74036d1Da831d11089D326296e64a728
+Vault                       : 0x9b6e5a6b2006C0F6Bc886c771ee5F6144B7CE4DF
+Controller                  : 0x6403F9B066c8aD2BaE3dff203aB20C8CF3Dd0F59
+Strategy                    : 0xdE5E5cF2317EB521d53dEB7AEA10033ba16B1185
+
+
+//USDC-WETH quick
+BaseToken                   : 0x853Ee4b2A13f8a742d64C8F088bE7bA2131f670d
+Vault                       : 0x7ED97F9CFd017B84b591B5919cb26d8B98e7F749
+Controller                  : 0x94D4bd9762Ba0386Ccf02A9941057f7f213a6fd4
+Strategy                    : 0xA482d1957aAA64C9eC80d19cf4F017A34AFEea5A
+
+
+//MATIC-WETH quick
+BaseToken                   : 0xadbF1854e5883eB8aa7BAf50705338739e558E5b
+Vault                       : 0x722BCB865508803740F1Efd87523BC7b8b083Bf7
+Controller                  : 0x154c3420Bc75791C188d4E2a1E357290f29Bc974
+Strategy                    : 0x38ec24F2C6F05A1812fF097ff33A80155d0030D3
+
+
+//DINO-USDC sushi
+BaseToken                   : 0x3324af8417844e70b81555A6D1568d78f4D4Bf1f
+Vault                       : 0x088CA5Cec81D646A5b17F46e000895CFB1D8C1af
+Controller                  : 0x3b42F7f31A8921dA615eb8DDc9E1D001552Fa31c
+Strategy                    : 0x14142e64BD1363a7B3dC81E6C2954345995Bc39e
+
+
+//BEL-WETH quick
+BaseToken                   : 0x49ceCfa5c62b3A97F58CAd6B4aCc7c74810E1DDa
+Vault                       : 0xa238A10D30C6F157fb2A98D4d4E9e449B8cD86EC
+Controller                  : 0xFAf1fFBbB5ecC78EA67DE85C9ff68Fb3d59e184d
+Strategy                    : 0xF427380F792E1E8f45E457BeBBAf649c55bc0004
+
+
+//DFYN-WETH dfyn
+BaseToken                   : 0x6fA867BBFDd025780a8CFE988475220AfF51FB8b
+Vault                       : 0x6AdB801f90C09EAc4df2126f33Ac7b196578507E
+Controller                  : 0xd47636621C49d42cfEC9C39696b90726B7b54c66
+Strategy                    : 0x35F113Beb0b3d28274AF13c5aeA75ca996c473a5
+
+
 
 ===================
 max                         : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff

@@ -9,10 +9,10 @@ const StrategyABI = require('../../artifacts/contracts/compositevaults/strategie
 const ownerPrivateKey = process.env.MNEMONICC;
 let wallet, overrides;
 
-let baseToken = '0xE7a24EF0C5e95Ffb0f6684b813A78F2a3AD7D171';
-let vaultAddress = '0xaCd881B86621D6eEC239C81B32Ab572580d62C5C';
-let controllerAddress = '0x94CA290CACEcB00ac234f91CE1d46543351573A1';
-let strategyAddress = '0x8a1892Ea79dd34aDFB1160A3b1836F4776126896';
+let baseToken = '';
+let vaultAddress = '';
+let controllerAddress = '';
+let strategyAddress = '';
 
 let depositAmount = maxUint256;
 // let depositAmount = BigNumber.from("");
@@ -24,7 +24,7 @@ describe('GenericVault', function() {
     const provider = new providers.JsonRpcProvider(process.env.RPC_URL);
     wallet = new ethers.Wallet(ownerPrivateKey, provider);
     let [gasPrice] = await Promise.all([wallet.getGasPrice()]);
-    gasPrice = gasPrice.mul(2);
+    gasPrice = gasPrice.mul(6);
     overrides = {gasLimit: 900000, gasPrice};
 
     baseTokenContract = new Contract(baseToken, VaultABI, wallet);
@@ -42,9 +42,9 @@ describe('GenericVault', function() {
 
       expect(depositAmount).is.gt(0);
 
-      const currentApprove = await baseTokenContract.allowance(wallet.address, vaultContract);
+      const currentApprove = await baseTokenContract.allowance(wallet.address, vaultAddress);
       if (currentApprove.eq(0)) {
-        const txApprove = await baseTokenContract.populateTransaction.approve(vaultContract, maxUint256);
+        const txApprove = await baseTokenContract.populateTransaction.approve(vaultAddress, maxUint256);
         await processTx(txApprove, 'RECEIPT token approve');
       }
       const tx = await vaultContract.populateTransaction.deposit(depositAmount, 1);
@@ -92,12 +92,16 @@ describe('GenericVault', function() {
   describe('Can harvest', function() {
     it('harvest all strategies', async () => {
       const tx = await vaultContract.populateTransaction.harvestAllStrategies();
-      await processTx(tx, 'RECEIPT vault harvest');
+
+      const priceShare = await vaultContract.getPricePerFullShare();
+      if (priceShare.eq(BigNumber.from('1000000000000000000'))) {
+        await processTx(tx, 'RECEIPT vault harvest');
+      }
     });
 
     it('price share is increase', async () => {
-      const strategyBalance = await vaultContract.getPricePerFullShare();
-      expect(strategyBalance).is.gt(BigNumber.from('1000000000000000000'));
+      const priceShare = await vaultContract.getPricePerFullShare();
+      expect(priceShare).is.gt(BigNumber.from('1000000000000000000'));
     });
   });
 
@@ -105,6 +109,7 @@ describe('GenericVault', function() {
     it('withdraw all want token', async () => {
       const vaultToken = await vaultContract.balanceOf(wallet.address);
 
+      expect(vaultToken).is.gt(0);
       const tx = await vaultContract.populateTransaction.withdraw(vaultToken, 1);
       await wallet.estimateGas(tx);
     });

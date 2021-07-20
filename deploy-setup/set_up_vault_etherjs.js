@@ -1,93 +1,91 @@
-const {ethers, providers, Contract} = require('ethers');
+const {ethers, providers, Contract, BigNumber} = require('ethers');
 require('dotenv').config();
-const BigNumber = require('bignumber.js');
 const VaultABI = require('../artifacts/contracts/compositevaults/vaults/Vault.sol/Vault.json').abi;
 const ControllerABI = require('../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
-const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategyPairWeightLp.sol/StrategyPairWeightLp.json').abi;
+const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategySushiLp.sol/StrategySushiLp.json').abi;
 const ownerPrivateKey = process.env.MNEMONICC;
 let wallet, overrides;
 let vaultMasterAddress = '0x439392419b8bEEe085A3Fd913eF04e116cE99870';
 
-let baseToken = '0xE7a24EF0C5e95Ffb0f6684b813A78F2a3AD7D171';
-let vaultAddress = '0xaCd881B86621D6eEC239C81B32Ab572580d62C5C';
-let controllerAddress = '0x94CA290CACEcB00ac234f91CE1d46543351573A1';
-let strategyAddress = '0x8a1892Ea79dd34aDFB1160A3b1836F4776126896';
+let baseToken = '0x6fA867BBFDd025780a8CFE988475220AfF51FB8b';
+let vaultAddress = '0x6AdB801f90C09EAc4df2126f33Ac7b196578507E';
+let controllerAddress = '0xd47636621C49d42cfEC9C39696b90726B7b54c66';
+let strategyAddress = '0x35F113Beb0b3d28274AF13c5aeA75ca996c473a5';
 
-let vaultName = 'Vault:FirebirdWMATICsMATIC';
-let vaultSymbol = 'vaultWMATICsMATIC';
-let controllerName = 'VaultController:FirebirdWMATICsMATIC';
+let vaultName = 'Vault:DfynDFYNWETH';
+let vaultSymbol = 'vaultDFYNWETH';
+let controllerName = 'VaultController:DfynDFYNWETH';
 
 const main = async () => {
-    console.log('Run job', new Date());
-    const provider = new providers.JsonRpcProvider(process.env.RPC_URL);
-    wallet = new ethers.Wallet(ownerPrivateKey, provider);
-    const maxUint256 = new BigNumber('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
+  console.log('Run job', new Date());
+  const provider = new providers.JsonRpcProvider(process.env.RPC_URL);
+  wallet = new ethers.Wallet(ownerPrivateKey, provider);
+  const maxUint256 = BigNumber.from('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
 
-    let [gasPrice] = await Promise.all([wallet.getGasPrice()]);
-    gasPrice = gasPrice.mul(2);
-    overrides = {gasLimit: 900000, gasPrice};
+  let [gasPrice] = await Promise.all([wallet.getGasPrice()]);
+  gasPrice = gasPrice.mul(16);
+  overrides = {gasLimit: 900000, gasPrice};
 
-    let tx;
-    let vaultContract = new Contract(vaultAddress, VaultABI, wallet);
-    let controllerContract = new Contract(controllerAddress, ControllerABI, wallet);
-    let strategyContract = new Contract(strategyAddress, StrategyABI, wallet);
-    console.log('Current nonce', await wallet.getTransactionCount(), await wallet.getTransactionCount('pending'), gasPrice.div(1e9).toString(), 'Gwei');
+  let tx;
+  let vaultContract = new Contract(vaultAddress, VaultABI, wallet);
+  let controllerContract = new Contract(controllerAddress, ControllerABI, wallet);
+  let strategyContract = new Contract(strategyAddress, StrategyABI, wallet);
+  console.log('Current nonce', await wallet.getTransactionCount(), await wallet.getTransactionCount('pending'), gasPrice.div(1e9).toString(), 'Gwei');
 
-    //vault
-    tx = await vaultContract.populateTransaction.initialize(baseToken, vaultMasterAddress, vaultName, vaultSymbol);
-    await processTx(tx, 'RECEIPT vault init');
+  //vault
+  tx = await vaultContract.populateTransaction.initialize(baseToken, vaultMasterAddress, vaultName, vaultSymbol);
+  await processTx(tx, 'RECEIPT vault init');
 
-    //controller
-    tx = await controllerContract.populateTransaction.initialize(vaultAddress, controllerName);
-    await processTx(tx, 'RECEIPT controller init');
+  //controller
+  tx = await controllerContract.populateTransaction.initialize(vaultAddress, controllerName);
+  await processTx(tx, 'RECEIPT controller init');
 
-    // strategy
-    tx = await strategyContract.populateTransaction.initialize(
-        '0xB949de02e5bB30DaC57460a61aBd4Fcd9c256f18',
-        '0xAB72EE159Ff70b64beEcBbB0FbBE58b372391C54',
-        '0x69E7Bbe85db0364397378364458952bEcB886920',
-        4,
-        '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', //matic
-        '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
-        50,
-        '0xc1ac5c0b73ba01a31c93884c28a31e9985842c38',
-        '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
-        controllerAddress
-    );
-    await processTx(tx, 'RECEIPT strategy init');
+  // strategy
+  tx = await strategyContract.populateTransaction.initialize(
+    '0x6fA867BBFDd025780a8CFE988475220AfF51FB8b',
+    '0xAa9654BECca45B5BDFA5ac646c939C62b527D394',
+    '0x1948abC5400Aa1d72223882958Da3bec643fb4E5',
+    1,
+    '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', //eth
+    '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', //eth
+    '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
+    '0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97',
+    controllerAddress
+  );
+  await processTx(tx, 'RECEIPT strategy init');
 
-    tx = await strategyContract.populateTransaction.setFirebirdPairs('0xAB72EE159Ff70b64beEcBbB0FbBE58b372391C54', '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', [
-        '0x46A30dFece0E0fc0977eefd15bd0595fdDe15a10',
-        '0xCe2cB67b11ec0399E39AF20433927424f9033233'
-    ]);
-    await processTx(tx, 'RECEIPT strategy');
+  tx = await strategyContract.populateTransaction.setFirebirdPairs('0xAa9654BECca45B5BDFA5ac646c939C62b527D394', '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', [
+    '0x3324af8417844e70b81555A6D1568d78f4D4Bf1f',
+    '0x39D736D2b254eE30796f43Ec665143010b558F82'
+  ]);
+  await processTx(tx, 'RECEIPT strategy');
 
-    tx = await strategyContract.populateTransaction.setFirebirdPairs('0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', '0xc1ac5c0b73ba01a31c93884c28a31e9985842c38', [
-        '0xB949de02e5bB30DaC57460a61aBd4Fcd9c256f18'
-    ]);
-    await processTx(tx, 'RECEIPT strategy');
+  tx = await strategyContract.populateTransaction.setFirebirdPairs('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', '0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97', [
+    '0x6fA867BBFDd025780a8CFE988475220AfF51FB8b'
+  ]);
+  await processTx(tx, 'RECEIPT strategy');
 
-    // vault governance
-    tx = await vaultContract.populateTransaction.setController(controllerAddress);
-    await processTx(tx, 'RECEIPT vault');
+  // vault governance
+  tx = await vaultContract.populateTransaction.setController(controllerAddress);
+  await processTx(tx, 'RECEIPT vault');
 
-    // controller strategist
-    tx = await controllerContract.populateTransaction.approveStrategy(strategyAddress);
-    await processTx(tx, 'RECEIPT controller');
+  // controller strategist
+  tx = await controllerContract.populateTransaction.approveStrategy(strategyAddress);
+  await processTx(tx, 'RECEIPT controller');
 
-    tx = await controllerContract.populateTransaction.setStrategyInfo('0', strategyAddress, maxUint256, '100');
-    await processTx(tx, 'RECEIPT controller');
+  tx = await controllerContract.populateTransaction.setStrategyInfo('0', strategyAddress, maxUint256, '100');
+  await processTx(tx, 'RECEIPT controller');
 
-    tx = await controllerContract.populateTransaction.setStrategyLength('1');
-    await processTx(tx, 'RECEIPT controller');
+  tx = await controllerContract.populateTransaction.setStrategyLength('1');
+  await processTx(tx, 'RECEIPT controller');
 
-    console.log('--------Finished job', new Date());
+  console.log('--------Finished job', new Date());
 };
 
 const processTx = async (tx, message) => {
-    await wallet.estimateGas(tx);
-    let receipt = await (await wallet.sendTransaction({...tx, ...overrides})).wait(2);
-    console.log(message, new Date(), receipt.transactionHash);
+  await wallet.estimateGas(tx);
+  let receipt = await (await wallet.sendTransaction({...tx, ...overrides})).wait(2);
+  console.log(message, new Date(), receipt.transactionHash);
 };
 
 main();
