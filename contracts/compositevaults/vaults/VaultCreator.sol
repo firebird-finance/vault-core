@@ -5,10 +5,18 @@ import './Vault.sol';
 contract VaultCreator {
     event NewVault(address vault);
 
-    function create() external returns (address) {
+    function create() external {
+        _create();
+    }
+
+    function batchCreate(uint num) external {
+        for (uint i=0; i<num; i++) {
+            _create();
+        }
+    }
+
+    function _create() internal {
         Vault vault = new Vault();
         emit NewVault(address(vault));
-
-        return address(vault);
     }
 }

@@ -151,6 +151,12 @@ contract VaultController is IController, ReentrancyGuard {
         lazySelectedBestStrategy = _strategy;
     }
 
+    function setUseSingleStrategy(address _strategy) external onlyGovernance {
+        approvedStrategies[_strategy] = true;
+        _setStrategyInfo(0, _strategy, type(uint256).max, 100);
+        strategyLength = 1;
+    }
+
     function getStrategyCount() external override view returns(uint _strategyCount) {
         _strategyCount = strategyLength;
     }
