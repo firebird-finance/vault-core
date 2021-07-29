@@ -7,85 +7,79 @@ const ownerPrivateKey = process.env.MNEMONICC;
 let wallet, overrides;
 let vaultMasterAddress = '0x439392419b8bEEe085A3Fd913eF04e116cE99870';
 
-let baseToken = '0x6fA867BBFDd025780a8CFE988475220AfF51FB8b';
-let vaultAddress = '0x6AdB801f90C09EAc4df2126f33Ac7b196578507E';
-let controllerAddress = '0xd47636621C49d42cfEC9C39696b90726B7b54c66';
-let strategyAddress = '0x35F113Beb0b3d28274AF13c5aeA75ca996c473a5';
+let baseToken = '0x527e43ca8f600f120b1eaEe2aFc80E3Cb375e191';
+let vaultAddress = '0x97E2b8d22899E9d5727d8668F9C6f476B5060314';
+let controllerAddress = '0x49C567444fc3D576b40a3FC66533909B836ad30b';
+let strategyAddress = '0x26F68f1cd6521b15162241C01e58991f2597F6Aa';
 
-let vaultName = 'Vault:DfynDFYNWETH';
-let vaultSymbol = 'vaultDFYNWETH';
-let controllerName = 'VaultController:DfynDFYNWETH';
+let vaultName = 'Vault:SushiWMATICxUSD';
+let vaultSymbol = 'vaultWMATICxUSD';
+let controllerName = 'VaultController:SushiWMATICxUSD';
 
 const main = async () => {
-  console.log('Run job', new Date());
-  const provider = new providers.JsonRpcProvider(process.env.RPC_URL);
-  wallet = new ethers.Wallet(ownerPrivateKey, provider);
-  const maxUint256 = BigNumber.from('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
+    console.log('Run job', new Date());
+    const provider = new providers.JsonRpcProvider(process.env.RPC_URL);
+    wallet = new ethers.Wallet(ownerPrivateKey, provider);
+    const maxUint256 = BigNumber.from('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
 
-  let [gasPrice] = await Promise.all([wallet.getGasPrice()]);
-  gasPrice = gasPrice.mul(16);
-  overrides = {gasLimit: 900000, gasPrice};
+    let [gasPrice] = await Promise.all([wallet.getGasPrice()]);
+    gasPrice = gasPrice.mul(120);
+    overrides = {gasLimit: 900000, gasPrice};
 
-  let tx;
-  let vaultContract = new Contract(vaultAddress, VaultABI, wallet);
-  let controllerContract = new Contract(controllerAddress, ControllerABI, wallet);
-  let strategyContract = new Contract(strategyAddress, StrategyABI, wallet);
-  console.log('Current nonce', await wallet.getTransactionCount(), await wallet.getTransactionCount('pending'), gasPrice.div(1e9).toString(), 'Gwei');
+    let tx;
+    let vaultContract = new Contract(vaultAddress, VaultABI, wallet);
+    let controllerContract = new Contract(controllerAddress, ControllerABI, wallet);
+    let strategyContract = new Contract(strategyAddress, StrategyABI, wallet);
+    console.log('Current nonce', await wallet.getTransactionCount(), await wallet.getTransactionCount('pending'), gasPrice.div(1e9).toString(), 'Gwei');
 
-  //vault
-  tx = await vaultContract.populateTransaction.initialize(baseToken, vaultMasterAddress, vaultName, vaultSymbol);
-  await processTx(tx, 'RECEIPT vault init');
+    //vault
+    tx = await vaultContract.populateTransaction.initialize(baseToken, vaultMasterAddress, vaultName, vaultSymbol);
+    await processTx(tx, 'RECEIPT vault init');
 
-  //controller
-  tx = await controllerContract.populateTransaction.initialize(vaultAddress, controllerName);
-  await processTx(tx, 'RECEIPT controller init');
+    //controller
+    tx = await controllerContract.populateTransaction.initialize(vaultAddress, controllerName);
+    await processTx(tx, 'RECEIPT controller init');
 
-  // strategy
-  tx = await strategyContract.populateTransaction.initialize(
-    '0x6fA867BBFDd025780a8CFE988475220AfF51FB8b',
-    '0xAa9654BECca45B5BDFA5ac646c939C62b527D394',
-    '0x1948abC5400Aa1d72223882958Da3bec643fb4E5',
-    1,
-    '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', //eth
-    '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', //eth
-    '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
-    '0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97',
-    controllerAddress
-  );
-  await processTx(tx, 'RECEIPT strategy init');
+    // strategy
+    tx = await strategyContract.populateTransaction.initialize(
+        '0x527e43ca8f600f120b1eaEe2aFc80E3Cb375e191',
+        '0x7917FB62b993511320Eee5ad70E98D49356580C9',
+        '0xe681c22Dc729E88559a0607ACa4b136Cc9998A6F',
+        3,
+        '0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975', //xUSD
+        '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', //usdc
+        '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+        '0x3a3e7650f8b9f667da98f236010fbf44ee4b2975',
+        controllerAddress
+    );
+    await processTx(tx, 'RECEIPT strategy init');
 
-  tx = await strategyContract.populateTransaction.setFirebirdPairs('0xAa9654BECca45B5BDFA5ac646c939C62b527D394', '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', [
-    '0x3324af8417844e70b81555A6D1568d78f4D4Bf1f',
-    '0x39D736D2b254eE30796f43Ec665143010b558F82'
-  ]);
-  await processTx(tx, 'RECEIPT strategy');
+    tx = await strategyContract.populateTransaction.setFirebirdPairs('0x7917FB62b993511320Eee5ad70E98D49356580C9', '0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975', [
+        '0xD52bF3AC296F9ed1171e48e5ef248Fb217fBfCfD',
+        '0x527e43ca8f600f120b1eaEe2aFc80E3Cb375e191'
+    ]);
+    await processTx(tx, 'RECEIPT strategy');
 
-  tx = await strategyContract.populateTransaction.setFirebirdPairs('0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', '0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97', [
-    '0x6fA867BBFDd025780a8CFE988475220AfF51FB8b'
-  ]);
-  await processTx(tx, 'RECEIPT strategy');
+    tx = await strategyContract.populateTransaction.setFirebirdPairs('0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975', '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', [
+        '0x527e43ca8f600f120b1eaEe2aFc80E3Cb375e191'
+    ]);
+    await processTx(tx, 'RECEIPT strategy');
 
-  // vault governance
-  tx = await vaultContract.populateTransaction.setController(controllerAddress);
-  await processTx(tx, 'RECEIPT vault');
+    // vault governance
+    tx = await vaultContract.populateTransaction.setController(controllerAddress);
+    await processTx(tx, 'RECEIPT vault');
 
-  // controller strategist
-  tx = await controllerContract.populateTransaction.approveStrategy(strategyAddress);
-  await processTx(tx, 'RECEIPT controller');
+    // controller strategist
+    tx = await controllerContract.populateTransaction.setUseSingleStrategy(strategyAddress);
+    await processTx(tx, 'RECEIPT controller');
 
-  tx = await controllerContract.populateTransaction.setStrategyInfo('0', strategyAddress, maxUint256, '100');
-  await processTx(tx, 'RECEIPT controller');
-
-  tx = await controllerContract.populateTransaction.setStrategyLength('1');
-  await processTx(tx, 'RECEIPT controller');
-
-  console.log('--------Finished job', new Date());
+    console.log('--------Finished job', new Date());
 };
 
 const processTx = async (tx, message) => {
-  await wallet.estimateGas(tx);
-  let receipt = await (await wallet.sendTransaction({...tx, ...overrides})).wait(2);
-  console.log(message, new Date(), receipt.transactionHash);
+    await wallet.estimateGas(tx);
+    let receipt = await (await wallet.sendTransaction({...tx, ...overrides})).wait(2);
+    console.log(message, new Date(), receipt.transactionHash);
 };
 
 main();

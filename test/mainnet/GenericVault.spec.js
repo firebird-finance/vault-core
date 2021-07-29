@@ -9,10 +9,10 @@ const StrategyABI = require('../../artifacts/contracts/compositevaults/strategie
 const ownerPrivateKey = process.env.MNEMONICC;
 let wallet, overrides;
 
-let baseToken = '';
-let vaultAddress = '';
-let controllerAddress = '';
-let strategyAddress = '';
+let baseToken = '0x527e43ca8f600f120b1eaEe2aFc80E3Cb375e191';
+let vaultAddress = '0x97E2b8d22899E9d5727d8668F9C6f476B5060314';
+let controllerAddress = '0x49C567444fc3D576b40a3FC66533909B836ad30b';
+let strategyAddress = '0x26F68f1cd6521b15162241C01e58991f2597F6Aa';
 
 let depositAmount = maxUint256;
 // let depositAmount = BigNumber.from("");
@@ -24,8 +24,8 @@ describe('GenericVault', function() {
     const provider = new providers.JsonRpcProvider(process.env.RPC_URL);
     wallet = new ethers.Wallet(ownerPrivateKey, provider);
     let [gasPrice] = await Promise.all([wallet.getGasPrice()]);
-    gasPrice = gasPrice.mul(6);
-    overrides = {gasLimit: 900000, gasPrice};
+    gasPrice = gasPrice.mul(120);
+    overrides = {gasLimit: 1600000, gasPrice};
 
     baseTokenContract = new Contract(baseToken, VaultABI, wallet);
     vaultContract = new Contract(vaultAddress, VaultABI, wallet);

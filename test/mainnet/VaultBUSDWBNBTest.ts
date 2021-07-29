@@ -36,6 +36,8 @@ import {
     StrategyFairLaunchKyberDmmLpFactory,
     StrategyPancakeCakeFactory,
     StrategySushiMiniV2StableSwapFactory,
+      StrategyRewardsQuickLpFactory,
+      StrategyLqtyStakingLpFactory
 } from "../../typechain";
 
 import {SignerWithAddress} from "hardhat-deploy-ethers/dist/src/signer-with-address";
@@ -108,6 +110,100 @@ describe("StrategyBTCWBNB", function() {
 
         await strategy.setFirebirdPairs(busd.address, btc.address, ["0xf98313f818c53E40Bd758C5276EF4B434463Bec4"]);
         await strategy.setFirebirdPairs(cakeAddress, busd.address, ["0xC99E3abe7729a3869d5cAd631bcbB90e3d389AA2"]);
+
+        //xUSD-matic sushi
+        let strategy61 = await new StrategyLqtyStakingLpFactory(deployerMainnet).deploy();
+        await strategy61.initialize(
+          "0xc2FEC6e52A2e4622eb91E5ae4f23F0eA73c47Aa2",
+          ["0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", "0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975"],
+          "0xa00493d324cD342834eB657228c59d63b5EB2E89",
+          "0x3a3e7650f8b9f667da98f236010fbf44ee4b2975", //xUSD
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", //matic
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+          "0x3a3e7650f8b9f667da98f236010fbf44ee4b2975",
+          controller.address
+        );
+        //matic -> xUSD
+        await strategy61.setFirebirdPairs("0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", "0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975", ["0xc2FEC6e52A2e4622eb91E5ae4f23F0eA73c47Aa2"]);
+        //xUSD -> matic
+        await strategy61.setFirebirdPairs("0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0xc2FEC6e52A2e4622eb91E5ae4f23F0eA73c47Aa2"]);
+
+
+        //xUSD-USDC dfyn
+        let strategy60 = await new StrategyLqtyStakingLpFactory(deployerMainnet).deploy();
+        await strategy60.initialize(
+          "0x527e43ca8f600f120b1eaEe2aFc80E3Cb375e191",
+          ["0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", "0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975"],
+          "0x1e49892c0d0D4455bbbA633EeDaDd6d26224369e",
+          "0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975", //xUSD
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          "0x3a3e7650f8b9f667da98f236010fbf44ee4b2975",
+          controller.address
+        );
+        //matic -> xUSD
+        await strategy60.setFirebirdPairs("0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", "0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975", ["0xc2FEC6e52A2e4622eb91E5ae4f23F0eA73c47Aa2"]);
+        //xUSD -> usdc
+        await strategy60.setFirebirdPairs("0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x527e43ca8f600f120b1eaEe2aFc80E3Cb375e191"]);
+
+
+        //xUSD-USDC dfyn elysm
+        let strategy601 = await new StrategySushiLpFactory(deployerMainnet).deploy();
+        await strategy601.initialize(
+          "0x527e43ca8f600f120b1eaEe2aFc80E3Cb375e191",
+          "0x7917FB62b993511320Eee5ad70E98D49356580C9",
+          "0xe681c22Dc729E88559a0607ACa4b136Cc9998A6F",
+          3,
+          "0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975", //xUSD
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          "0x3a3e7650f8b9f667da98f236010fbf44ee4b2975",
+          controller.address
+        );
+        //ELYSM -> xUSD
+        await strategy601.setFirebirdPairs("0x7917FB62b993511320Eee5ad70E98D49356580C9", "0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975", ["0xD52bF3AC296F9ed1171e48e5ef248Fb217fBfCfD", "0x527e43ca8f600f120b1eaEe2aFc80E3Cb375e191"]);
+        //xUSD -> usdc
+        await strategy601.setFirebirdPairs("0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x527e43ca8f600f120b1eaEe2aFc80E3Cb375e191"]);
+
+
+        //xUSD-DFYN dfyn
+        let strategy59 = await new StrategyRewardsQuickLpFactory(deployerMainnet).deploy();
+        await strategy59.initialize(
+          "0xB023e038Ee031C4550b0EE322E85de78621077F9",
+          ["0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", "0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975"],
+          "0xc6Cface612849C1D378Fbfe8Bdf49D01bbf569Bb",
+          "0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97", //dfyn
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97",
+          "0x3a3e7650f8b9f667da98f236010fbf44ee4b2975",
+          controller.address
+        );
+        //dfyn -> usdc
+        await strategy59.setFirebirdPairs("0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x4c38938E21cB9796932B0B0Cc3f8a088f07b49B0"]);
+        //xUSD -> dfyn
+        await strategy59.setFirebirdPairs("0x3a3e7650f8b9f667da98f236010fbf44ee4b2975", "0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97", ["0xB023e038Ee031C4550b0EE322E85de78621077F9"]);
+        //dfyn -> xusd
+        await strategy59.setFirebirdPairs("0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97", "0x3a3e7650f8b9f667da98f236010fbf44ee4b2975", ["0xB023e038Ee031C4550b0EE322E85de78621077F9"]);
+        //matic -> dfyn
+        await strategy59.setFirebirdPairs("0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", "0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97", ["0xCe2cB67b11ec0399E39AF20433927424f9033233", "0x4c38938E21cB9796932B0B0Cc3f8a088f07b49B0"]);
+
+        //meeb-matic firebird
+        let strategy58 = await new StrategyPairWeightLpFactory(deployerMainnet).deploy();
+        await strategy58.initialize(
+          "0x0364e0C75e9fbFC7Ad34253c043f48518775D0e6",
+          "0x64afdf9e28946419e325d801fb3053d8b8ffdc23",
+          "0x91be2c9f175ac3f8e58b04bbd739df3d325ebfa8",
+          3,
+          "0x64afdf9e28946419e325d801fb3053d8b8ffdc23",
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", //matic
+          "50",
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+          "0x64afdf9e28946419e325d801fb3053d8b8ffdc23",
+          controller.address
+        );
+        //meeb -> matic
+        await strategy58.setFirebirdPairs("0x64afdf9e28946419e325d801fb3053d8b8ffdc23", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0x0364e0C75e9fbFC7Ad34253c043f48518775D0e6"]);
+
 
         //DFYN-WETH dfyn
         let strategy57 = await new StrategySushiLpFactory(deployerMainnet).deploy();

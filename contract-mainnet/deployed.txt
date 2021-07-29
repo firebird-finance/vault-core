@@ -2,8 +2,8 @@ Deployer                    : 0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c
 
 VaultMaster                 : 0x439392419b8bEEe085A3Fd913eF04e116cE99870
 VaultBank                   : 0x8294B42C8acFF8e819064e8755a55D038060731E
-VaultCreator                : 0x0e31784A94D0f3A48a1D44A46F886bBB34A0F8D1
-VaultControllerCreator      : 0x540D8C9084acea67305d2fdB8440529419864a43
+VaultCreator                : 0xa46124235740570999c1242D707983DB4fdDE390
+VaultControllerCreator      : 0x2e35Faa17C58678FCcC0b73eaA4DD85A2F4ea7E6
 
 
 //btc-eth sushi
@@ -412,6 +412,35 @@ BaseToken                   : 0x6fA867BBFDd025780a8CFE988475220AfF51FB8b
 Vault                       : 0x6AdB801f90C09EAc4df2126f33Ac7b196578507E
 Controller                  : 0xd47636621C49d42cfEC9C39696b90726B7b54c66
 Strategy                    : 0x35F113Beb0b3d28274AF13c5aeA75ca996c473a5
+
+
+//meeb-matic firebird
+BaseToken                   : 0x0364e0C75e9fbFC7Ad34253c043f48518775D0e6
+Vault                       : 0x75f0bBdB0035Ee1e98EeA5f612a105002690Fd77
+Controller                  : 0xf21c8F451c1822Dd38f627E7c12feC95782557f0
+Strategy                    : 0x2E4C3Dd9c5d1ede7BB0e2655B833B1F65Aef2C2d
+
+
+//xUSD-DFYN dfyn
+BaseToken                   : 0xB023e038Ee031C4550b0EE322E85de78621077F9
+Vault                       : 0xD02AB354a89693Ef34d2C588DFeb2874745e533C
+Controller                  : 0xb85C9872Af7ded646840dE978a48d158ece36414
+Strategy                    : 0x0C4cA7D4507aFa55ca3F2895dCA5bEfA5a3cAa6c
+
+
+//xUSD-USDC dfyn
+BaseToken                   : 0x527e43ca8f600f120b1eaEe2aFc80E3Cb375e191
+Vault                       : 0x97E2b8d22899E9d5727d8668F9C6f476B5060314
+Controller                  : 0x49C567444fc3D576b40a3FC66533909B836ad30b
+StrategyXdollar             : 0xc4ACCEC1f64F5b830eA80F0bB3F3E629596c16b5
+StrategyELYSM               : 0x26F68f1cd6521b15162241C01e58991f2597F6Aa
+
+
+//xUSD-MATIC sushi
+BaseToken                   : 0xc2FEC6e52A2e4622eb91E5ae4f23F0eA73c47Aa2
+Vault                       : 0x805d849e374b3DF29e1025a97A8F367a4f96E48A
+Controller                  : 0xE096091f3216562A7767A42F314AE4a24ec382d7
+Strategy                    : 0x2d94dE99F9FC716dbA063102c13d46A8Cb16CcE0
 
 
 

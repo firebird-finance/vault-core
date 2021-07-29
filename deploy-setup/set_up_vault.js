@@ -84,17 +84,7 @@ const main = async () => {
     console.log('RECEIPT vault', new Date(), txReceipt.transactionHash);
 
     // controller strategist
-    method = controllerContract.methods.approveStrategy(strategyAddress);
-    await method.estimateGas({from});
-    txReceipt = await method.send({from, gas: 900000, gasPrice});
-    console.log('RECEIPT controller', new Date(), txReceipt.transactionHash);
-
-    method = controllerContract.methods.setStrategyInfo('0', strategyAddress, maxUint256, '100');
-    await method.estimateGas({from});
-    txReceipt = await method.send({from, gas: 900000, gasPrice});
-    console.log('RECEIPT controller', new Date(), txReceipt.transactionHash);
-
-    method = controllerContract.methods.setStrategyLength('1');
+    method = controllerContract.methods.setUseSingleStrategy(strategyAddress);
     await method.estimateGas({from});
     txReceipt = await method.send({from, gas: 900000, gasPrice});
     console.log('RECEIPT controller', new Date(), txReceipt.transactionHash);
