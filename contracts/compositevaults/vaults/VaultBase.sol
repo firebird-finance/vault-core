@@ -75,9 +75,9 @@ abstract contract VaultBase is ERC20Upgradeable, IVault {
     /**
      * @dev Throws if called by a not-whitelisted contract while we do not accept contract depositor.
      */
-    modifier checkContract(address _account) {
-        if (!acceptContractDepositor && !whitelistedContract[_account] && _account != vaultMaster.bank(address(this)) && _account != vaultMaster.bankMaster()) {
-            require(!address(_account).isContract() && _account == tx.origin, "contract not support");
+    modifier checkContract() {
+        if (!acceptContractDepositor && !whitelistedContract[msg.sender] && msg.sender != vaultMaster.bank(address(this)) && msg.sender != vaultMaster.bankMaster()) {
+            require(!address(msg.sender).isContract() && msg.sender == tx.origin, "contract not support");
         }
         _;
     }
@@ -228,7 +228,7 @@ abstract contract VaultBase is ERC20Upgradeable, IVault {
         return depositFor(msg.sender, _amount, _min_mint_amount);
     }
 
-    function depositFor(address _to, uint _amount, uint _min_mint_amount) public override checkContract(msg.sender) _non_reentrant_ returns (uint _mint_amount) {
+    function depositFor(address _to, uint _amount, uint _min_mint_amount) public override checkContract() _non_reentrant_ returns (uint _mint_amount) {
         require(!depositPaused, "deposit paused");
         if (controller != address(0)) {
             IController(controller).beforeDeposit();
@@ -290,7 +290,7 @@ abstract contract VaultBase is ERC20Upgradeable, IVault {
     }
 
     // No rebalance implementation for lower fees and faster swaps
-    function withdrawFor(address _account, uint _shares, uint _min_output_amount) public override _non_reentrant_ checkContract(msg.sender) returns (uint _output_amount) {
+    function withdrawFor(address _account, uint _shares, uint _min_output_amount) public override _non_reentrant_ checkContract() returns (uint _output_amount) {
         require(!withdrawPaused, "withdraw paused");
         // Check that no mint has been made in the same block from the same EOA
         require(keccak256(abi.encodePacked(tx.origin, block.number)) != _minterBlock, "REENTR MINT-BURN");

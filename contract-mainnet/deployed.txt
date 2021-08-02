@@ -443,6 +443,20 @@ Controller                  : 0xE096091f3216562A7767A42F314AE4a24ec382d7
 Strategy                    : 0x2d94dE99F9FC716dbA063102c13d46A8Cb16CcE0
 
 
+//UST-USDT dfyn
+BaseToken                   : 0x39BEd7f1C412ab64443196A6fEcb2ac20C707224
+Vault                       : 0x079f892b241CCdfFF347728C1428D0819d93708C
+Controller                  : 0xf26812fBb419dbcdA4d98A0721c9f461559dAaD1
+Strategy                    : 0x044DA717df51bE0D15bc984a849F6DeE0B95f5dE
+
+
+//DINO-WETH quick
+BaseToken                   : 0x9f03309A588e33A239Bf49ed8D68b2D45C7A1F11
+Vault                       : 0xF5D99B8405eD34Dea52321732191484020b34dA0
+Controller                  : 0xFC35561c7099737fAde5eF7E3352456Af0b92d97
+Strategy                    : 0x8025C572851eb560513906DbE55B8fB30a62AB7a
+
+
 
 ===================
 max                         : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff

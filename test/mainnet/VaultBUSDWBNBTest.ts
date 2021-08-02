@@ -111,6 +111,42 @@ describe("StrategyBTCWBNB", function() {
         await strategy.setFirebirdPairs(busd.address, btc.address, ["0xf98313f818c53E40Bd758C5276EF4B434463Bec4"]);
         await strategy.setFirebirdPairs(cakeAddress, busd.address, ["0xC99E3abe7729a3869d5cAd631bcbB90e3d389AA2"]);
 
+        //UST-USDT dfyn
+        let strategy63 = await new StrategySushiLpFactory(deployerMainnet).deploy();
+        await strategy63.initialize(
+          "0x39BEd7f1C412ab64443196A6fEcb2ac20C707224",
+          "0xaa9654becca45b5bdfa5ac646c939c62b527d394",
+          "0x1948abC5400Aa1d72223882958Da3bec643fb4E5",
+          12,
+          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", //usdt
+          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", //usdt
+          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+          "0x692597b009d13c4049a947cab2239b7d6517875f",
+          controller.address
+        );
+        //dino -> usdt
+        await strategy63.setFirebirdPairs("0xAa9654BECca45B5BDFA5ac646c939C62b527D394", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", ["0x3324af8417844e70b81555A6D1568d78f4D4Bf1f", "0x2cF7252e74036d1Da831d11089D326296e64a728"]);
+        //usdt -> ust
+        await strategy63.setFirebirdPairs("0xc2132d05d31c914a87c6611c10748aeb04b58e8f", "0x692597b009d13c4049a947cab2239b7d6517875f", ["0x39BEd7f1C412ab64443196A6fEcb2ac20C707224"]);
+
+
+        //DINO-WETH quick
+        let strategy62 = await new StrategySushiLpFactory(deployerMainnet).deploy();
+        await strategy62.initialize(
+          "0x9f03309A588e33A239Bf49ed8D68b2D45C7A1F11",
+          "0xaa9654becca45b5bdfa5ac646c939c62b527d394",
+          "0x1948abC5400Aa1d72223882958Da3bec643fb4E5",
+          11,
+          "0xaa9654becca45b5bdfa5ac646c939c62b527d394", //dino
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
+          "0xaa9654becca45b5bdfa5ac646c939c62b527d394",
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+          controller.address
+        );
+        //dino -> eth
+        await strategy62.setFirebirdPairs("0xaa9654becca45b5bdfa5ac646c939c62b527d394", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0x9f03309A588e33A239Bf49ed8D68b2D45C7A1F11"]);
+
+
         //xUSD-matic sushi
         let strategy61 = await new StrategyLqtyStakingLpFactory(deployerMainnet).deploy();
         await strategy61.initialize(

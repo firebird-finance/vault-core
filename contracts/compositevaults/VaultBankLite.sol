@@ -46,6 +46,11 @@ contract VaultBankLite is ContextUpgradeable, ReentrancyGuard {
         _;
     }
 
+    modifier checkVault(address vault) {
+        require(vaultMaster.isVault(vault), "Bank: !vault");
+        _;
+    }
+
     function setAcceptContractDepositor(bool _acceptContractDepositor) external onlyGovernance {
         acceptContractDepositor = _acceptContractDepositor;
     }
@@ -71,7 +76,7 @@ contract VaultBankLite is ContextUpgradeable, ReentrancyGuard {
         vaultMaster = _vaultMaster;
     }
 
-    function deposit(IVault _vault, uint _amount, uint _min_mint_amount) external checkContract nonReentrant {
+    function deposit(IVault _vault, uint _amount, uint _min_mint_amount) external checkContract checkVault(address(_vault)) nonReentrant {
         IERC20(_vault.token()).safeTransferFrom(msg.sender, address(this), _amount);
         IERC20(_vault.token()).safeIncreaseAllowance(address(_vault), _amount);
 

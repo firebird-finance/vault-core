@@ -7,14 +7,14 @@ const ownerPrivateKey = process.env.MNEMONICC;
 let wallet, overrides;
 let vaultMasterAddress = '0x439392419b8bEEe085A3Fd913eF04e116cE99870';
 
-let baseToken = '0x527e43ca8f600f120b1eaEe2aFc80E3Cb375e191';
-let vaultAddress = '0x97E2b8d22899E9d5727d8668F9C6f476B5060314';
-let controllerAddress = '0x49C567444fc3D576b40a3FC66533909B836ad30b';
-let strategyAddress = '0x26F68f1cd6521b15162241C01e58991f2597F6Aa';
+let baseToken = '0x9f03309A588e33A239Bf49ed8D68b2D45C7A1F11';
+let vaultAddress = '0xF5D99B8405eD34Dea52321732191484020b34dA0';
+let controllerAddress = '0xFC35561c7099737fAde5eF7E3352456Af0b92d97';
+let strategyAddress = '0x8025C572851eb560513906DbE55B8fB30a62AB7a';
 
-let vaultName = 'Vault:SushiWMATICxUSD';
-let vaultSymbol = 'vaultWMATICxUSD';
-let controllerName = 'VaultController:SushiWMATICxUSD';
+let vaultName = 'Vault:QuickDINOWETH';
+let vaultSymbol = 'vaultDINOWETH';
+let controllerName = 'VaultController:QuickDINOWETH';
 
 const main = async () => {
     console.log('Run job', new Date());
@@ -42,28 +42,27 @@ const main = async () => {
 
     // strategy
     tx = await strategyContract.populateTransaction.initialize(
-        '0x527e43ca8f600f120b1eaEe2aFc80E3Cb375e191',
-        '0x7917FB62b993511320Eee5ad70E98D49356580C9',
-        '0xe681c22Dc729E88559a0607ACa4b136Cc9998A6F',
-        3,
-        '0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975', //xUSD
-        '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', //usdc
-        '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
-        '0x3a3e7650f8b9f667da98f236010fbf44ee4b2975',
+        '0x9f03309A588e33A239Bf49ed8D68b2D45C7A1F11',
+        '0xaa9654becca45b5bdfa5ac646c939c62b527d394',
+        '0x1948abC5400Aa1d72223882958Da3bec643fb4E5',
+        11,
+        '0xaa9654becca45b5bdfa5ac646c939c62b527d394', //dino
+        '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', //eth
+        '0xaa9654becca45b5bdfa5ac646c939c62b527d394',
+        '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
         controllerAddress
     );
     await processTx(tx, 'RECEIPT strategy init');
 
-    tx = await strategyContract.populateTransaction.setFirebirdPairs('0x7917FB62b993511320Eee5ad70E98D49356580C9', '0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975', [
-        '0xD52bF3AC296F9ed1171e48e5ef248Fb217fBfCfD',
-        '0x527e43ca8f600f120b1eaEe2aFc80E3Cb375e191'
+    tx = await strategyContract.populateTransaction.setFirebirdPairs('0xaa9654becca45b5bdfa5ac646c939c62b527d394', '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', [
+        '0x9f03309A588e33A239Bf49ed8D68b2D45C7A1F11'
     ]);
     await processTx(tx, 'RECEIPT strategy');
 
-    tx = await strategyContract.populateTransaction.setFirebirdPairs('0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975', '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', [
-        '0x527e43ca8f600f120b1eaEe2aFc80E3Cb375e191'
-    ]);
-    await processTx(tx, 'RECEIPT strategy');
+    // tx = await strategyContract.populateTransaction.setFirebirdPairs('0xc2132d05d31c914a87c6611c10748aeb04b58e8f', '0x692597b009d13c4049a947cab2239b7d6517875f', [
+    //     '0x39BEd7f1C412ab64443196A6fEcb2ac20C707224'
+    // ]);
+    // await processTx(tx, 'RECEIPT strategy');
 
     // vault governance
     tx = await vaultContract.populateTransaction.setController(controllerAddress);

@@ -15,7 +15,7 @@ const main = async () => {
     wallet = new ethers.Wallet(ownerPrivateKey, provider);
 
     let [gasPrice] = await Promise.all([wallet.getGasPrice()]);
-    gasPrice = gasPrice.mul(16);
+    gasPrice = gasPrice.mul(120);
     overrides = {gasLimit: 200000, gasPrice};
     let tx;
     console.log('Current nonce', await wallet.getTransactionCount(), await wallet.getTransactionCount('pending'), gasPrice.div(1e9).toString(), 'Gwei');
