@@ -457,6 +457,41 @@ Controller                  : 0xFC35561c7099737fAde5eF7E3352456Af0b92d97
 Strategy                    : 0x8025C572851eb560513906DbE55B8fB30a62AB7a
 
 
+//rMATIC
+BaseToken                   :
+Vault                       :
+Controller                  :
+Strategy                    :
+
+
+//rWETH
+BaseToken                   :
+Vault                       :
+Controller                  :
+Strategy                    :
+
+
+//rUSDC
+BaseToken                   :
+Vault                       :
+Controller                  :
+Strategy                    :
+
+
+//rWBTC
+BaseToken                   :
+Vault                       :
+Controller                  :
+Strategy                    :
+
+
+//rUSDT
+BaseToken                   :
+Vault                       :
+Controller                  :
+Strategy                    :
+
+
 
 ===================
 max                         : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
