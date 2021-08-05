@@ -457,39 +457,39 @@ Controller                  : 0xFC35561c7099737fAde5eF7E3352456Af0b92d97
 Strategy                    : 0x8025C572851eb560513906DbE55B8fB30a62AB7a
 
 
-//rMATIC
-BaseToken                   :
-Vault                       :
-Controller                  :
-Strategy                    :
+//WMATIC
+BaseToken                   : 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
+Vault                       : 0x8F0852a6c027c325D0BB624dd300B3EF82988Ecb
+Controller                  : 0x773bc47Ef08CAAF28D87e75c7fe288e59aFCeC75
+Strategy                    : 0x23827B6b6385dDA50F8c1FAd828F3b8e4B193a07
 
 
-//rWETH
-BaseToken                   :
-Vault                       :
-Controller                  :
-Strategy                    :
+//WETH
+BaseToken                   : 0x7ceb23fd6bc0add59e62ac25578270cff1b9f619
+Vault                       : 0x357A43bC55FC40189ce15Bc2753AD24AF69cA138
+Controller                  : 0x07C1f9119d989c50E02d6C9A588d7A358CAD831e
+Strategy                    : 0x49BfEab0aD925B3368ecA2752eceAFA72b76a2a3
 
 
-//rUSDC
-BaseToken                   :
-Vault                       :
-Controller                  :
-Strategy                    :
+//USDC
+BaseToken                   : 0x2791bca1f2de4661ed88a30c99a7a9449aa84174
+Vault                       : 0x08EEAf23F605D040d07320a4C7E22BC5824ee59C
+Controller                  : 0xcE1bf057D92ceE46bBc39a0002899c796c464D69
+Strategy                    : 0x87BDb433786C6e0b4477c5b17BDF0BC85a6b5b0b
 
 
-//rWBTC
-BaseToken                   :
-Vault                       :
-Controller                  :
-Strategy                    :
+//WBTC
+BaseToken                   : 0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6
+Vault                       : 0xB3D5cE4b1DA2Ce5BBe9BB2256e1f7A8027D534E3
+Controller                  : 0xD31e4d452d6273A32f49ffD1aDC5511A309BA013
+Strategy                    : 0xAB7B9e01E1925889828c5BdaADBc20a9b410dd2A
 
 
-//rUSDT
-BaseToken                   :
-Vault                       :
-Controller                  :
-Strategy                    :
+//USDT
+BaseToken                   : 0xc2132d05d31c914a87c6611c10748aeb04b58e8f
+Vault                       : 0x59Ff10e411F8040d3db4bE2ef187E9493f90D86C
+Controller                  : 0x6670Ae26751F4701778a828136882d65b2DBC1a7
+Strategy                    : 0x31fb7a11338a0749Bb8c2e122d88953cE3880655
 
 
 

@@ -9,13 +9,13 @@ const StrategyABI = require('../../artifacts/contracts/compositevaults/strategie
 const ownerPrivateKey = process.env.MNEMONICC;
 let wallet, overrides;
 
-let baseToken = '0x39BEd7f1C412ab64443196A6fEcb2ac20C707224';
-let vaultAddress = '0x079f892b241CCdfFF347728C1428D0819d93708C';
-let controllerAddress = '0xf26812fBb419dbcdA4d98A0721c9f461559dAaD1';
-let strategyAddress = '0x044DA717df51bE0D15bc984a849F6DeE0B95f5dE';
+let baseToken = '0x2791bca1f2de4661ed88a30c99a7a9449aa84174';
+let vaultAddress = '0x08EEAf23F605D040d07320a4C7E22BC5824ee59C';
+let controllerAddress = '0xcE1bf057D92ceE46bBc39a0002899c796c464D69';
+let strategyAddress = '0x87BDb433786C6e0b4477c5b17BDF0BC85a6b5b0b';
 
 let depositAmount = maxUint256;
-// let depositAmount = BigNumber.from("");
+// let depositAmount = BigNumber.from("1000000");
 
 describe('GenericVault', function() {
   let baseTokenContract, vaultContract, controllerContract, strategyContract;

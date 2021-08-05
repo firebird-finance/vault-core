@@ -2,19 +2,19 @@ const {ethers, providers, Contract, BigNumber} = require('ethers');
 require('dotenv').config();
 const VaultABI = require('../artifacts/contracts/compositevaults/vaults/Vault.sol/Vault.json').abi;
 const ControllerABI = require('../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
-const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategySushiLp.sol/StrategySushiLp.json').abi;
+const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategyVenusLeverage.sol/StrategyVenusLeverage.json').abi;
 const ownerPrivateKey = process.env.MNEMONICC;
 let wallet, overrides;
 let vaultMasterAddress = '0x439392419b8bEEe085A3Fd913eF04e116cE99870';
 
-let baseToken = '0x9f03309A588e33A239Bf49ed8D68b2D45C7A1F11';
-let vaultAddress = '0xF5D99B8405eD34Dea52321732191484020b34dA0';
-let controllerAddress = '0xFC35561c7099737fAde5eF7E3352456Af0b92d97';
-let strategyAddress = '0x8025C572851eb560513906DbE55B8fB30a62AB7a';
+let baseToken = '0xc2132d05d31c914a87c6611c10748aeb04b58e8f';
+let vaultAddress = '0x59Ff10e411F8040d3db4bE2ef187E9493f90D86C';
+let controllerAddress = '0x6670Ae26751F4701778a828136882d65b2DBC1a7';
+let strategyAddress = '0x31fb7a11338a0749Bb8c2e122d88953cE3880655';
 
-let vaultName = 'Vault:QuickDINOWETH';
-let vaultSymbol = 'vaultDINOWETH';
-let controllerName = 'VaultController:QuickDINOWETH';
+let vaultName = 'Vault:USDT';
+let vaultSymbol = 'vaultUSDT';
+let controllerName = 'VaultController:USDT';
 
 const main = async () => {
     console.log('Run job', new Date());
@@ -23,7 +23,7 @@ const main = async () => {
     const maxUint256 = BigNumber.from('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
 
     let [gasPrice] = await Promise.all([wallet.getGasPrice()]);
-    gasPrice = gasPrice.mul(120);
+    gasPrice = gasPrice.mul(88);
     overrides = {gasLimit: 900000, gasPrice};
 
     let tx;
@@ -42,20 +42,20 @@ const main = async () => {
 
     // strategy
     tx = await strategyContract.populateTransaction.initialize(
-        '0x9f03309A588e33A239Bf49ed8D68b2D45C7A1F11',
-        '0xaa9654becca45b5bdfa5ac646c939c62b527d394',
-        '0x1948abC5400Aa1d72223882958Da3bec643fb4E5',
-        11,
-        '0xaa9654becca45b5bdfa5ac646c939c62b527d394', //dino
-        '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', //eth
-        '0xaa9654becca45b5bdfa5ac646c939c62b527d394',
-        '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
+        '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+        '0x4A81f8796e0c6Ad4877A51C86693B0dE8093F2ef',
+        '0xad6ad29d6b8b74b4302dd829c945ca3274035c16',
+        '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+        '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+        '0',
+        '0',
         controllerAddress
     );
     await processTx(tx, 'RECEIPT strategy init');
 
-    tx = await strategyContract.populateTransaction.setFirebirdPairs('0xaa9654becca45b5bdfa5ac646c939c62b527d394', '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', [
-        '0x9f03309A588e33A239Bf49ed8D68b2D45C7A1F11'
+    tx = await strategyContract.populateTransaction.setFirebirdPairs('0x4A81f8796e0c6Ad4877A51C86693B0dE8093F2ef', '0xc2132d05d31c914a87c6611c10748aeb04b58e8f', [
+        '0xf1EE78544a1118F2efb87f7EaCd9f1E6e80e1ea5',
+        '0xc7f1B47F4ed069E9B34e6bD59792B8ABf5a66339'
     ]);
     await processTx(tx, 'RECEIPT strategy');
 

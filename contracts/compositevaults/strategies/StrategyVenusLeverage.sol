@@ -209,8 +209,14 @@ contract StrategyVenusLeverage is StrategyBase {
     receive() external payable {}
 
     function _buyWantAndReinvest() internal override {
-        _supplyWant();
-        _rebalance(0);
+        uint _baseBal = IERC20(baseToken).balanceOf(address(this));
+        if (_baseBal > 0) {
+            if (vaultMaster.isStrategy(address(this))) {
+                vault.addNewCompound(_baseBal, timeToReleaseCompound);
+            }
+            _supplyWant();
+            _rebalance(0);
+        }
     }
 
     function balanceOfPool() public override view returns (uint) {

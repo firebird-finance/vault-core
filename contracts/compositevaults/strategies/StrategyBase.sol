@@ -115,26 +115,10 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
 
     function setUnirouter(IUniswapV2Router _unirouter) external onlyTimelock {
         unirouter = _unirouter;
-        if (farmingToken != address(0)) {
-            IERC20(farmingToken).approve(address(unirouter), type(uint256).max);
-        }
-        if (targetCompoundToken != farmingToken)
-            IERC20(targetCompoundToken).approve(address(unirouter), type(uint256).max);
-        if (targetProfitToken != targetCompoundToken && targetProfitToken != farmingToken) {
-            IERC20(targetProfitToken).approve(address(unirouter), type(uint256).max);
-        }
     }
 
     function setFirebirdRouter(IFirebirdRouter _firebirdRouter) external onlyTimelock {
         firebirdRouter = _firebirdRouter;
-        if (farmingToken != address(0)) {
-            IERC20(farmingToken).approve(address(firebirdRouter), type(uint256).max);
-        }
-        if (targetCompoundToken != farmingToken)
-            IERC20(targetCompoundToken).approve(address(firebirdRouter), type(uint256).max);
-        if (targetProfitToken != targetCompoundToken && targetProfitToken != farmingToken) {
-            IERC20(targetProfitToken).approve(address(firebirdRouter), type(uint256).max);
-        }
     }
 
     function setUnirouterPath(address _input, address _output, address [] memory _path) external onlyStrategist {
