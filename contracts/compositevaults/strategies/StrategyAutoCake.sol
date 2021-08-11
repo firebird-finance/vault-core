@@ -55,7 +55,7 @@ contract StrategyAutoCake is StrategyBase {
         return "StrategyAutoCake";
     }
 
-    function deposit() public override nonReentrant {
+    function deposit() external override nonReentrant {
         _deposit();
     }
 

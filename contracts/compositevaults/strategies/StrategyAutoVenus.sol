@@ -64,7 +64,7 @@ contract StrategyAutoVenus is StrategyBase {
         IStratVLEV(autoStrat).updateBalance();
     }
 
-    function deposit() public override nonReentrant {
+    function deposit() external override nonReentrant {
         _deposit();
     }
 

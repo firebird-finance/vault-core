@@ -57,7 +57,7 @@ contract StrategyEllipsisStableLp is StrategyBase {
         return "StrategyEllipsisStableLp";
     }
 
-    function deposit() public override nonReentrant {
+    function deposit() external override nonReentrant {
         _deposit();
     }
 

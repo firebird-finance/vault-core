@@ -8,8 +8,8 @@ import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 
 import "./StrategyBase.sol";
-import "../../interfaces/IAutoFarmV2.sol";
-import "../../interfaces/IStratX.sol";
+import "../../interfaces/IPolycatMasterChef.sol";
+import "../../interfaces/IKyberRewardLocker.sol";
 
 /*
 
@@ -25,34 +25,34 @@ import "../../interfaces/IStratX.sol";
 
 */
 
-contract StrategyAutoLp is StrategyBase {
-    address public autoFarm = 0x0895196562C7868C5Be92459FaE7f877ED450452;
-    address public autoStrat;
+contract StrategyPolycatLp is StrategyBase {
+    address public farmPool = 0x0895196562C7868C5Be92459FaE7f877ED450452;
     uint public poolId;
 
     address public token0 = 0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82;
     address public token1 = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c;
 
+    uint public lastClaimRewardTimestamp;
+    uint public limitTimeToClaimReward = 12 hours;
+
     // baseToken       = 0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6 (CAKEBNB-CAKELP)
-    // farmingToken = 0x0391d2021f89dc339f60fff84546ea23e337750f (AUTO)
+    // farmingToken = 0x4f47a0d15c1e53f3d94c069c7d16977c29f9cb6b (RAMEN)
     // targetCompound = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c (BNB)
     // token0 = 0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82 (CAKE)
     // token1 = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c (BNB)
     function initialize(
         address _baseToken, address _farmingToken,
-        address _autoFarm, uint _poolId, address _targetCompound, address _targetProfit, address _token0, address _token1,
+        address _farmPool, uint _poolId, address _targetCompound, address _targetProfit, address _token0, address _token1,
         address _controller
-    ) public nonReentrant initializer {
+    ) public initializer {
+        unirouter = IUniswapV2Router(0x8ceed93Cf1ad0A25fA7Dd7056CfAbae8722fe191);
         initialize(_baseToken, _farmingToken, _controller, _targetCompound, _targetProfit);
-        autoFarm = _autoFarm;
+        farmPool = _farmPool;
         poolId = _poolId;
         token0 = _token0;
         token1 = _token1;
 
-        (, , , , address _autoStrat) = IAutoFarmV2(_autoFarm).poolInfo(poolId);
-        autoStrat = _autoStrat;
-
-        IERC20(baseToken).approve(autoFarm, type(uint256).max);
+        IERC20(baseToken).approve(address(farmPool), type(uint256).max);
         if (token0 != farmingToken && token0 != targetCompoundToken) {
             IERC20(token0).approve(address(unirouter), type(uint256).max);
             IERC20(token0).approve(address(firebirdRouter), type(uint256).max);
@@ -64,7 +64,7 @@ contract StrategyAutoLp is StrategyBase {
     }
 
     function getName() public override pure returns (string memory) {
-        return "StrategyAutoLp";
+        return "StrategyPolycatLp";
     }
 
     function deposit() external override nonReentrant {
@@ -74,21 +74,19 @@ contract StrategyAutoLp is StrategyBase {
     function _deposit() internal {
         uint _baseBal = IERC20(baseToken).balanceOf(address(this));
         if (_baseBal > 0) {
-            IAutoFarmV2(autoFarm).deposit(poolId, _baseBal);
+            IPolycatMasterChef(farmPool).deposit(poolId, _baseBal, false);
             emit Deposit(baseToken, _baseBal);
         }
     }
 
     function _withdrawSome(uint _amount) internal override returns (uint) {
-        IStratX(autoStrat).farm();
-        IStratX(autoStrat).farm();
-
-        uint _stakedAmount = IAutoFarmV2(autoFarm).stakedWantTokens(poolId, address(this));
+        (uint _stakedAmount,,) = IPolycatMasterChef(farmPool).userInfo(poolId, address(this));
         if (_amount > _stakedAmount) {
             _amount = _stakedAmount;
         }
+
         uint _before = IERC20(baseToken).balanceOf(address(this));
-        IAutoFarmV2(autoFarm).withdraw(poolId, _amount);
+        IPolycatMasterChef(farmPool).withdraw(poolId, _amount, false);
         uint _after = IERC20(baseToken).balanceOf(address(this));
         _amount = _after.sub(_before);
 
@@ -96,14 +94,27 @@ contract StrategyAutoLp is StrategyBase {
     }
 
     function _withdrawAll() internal override {
-        IStratX(autoStrat).farm();
-        IStratX(autoStrat).farm();
+        (uint _stakedAmount,,) = IPolycatMasterChef(farmPool).userInfo(poolId, address(this));
+        IPolycatMasterChef(farmPool).withdraw(poolId, _stakedAmount, true);
+        lastClaimRewardTimestamp = block.timestamp;
+    }
 
-        IAutoFarmV2(autoFarm).withdraw(poolId, uint256(-1));
+    function claimRewardToLock() public {
+        if (block.timestamp > lastClaimRewardTimestamp + limitTimeToClaimReward) {
+            IPolycatMasterChef(farmPool).harvest(poolId);
+            lastClaimRewardTimestamp = block.timestamp;
+        }
     }
 
     function claimReward() public override {
-        IAutoFarmV2(autoFarm).deposit(poolId, 0);
+        claimRewardToLock();
+        address rewardLocker = IPolycatMasterChef(farmPool).rewardLocker();
+        address _rewardToken = farmingToken;
+
+        uint256 vestingLength = IKyberRewardLocker(rewardLocker).numVestingSchedules(address(this), _rewardToken);
+        if (vestingLength > 0) {
+            IKyberRewardLocker(rewardLocker).vestSchedulesInRange(_rewardToken, 0, vestingLength.sub(1));
+        }
     }
 
     function _buyWantAndReinvest() internal override {
@@ -144,7 +155,7 @@ contract StrategyAutoLp is StrategyBase {
     }
 
     function balanceOfPool() public override view returns (uint) {
-        uint amount = IAutoFarmV2(autoFarm).stakedWantTokens(poolId, address(this));
+        (uint amount,,) = IPolycatMasterChef(farmPool).userInfo(poolId, address(this));
         return amount;
     }
 
@@ -152,16 +163,16 @@ contract StrategyAutoLp is StrategyBase {
         farmToken = new address[](1);
         totalDistributedValue = new uint[](1);
         farmToken[0] = farmingToken;
-        totalDistributedValue[0] = IAutoFarmV2(autoFarm).pendingAUTO(poolId, address(this));
+        totalDistributedValue[0] = IPolycatMasterChef(farmPool).pendingPaw(poolId, address(this));
     }
 
     function claimable_token() external override view returns (address farmToken, uint totalDistributedValue) {
         farmToken = farmingToken;
-        totalDistributedValue = IAutoFarmV2(autoFarm).pendingAUTO(poolId, address(this));
+        totalDistributedValue = IPolycatMasterChef(farmPool).pendingPaw(poolId, address(this));
     }
 
     function getTargetFarm() external override view returns (address) {
-        return autoFarm;
+        return farmPool;
     }
 
     function getTargetPoolId() external override view returns (uint) {
@@ -173,19 +184,15 @@ contract StrategyAutoLp is StrategyBase {
      * vault, ready to be migrated to the new strat.
      */
     function retireStrat() external override onlyStrategist {
-        IAutoFarmV2(autoFarm).emergencyWithdraw(poolId);
+        IPolycatMasterChef(farmPool).emergencyWithdraw(poolId);
 
-        uint256 baseBal = IERC20(baseToken).balanceOf(address(this));
-        IERC20(baseToken).safeTransfer(address(vault), baseBal);
+        IERC20(baseToken).safeTransfer(address(vault), IERC20(baseToken).balanceOf(address(this)));
     }
 
-    function setAutoFarmContract(address _autoFarm) external onlyStrategist {
-        autoFarm = _autoFarm;
-
-        (, , , , address _autoStrat) = IAutoFarmV2(_autoFarm).poolInfo(poolId);
-        autoStrat = _autoStrat;
-
-        IERC20(baseToken).approve(_autoFarm, type(uint256).max);
+    function setFarmPoolContract(address _farmPool) external onlyStrategist {
+        require(_farmPool != address(0), "!farmPool");
+        farmPool = _farmPool;
+        IERC20(baseToken).approve(farmPool, type(uint256).max);
     }
 
     function setPoolId(uint _poolId) external onlyStrategist {
@@ -193,6 +200,7 @@ contract StrategyAutoLp is StrategyBase {
     }
 
     function setTokenLp(address _token0, address _token1) external onlyStrategist {
+        require(_token0 != address(0) && _token1 != address(0), "!token");
         token0 = _token0;
         token1 = _token1;
 
@@ -204,5 +212,9 @@ contract StrategyAutoLp is StrategyBase {
             IERC20(token1).approve(address(unirouter), type(uint256).max);
             IERC20(token1).approve(address(firebirdRouter), type(uint256).max);
         }
+    }
+
+    function setLimitTimeToClaimReward(uint _limitTimeToClaimReward) external onlyStrategist {
+        limitTimeToClaimReward = _limitTimeToClaimReward;
     }
 }

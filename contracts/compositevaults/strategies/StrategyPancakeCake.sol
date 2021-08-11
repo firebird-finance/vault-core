@@ -45,7 +45,7 @@ contract StrategyPancakeCake is StrategyBase {
         return "StrategyPancakeCake";
     }
 
-    function deposit() public override nonReentrant {
+    function deposit() external override nonReentrant {
         uint _baseBal = IERC20(baseToken).balanceOf(address(this));
         if (_baseBal > 0) {
             _stakeCake();

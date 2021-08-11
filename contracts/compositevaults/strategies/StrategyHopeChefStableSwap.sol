@@ -60,7 +60,7 @@ contract StrategyHopeChefStableSwap is StrategyBase {
         return "StrategyStableSwap";
     }
 
-    function deposit() public override nonReentrant {
+    function deposit() external override nonReentrant {
         _deposit();
     }
 

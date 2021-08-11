@@ -492,6 +492,69 @@ Controller                  : 0x6670Ae26751F4701778a828136882d65b2DBC1a7
 Strategy                    : 0x31fb7a11338a0749Bb8c2e122d88953cE3880655
 
 
+//USDC-USDT polycat
+BaseToken                   : 0x97B4f2797cC903D76F9b8ff41A94286F0B16198e
+Vault                       : 0xd6C16ec863999517f030b84bbFb617AaD19bBF8a
+Controller                  : 0xdFEe49d8F8A044F140461c66A903Adbf3ded1cBD
+Strategy                    : 0x882eF6F99bACC84b8b2FFe27e197D8C1E9F484b3
+
+
+//DAI-USDC polycat
+BaseToken                   : 0xC8174d091c288FF78De98303c2973140Cbcf3B23
+Vault                       : 0x853dCd05FaF254a1c48b9d2244F4abA4c0be603a
+Controller                  : 0xdEd27A414916c8629F28Df5A993F1a4D5fc8C9C2
+Strategy                    : 0x6A037215b0F5752db228aF80BD00c0E740A98791
+
+
+//WETH-WBTC polycat
+BaseToken                   : 0xbbBd54c1CD649288d2e584917778eEccD8D8254d
+Vault                       : 0x22941b83EDCAC5Bd4A851dF93fCdefe1C870ab38
+Controller                  : 0x6c089f65a64F3436eA9b5896bdb30e406bEec443
+Strategy                    : 0xFd4041F6fA537db2D3B4a315944EE03568b4D998
+
+
+//USDT-WBTC polycat
+BaseToken                   : 0x0509083749716B68f0fdB490a59Ca62F2cfFEbB9
+Vault                       : 0x3A710953376A2B6C16A766e4959A1aEB63b229cb
+Controller                  : 0x9193c9599532722eDEad256a748d868714fF6194
+Strategy                    : 0x9DE8a0114cD414759778C28Dbc5E033A2860FD0A
+
+
+//WETH-WMATIC polycat
+BaseToken                   : 0xC4e90AE0298E0e7BE0102Cce64089231e1E2D67C
+Vault                       : 0xf7BeB4900B1A09E5623Ffd76E6cD48B4170A47c8
+Controller                  : 0x6c88CB538b19A884A616960a815368Aa770729c4
+Strategy                    : 0x2C33085dA037131b8671656B63A9eF9b37663241
+
+
+//DAI-MATIC polycat
+BaseToken                   : 0x9cE65ae286e74f1268D19aB9b25f102C25DbDCb4
+Vault                       : 0x79BC4793ABFdDddDb678906ec20eDF43698aFE9A
+Controller                  : 0x29Dc5095DCaf99DF6f8603970d194909aDe3b567
+Strategy                    : 0x30F1931AEB2Bf5cdE07BC9a069E78ebd45B97bE4
+
+
+//PAW-FISH polycat
+BaseToken                   : 0x0934B46640F7B79910d4F1A937233A0E8d02E260
+Vault                       : 0xEC156f97Ee64eD18F2Df9ED7ff900Ed4B74752a6
+Controller                  : 0xD4c0505e6ce9e52Fa9a5bcc8Ef84DD4EDAF3C4Ac
+Strategy                    : 0xE6eF32281481aAcbdAe1a9Daf4c4DD2B391Eb7DC
+
+
+//PAW-USDC polycat
+BaseToken                   : 0x402F60df5a6413C008Cd406810FB045625f10047
+Vault                       : 0xEe59647523D5b42C09E4ebF5b47a0579885f3F0b
+Controller                  : 0x9ABfb5110F964758011EC6544E16d48139d00993
+Strategy                    : 0xd8968bF43B2BcC42D944BA8b940A86507FC00D53
+
+
+//FISH-MATIC polycat
+BaseToken                   : 0x6b2d7c0cC9F75Db8dd5228F329730BbC732FeA05
+Vault                       : 0x47ebD3B3703782Bb9852b3F74f090C3DdEcb7299
+Controller                  : 0x7E2c5b991D55e73939b40D7935F7E62cE0467f26
+Strategy                    : 0xECEB8961C441C61082e570615DaEf11Dde9ae31A
+
+
 
 ===================
 max                         : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff

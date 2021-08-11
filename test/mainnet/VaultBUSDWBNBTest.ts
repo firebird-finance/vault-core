@@ -39,6 +39,7 @@ import {
       StrategyRewardsQuickLpFactory,
       StrategyLqtyStakingLpFactory,
   StrategyVenusLeverageFactory,
+  StrategyPolycatLpFactory
 } from "../../typechain";
 
 import {SignerWithAddress} from "hardhat-deploy-ethers/dist/src/signer-with-address";
@@ -112,6 +113,173 @@ describe("StrategyBTCWBNB", function() {
         await strategy.setFirebirdPairs(busd.address, btc.address, ["0xf98313f818c53E40Bd758C5276EF4B434463Bec4"]);
         await strategy.setFirebirdPairs(cakeAddress, busd.address, ["0xC99E3abe7729a3869d5cAd631bcbB90e3d389AA2"]);
 
+        //FISH-MATIC polycat
+        let stratetgy77 = await new StrategyPolycatLpFactory(deployerMainnet).deploy();
+        await stratetgy77.initialize(
+          "0x6b2d7c0cC9F75Db8dd5228F329730BbC732FeA05",
+          "0x6971AcA589BbD367516d70c3d210E4906b090c96",
+          "0xB026DeD2d4Bc2b94aDd2B724A65D3FE744592827",
+          4,
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", //matic
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
+          controller.address
+        );
+        //paw -> matic
+        await stratetgy77.setFirebirdPairs("0x6971AcA589BbD367516d70c3d210E4906b090c96", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0xd3485DcbcB74D6F971A798228A65F9a3487EBC13"]);
+        //matic -> fish
+        await stratetgy77.setFirebirdPairs("0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", "0x3a3df212b7aa91aa0402b9035b098891d276572b", ["0x6b2d7c0cC9F75Db8dd5228F329730BbC732FeA05"]);
+
+
+        //PAW-USDC polycat
+        let strategy76 = await new StrategyPolycatLpFactory(deployerMainnet).deploy();
+        await strategy76.initialize(
+          "0x402F60df5a6413C008Cd406810FB045625f10047",
+          "0x6971AcA589BbD367516d70c3d210E4906b090c96",
+          "0xB026DeD2d4Bc2b94aDd2B724A65D3FE744592827",
+          1,
+          "0x6971AcA589BbD367516d70c3d210E4906b090c96",
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0x6971AcA589BbD367516d70c3d210E4906b090c96",
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          controller.address
+        );
+        //paw -> usdc
+        await strategy76.setFirebirdPairs("0x6971AcA589BbD367516d70c3d210E4906b090c96", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x402F60df5a6413C008Cd406810FB045625f10047"]);
+
+
+        //PAW-FISH polycat
+        let strategy75 = await new StrategyPolycatLpFactory(deployerMainnet).deploy();
+        await strategy75.initialize(
+          "0x0934B46640F7B79910d4F1A937233A0E8d02E260",
+          "0x6971AcA589BbD367516d70c3d210E4906b090c96",
+          "0xB026DeD2d4Bc2b94aDd2B724A65D3FE744592827",
+          6,
+          "0x6971aca589bbd367516d70c3d210e4906b090c96", //paw
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0x6971aca589bbd367516d70c3d210e4906b090c96",
+          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
+          controller.address
+        );
+        //paw -> usdc
+        await strategy75.setFirebirdPairs("0x6971AcA589BbD367516d70c3d210E4906b090c96", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x402F60df5a6413C008Cd406810FB045625f10047"]);
+        //paw -> fish
+        await strategy75.setFirebirdPairs("0x6971aca589bbd367516d70c3d210e4906b090c96", "0x3a3df212b7aa91aa0402b9035b098891d276572b", ["0x0934B46640F7B79910d4F1A937233A0E8d02E260"]);
+
+
+        //DAI-MATIC polycat
+        let strategy74 = await new StrategyPolycatLpFactory(deployerMainnet).deploy();
+        await strategy74.initialize(
+          "0x9cE65ae286e74f1268D19aB9b25f102C25DbDCb4",
+          "0x6971AcA589BbD367516d70c3d210E4906b090c96",
+          "0xB026DeD2d4Bc2b94aDd2B724A65D3FE744592827",
+          9,
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", //matic
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+          "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          controller.address
+        );
+        //paw -> matic
+        await strategy74.setFirebirdPairs("0x6971AcA589BbD367516d70c3d210E4906b090c96", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0xd3485DcbcB74D6F971A798228A65F9a3487EBC13"]);
+        //matic -> dai
+        await strategy74.setFirebirdPairs("0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063", ["0x9cE65ae286e74f1268D19aB9b25f102C25DbDCb4"]);
+
+
+        //WETH-WMATIC polycat
+        let strategy73 = await new StrategyPolycatLpFactory(deployerMainnet).deploy();
+        await strategy73.initialize(
+          "0xC4e90AE0298E0e7BE0102Cce64089231e1E2D67C",
+          "0x6971AcA589BbD367516d70c3d210E4906b090c96",
+          "0xB026DeD2d4Bc2b94aDd2B724A65D3FE744592827",
+          11,
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+          controller.address
+        );
+        //paw -> weth
+        await strategy73.setFirebirdPairs("0x6971AcA589BbD367516d70c3d210E4906b090c96", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0xdb5098cC000673afB6f4123cC06d58De1be225D4"]);
+        //weth -> wmatic
+        await strategy73.setFirebirdPairs("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0x7887a048a2E5995CcFC3B1F2E9c23Ab2EcA40BCF"]);
+
+
+        //USDT-WBTC polycat
+        let strategy72 = await new StrategyPolycatLpFactory(deployerMainnet).deploy();
+        await strategy72.initialize(
+          "0x0509083749716B68f0fdB490a59Ca62F2cfFEbB9",
+          "0x6971AcA589BbD367516d70c3d210E4906b090c96",
+          "0xB026DeD2d4Bc2b94aDd2B724A65D3FE744592827",
+          8,
+          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", //usdt
+          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+          "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6",
+          controller.address
+        );
+        //paw -> usdt
+        await strategy72.setFirebirdPairs("0x6971AcA589BbD367516d70c3d210E4906b090c96", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", ["0x402F60df5a6413C008Cd406810FB045625f10047", "0x97B4f2797cC903D76F9b8ff41A94286F0B16198e"]);
+        //usdt -> wbtc
+        await strategy72.setFirebirdPairs("0xc2132d05d31c914a87c6611c10748aeb04b58e8f", "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", ["0x0509083749716B68f0fdB490a59Ca62F2cfFEbB9"]);
+
+
+        //WETH-WBTC polycat
+        let strategy71 = await new StrategyPolycatLpFactory(deployerMainnet).deploy();
+        await strategy71.initialize(
+          "0xbbBd54c1CD649288d2e584917778eEccD8D8254d",
+          "0x6971AcA589BbD367516d70c3d210E4906b090c96",
+          "0xB026DeD2d4Bc2b94aDd2B724A65D3FE744592827",
+          14,
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+          "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6",
+          controller.address
+        );
+        //paw -> weth
+        await strategy71.setFirebirdPairs("0x6971AcA589BbD367516d70c3d210E4906b090c96", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0xdb5098cC000673afB6f4123cC06d58De1be225D4"]);
+        //weth -> wbtc
+        await strategy71.setFirebirdPairs("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", ["0x10F525CFbCe668815Da5142460af0fCfb5163C81"]);
+
+
+        //DAI-USDC polycat
+        let strategy70 = await new StrategyPolycatLpFactory(deployerMainnet).deploy();
+        await strategy70.initialize(
+          "0xC8174d091c288FF78De98303c2973140Cbcf3B23",
+          "0x6971AcA589BbD367516d70c3d210E4906b090c96",
+          "0xB026DeD2d4Bc2b94aDd2B724A65D3FE744592827",
+          16,
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          controller.address
+        );
+        //paw -> usdc
+        await strategy70.setFirebirdPairs("0x6971AcA589BbD367516d70c3d210E4906b090c96", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x402F60df5a6413C008Cd406810FB045625f10047"]);
+        //usdc -> dai
+        await strategy70.setFirebirdPairs("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063", ["0xC8174d091c288FF78De98303c2973140Cbcf3B23"]);
+
+
+        //USDC-USDT polycat
+        let strategy69 = await new StrategyPolycatLpFactory(deployerMainnet).deploy();
+        await strategy69.initialize(
+          "0x97B4f2797cC903D76F9b8ff41A94286F0B16198e",
+          "0x6971AcA589BbD367516d70c3d210E4906b090c96",
+          "0xB026DeD2d4Bc2b94aDd2B724A65D3FE744592827",
+          15,
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+          controller.address
+        );
+        //paw -> usdc
+        await strategy69.setFirebirdPairs("0x6971AcA589BbD367516d70c3d210E4906b090c96", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x402F60df5a6413C008Cd406810FB045625f10047"]);
+        //usdc -> usdt
+        await strategy69.setFirebirdPairs("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", ["0x97B4f2797cC903D76F9b8ff41A94286F0B16198e"]);
 
         //IRON interest rUSDT
         let strategy68 = await new StrategyVenusLeverageFactory(deployerMainnet).deploy();
@@ -265,25 +433,6 @@ describe("StrategyBTCWBNB", function() {
         await strategy60.setFirebirdPairs("0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x527e43ca8f600f120b1eaEe2aFc80E3Cb375e191"]);
 
 
-        //xUSD-USDC dfyn elysm
-        let strategy601 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy601.initialize(
-          "0x527e43ca8f600f120b1eaEe2aFc80E3Cb375e191",
-          "0x7917FB62b993511320Eee5ad70E98D49356580C9",
-          "0xe681c22Dc729E88559a0607ACa4b136Cc9998A6F",
-          3,
-          "0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975", //xUSD
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-          "0x3a3e7650f8b9f667da98f236010fbf44ee4b2975",
-          controller.address
-        );
-        //ELYSM -> xUSD
-        await strategy601.setFirebirdPairs("0x7917FB62b993511320Eee5ad70E98D49356580C9", "0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975", ["0xD52bF3AC296F9ed1171e48e5ef248Fb217fBfCfD", "0x527e43ca8f600f120b1eaEe2aFc80E3Cb375e191"]);
-        //xUSD -> usdc
-        await strategy601.setFirebirdPairs("0x3A3e7650f8B9f667dA98F236010fBf44Ee4B2975", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x527e43ca8f600f120b1eaEe2aFc80E3Cb375e191"]);
-
-
         //xUSD-DFYN dfyn
         let strategy59 = await new StrategyRewardsQuickLpFactory(deployerMainnet).deploy();
         await strategy59.initialize(
@@ -321,192 +470,6 @@ describe("StrategyBTCWBNB", function() {
         );
         //meeb -> matic
         await strategy58.setFirebirdPairs("0x64afdf9e28946419e325d801fb3053d8b8ffdc23", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0x0364e0C75e9fbFC7Ad34253c043f48518775D0e6"]);
-
-
-        //DFYN-WETH dfyn
-        let strategy57 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy57.initialize(
-          "0x6fA867BBFDd025780a8CFE988475220AfF51FB8b",
-          "0xAa9654BECca45B5BDFA5ac646c939C62b527D394",
-          "0x1948abC5400Aa1d72223882958Da3bec643fb4E5",
-          1,
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
-          "0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97",
-          controller.address
-        );
-        //dino -> eth
-        await strategy57.setFirebirdPairs("0xAa9654BECca45B5BDFA5ac646c939C62b527D394", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0x3324af8417844e70b81555A6D1568d78f4D4Bf1f", "0x39D736D2b254eE30796f43Ec665143010b558F82"]);
-        //eth -> dfyn
-        await strategy57.setFirebirdPairs("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", "0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97", ["0x6fA867BBFDd025780a8CFE988475220AfF51FB8b"]);
-
-
-        //BEL-WETH quick
-        let strategy56 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy56.initialize(
-          "0x49ceCfa5c62b3A97F58CAd6B4aCc7c74810E1DDa",
-          "0xAa9654BECca45B5BDFA5ac646c939C62b527D394",
-          "0x1948abC5400Aa1d72223882958Da3bec643fb4E5",
-          0,
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
-          "0x28c388fb1f4fa9f9eb445f0579666849ee5eeb42",
-          controller.address
-        );
-        //dino -> eth
-        await strategy56.setFirebirdPairs("0xAa9654BECca45B5BDFA5ac646c939C62b527D394", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0x3324af8417844e70b81555A6D1568d78f4D4Bf1f", "0x39D736D2b254eE30796f43Ec665143010b558F82"]);
-        //eth -> bel
-        await strategy56.setFirebirdPairs("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", "0x28c388fb1f4fa9f9eb445f0579666849ee5eeb42", ["0x49ceCfa5c62b3A97F58CAd6B4aCc7c74810E1DDa"]);
-
-
-        //DINO-USDC sushi
-        let strategy55 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy55.initialize(
-          "0x3324af8417844e70b81555A6D1568d78f4D4Bf1f",
-          "0xAa9654BECca45B5BDFA5ac646c939C62b527D394",
-          "0x1948abC5400Aa1d72223882958Da3bec643fb4E5",
-          10,
-          "0xaa9654becca45b5bdfa5ac646c939c62b527d394", //dino
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-          "0xaa9654becca45b5bdfa5ac646c939c62b527d394",
-          controller.address
-        );
-        //dino -> usdc
-        await strategy55.setFirebirdPairs("0xAa9654BECca45B5BDFA5ac646c939C62b527D394", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x3324af8417844e70b81555A6D1568d78f4D4Bf1f"]);
-
-
-        //MATIC-WETH quick
-        let strategy54 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy54.initialize(
-          "0xadbF1854e5883eB8aa7BAf50705338739e558E5b",
-          "0xAa9654BECca45B5BDFA5ac646c939C62b527D394",
-          "0x1948abC5400Aa1d72223882958Da3bec643fb4E5",
-          6,
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
-          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
-          controller.address
-        );
-        //dino -> eth
-        await strategy54.setFirebirdPairs("0xAa9654BECca45B5BDFA5ac646c939C62b527D394", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0x3324af8417844e70b81555A6D1568d78f4D4Bf1f", "0x39D736D2b254eE30796f43Ec665143010b558F82"]);
-        //eth -> matic
-        await strategy54.setFirebirdPairs("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0x7887a048a2E5995CcFC3B1F2E9c23Ab2EcA40BCF"]);
-
-
-        //USDC-WETH quick
-        let strategy53 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy53.initialize(
-          "0x853Ee4b2A13f8a742d64C8F088bE7bA2131f670d",
-          "0xAa9654BECca45B5BDFA5ac646c939C62b527D394",
-          "0x1948abC5400Aa1d72223882958Da3bec643fb4E5",
-          7,
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
-          controller.address
-        );
-        //dino -> usdc
-        await strategy53.setFirebirdPairs("0xAa9654BECca45B5BDFA5ac646c939C62b527D394", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x3324af8417844e70b81555A6D1568d78f4D4Bf1f"]);
-        //usdc -> eth
-        await strategy53.setFirebirdPairs("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0x39D736D2b254eE30796f43Ec665143010b558F82"]);
-
-
-        //USDC-USDT quick
-        let strategy52 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy52.initialize(
-          "0x2cF7252e74036d1Da831d11089D326296e64a728",
-          "0xAa9654BECca45B5BDFA5ac646c939C62b527D394",
-          "0x1948abC5400Aa1d72223882958Da3bec643fb4E5",
-          8,
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
-          controller.address
-        );
-        //dino -> usdc
-        await strategy52.setFirebirdPairs("0xAa9654BECca45B5BDFA5ac646c939C62b527D394", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x3324af8417844e70b81555A6D1568d78f4D4Bf1f"]);
-        //usdc -> usdt
-        await strategy52.setFirebirdPairs("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", ["0x2cF7252e74036d1Da831d11089D326296e64a728"]);
-
-
-        //USDC-MiMATIC quick
-        let strategy51 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy51.initialize(
-          "0x160532D2536175d65C03B97b0630A9802c274daD",
-          "0xAa9654BECca45B5BDFA5ac646c939C62b527D394",
-          "0x1948abC5400Aa1d72223882958Da3bec643fb4E5",
-          9,
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-          "0xa3fa99a148fa48d14ed51d610c367c61876997f1",
-          controller.address
-        );
-        //dino -> usdc
-        await strategy51.setFirebirdPairs("0xAa9654BECca45B5BDFA5ac646c939C62b527D394", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x3324af8417844e70b81555A6D1568d78f4D4Bf1f"]);
-        //usdc -> miMATIC
-        await strategy51.setFirebirdPairs("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", "0xa3fa99a148fa48d14ed51d610c367c61876997f1", ["0x160532D2536175d65C03B97b0630A9802c274daD"]);
-
-
-        //sUsdc-usdc quick
-        let strategy50 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy50.initialize(
-          "0x08e57E45b190d7b05003E6f80BA7cFdCA762cfb8",
-          "0xAB72EE159Ff70b64beEcBbB0FbBE58b372391C54",
-          "0x69E7Bbe85db0364397378364458952bEcB886920",
-          1,
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-          "0xd2eba21c2e0d6f996fdd063ae20aca8264ac1929",
-          controller.address
-        );
-        //sds -> usdc
-        await strategy50.setFirebirdPairs("0xAB72EE159Ff70b64beEcBbB0FbBE58b372391C54", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x46A30dFece0E0fc0977eefd15bd0595fdDe15a10"]);
-        //usdc -> susdc
-        await strategy50.setFirebirdPairs("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", "0xd2eba21c2e0d6f996fdd063ae20aca8264ac1929", ["0x08e57E45b190d7b05003E6f80BA7cFdCA762cfb8"]);
-
-
-        //sdo-usdc quick
-        let strategy49 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy49.initialize(
-          "0x6649F12E210862e0045B3dFe7E6eA1F8F0565049",
-          "0xAB72EE159Ff70b64beEcBbB0FbBE58b372391C54",
-          "0x69E7Bbe85db0364397378364458952bEcB886920",
-          2,
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-          "0x66c59dded4ef01a3412a8b019b6e41d4a8c49a35",
-          controller.address
-        );
-        //sds -> usdc
-        await strategy49.setFirebirdPairs("0xAB72EE159Ff70b64beEcBbB0FbBE58b372391C54", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x46A30dFece0E0fc0977eefd15bd0595fdDe15a10"]);
-        //usdc -> sdo
-        await strategy49.setFirebirdPairs("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", "0x66c59dded4ef01a3412a8b019b6e41d4a8c49a35", ["0x6649F12E210862e0045B3dFe7E6eA1F8F0565049"]);
-
-
-        //sds-usdc quick
-        let strategy48 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy48.initialize(
-          "0x46A30dFece0E0fc0977eefd15bd0595fdDe15a10",
-          "0xAB72EE159Ff70b64beEcBbB0FbBE58b372391C54",
-          "0x69E7Bbe85db0364397378364458952bEcB886920",
-          0,
-          "0xab72ee159ff70b64beecbbb0fbbe58b372391c54", //sds
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0xab72ee159ff70b64beecbbb0fbbe58b372391c54",
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-          controller.address
-        );
-        //sds -> usdc
-        await strategy48.setFirebirdPairs("0xAB72EE159Ff70b64beEcBbB0FbBE58b372391C54", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x46A30dFece0E0fc0977eefd15bd0595fdDe15a10"]);
 
 
         //sMatic-sdo firebird
@@ -638,281 +601,6 @@ describe("StrategyBTCWBNB", function() {
         await strategy41.setFirebirdPairs("0x4A81f8796e0c6Ad4877A51C86693B0dE8093F2ef", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x34832D9AC4127a232C1919d840f7aaE0fcb7315B"]);
 
 
-        //BTC-USDT
-        let strategy40 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy40.initialize(
-          "0x7641d6b873877007697D526EF3C50908779a6993",
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
-          12,
-          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", //usdt
-          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
-          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
-          "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6",
-          controller.address
-        );
-        //pWINGS -> USDT
-        await strategy40.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", ["0xA39a7640790907D4865a74c1F9715715DBd00431"]);
-        //usdt -> btc
-        await strategy40.setFirebirdPairs("0xc2132d05d31c914a87c6611c10748aeb04b58e8f", "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", ["0x7641d6b873877007697D526EF3C50908779a6993"]);
-
-
-        //ETH-USDT
-        let strategy39 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy39.initialize(
-          "0xc7f1B47F4ed069E9B34e6bD59792B8ABf5a66339",
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
-          9,
-          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", //usdt
-          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
-          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
-          controller.address
-        );
-        //pWINGS -> USDT
-        await strategy39.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", ["0xA39a7640790907D4865a74c1F9715715DBd00431"]);
-        //usdt -> eth
-        await strategy39.setFirebirdPairs("0xc2132d05d31c914a87c6611c10748aeb04b58e8f", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0xc7f1B47F4ed069E9B34e6bD59792B8ABf5a66339"]);
-
-
-        //ETH-USDC
-        let strategy38 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy38.initialize(
-          "0xFEFF91C350bB564cA5Dc7D6F7DcD12ac092F94FF",
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
-          8,
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
-          controller.address
-        );
-        //pWINGS -> USDC
-        await strategy38.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0xaf623E96d38191038C48990Df298e07Fb77b56c3"]);
-        //usdc -> eth
-        await strategy38.setFirebirdPairs("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0x39D736D2b254eE30796f43Ec665143010b558F82"]);
-
-
-        //pWINGS-QUICK
-        let strategy37 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy37.initialize(
-          "0xE331666Df4F2618CfB18Ab930Ae554f8fc0a695e",
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
-          6,
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", //pWings
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          "0x831753dd7087cac61ab5644b308642cc1c33dc13",
-          controller.address
-        );
-        //pWINGS -> USDC
-        await strategy37.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0xaf623E96d38191038C48990Df298e07Fb77b56c3"]);
-        //pWINGS -> QUICK
-        await strategy37.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0x831753dd7087cac61ab5644b308642cc1c33dc13", ["0xE331666Df4F2618CfB18Ab930Ae554f8fc0a695e"]);
-
-
-        //pWINGS-ETH
-        let strategy36 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy36.initialize(
-          "0xFa4218D03Ae852858C01505A7227EdCbe2f0b293",
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
-          4,
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", //pWings
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          controller.address
-        );
-        //pWINGS -> ETH
-        await strategy36.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0xFa4218D03Ae852858C01505A7227EdCbe2f0b293"]);
-
-
-        //pWINGS-BTC
-        let strategy35 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy35.initialize(
-          "0x44472e389C000a4c433F66A709eAF1068fADCfa9",
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
-          5,
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", //pWings
-          "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", //btc
-          "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6",
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          controller.address
-        );
-        //pWINGS -> BTC
-        await strategy35.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", ["0x44472e389C000a4c433F66A709eAF1068fADCfa9"]);
-
-
-        //USDT-MATIC
-        let strategy34 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy34.initialize(
-          "0x101640e107C4a72DeC79826768C239F1eB48cc85",
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
-          11,
-          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", //usdt
-          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", //usdt
-          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
-          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
-          controller.address
-        );
-        //pWINGS -> USDT
-        await strategy34.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", ["0xA39a7640790907D4865a74c1F9715715DBd00431"]);
-        //usdt -> matic
-        await strategy34.setFirebirdPairs("0xc2132d05d31c914a87c6611c10748aeb04b58e8f", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0x101640e107C4a72DeC79826768C239F1eB48cc85"]);
-
-
-        //USDC-MATIC
-        let strategy33 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy33.initialize(
-          "0x5E58e0CeD3a272CAeb8bA00F4A4C2805Df6BE495",
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
-          10,
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
-          controller.address
-        );
-        //pWINGS -> USDC
-        await strategy33.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0xaf623E96d38191038C48990Df298e07Fb77b56c3"]);
-        //usdc -> matic
-        await strategy33.setFirebirdPairs("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0xCe2cB67b11ec0399E39AF20433927424f9033233"]);
-
-
-        //ETH-MATIC
-        let strategy32 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy32.initialize(
-          "0x951E38875a93df95bbd24fe31f409b7933B35BED",
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
-          7,
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
-          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
-          controller.address
-        );
-        //pWINGS -> eth
-        await strategy32.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0xFa4218D03Ae852858C01505A7227EdCbe2f0b293"]);
-        //eth -> matic
-        await strategy32.setFirebirdPairs("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0x7887a048a2E5995CcFC3B1F2E9c23Ab2EcA40BCF"]);
-
-
-        //USDC-DAI
-        let strategy31 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy31.initialize(
-          "0x4A53119dd905fD39ccC532C68e69505dfB47fc2C",
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
-          16,
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-          "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
-          controller.address
-        );
-        //pWINGS -> USDC
-        await strategy31.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0xaf623E96d38191038C48990Df298e07Fb77b56c3"]);
-        //usdc -> dai
-        await strategy31.setFirebirdPairs("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063", ["0x4A53119dd905fD39ccC532C68e69505dfB47fc2C"]);
-
-
-        //USDC-USDT
-        let strategy30 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy30.initialize(
-          "0x20BF018FDDBa3b352f3d913FE1c81b846fE0F490",
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
-          15,
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
-          controller.address
-        );
-        //pWINGS -> USDC
-        await strategy30.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0xaf623E96d38191038C48990Df298e07Fb77b56c3"]);
-        //usdc -> usdt
-        await strategy30.setFirebirdPairs("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", ["0x20BF018FDDBa3b352f3d913FE1c81b846fE0F490"]);
-
-
-        //BTC-ETH
-        let strategy29 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy29.initialize(
-          "0x173E90f2a94Af3b075DeEC7e64Df4d70EfB4Ac3D",
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
-          14,
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
-          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
-          "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6",
-          controller.address
-        );
-        //pWINGS -> ETH
-        await strategy29.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0xFa4218D03Ae852858C01505A7227EdCbe2f0b293"]);
-        //ETH -> BTC
-        await strategy29.setFirebirdPairs("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6", ["0x10F525CFbCe668815Da5142460af0fCfb5163C81"]);
-
-
-        //pWINGS-MATIC
-        let strategy28 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy28.initialize(
-          "0xA0A6e9A5185d5737CF6F7920CB417EA2F07F03B3",
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
-          2,
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", //pWings
-          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", //matic
-          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          controller.address
-        );
-        //pWINGS -> MATIC
-        await strategy28.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0xA0A6e9A5185d5737CF6F7920CB417EA2F07F03B3"]);
-
-
-        //pWINGS-USDT
-        let strategy27 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy27.initialize(
-          "0xA39a7640790907D4865a74c1F9715715DBd00431",
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
-          3,
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", //pWings
-          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", //usdt
-          "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          controller.address
-        );
-        //pWINGS -> USDT
-        await strategy27.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", ["0xA39a7640790907D4865a74c1F9715715DBd00431"]);
-
-
-        //pWINGS-USDC
-        let strategy26 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy26.initialize(
-          "0xaf623E96d38191038C48990Df298e07Fb77b56c3",
-          "0x845E76A8691423fbc4ECb8Dd77556Cb61c09eE25",
-          "0x4e22399070aD5aD7f7BEb7d3A7b543e8EcBf1d85",
-          1,
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", //pWings
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-          "0x845e76a8691423fbc4ecb8dd77556cb61c09ee25",
-          controller.address
-        );
-        //pWINGS -> USDC
-        await strategy26.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0xaf623E96d38191038C48990Df298e07Fb77b56c3"]);
-
-
         //pWINGS
         let strategy25 = await new StrategyPancakeCakeFactory(deployerMainnet).deploy();
         await strategy25.initialize(
@@ -925,98 +613,6 @@ describe("StrategyBTCWBNB", function() {
         );
         //pWINGS -> USDT
         await strategy25.setFirebirdPairs("0x845e76a8691423fbc4ecb8dd77556cb61c09ee25", "0xc2132d05d31c914a87c6611c10748aeb04b58e8f", ["0xA39a7640790907D4865a74c1F9715715DBd00431"]);
-
-
-        //fish-usdc apeswap lp
-        let strategy24 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy24.initialize(
-          "0x3ab5dcf8e7ab97543Dac941fA2343c527837d329",
-          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
-          "0x8cfd1b9b7478e7b0422916b72d1db6a9d513d734",
-          25,
-          "0x3a3df212b7aa91aa0402b9035b098891d276572b", //fish
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
-          // "0xC0788A3aD43d79aa53B09c2EaCc313A787d1d607",
-          controller.address
-        );
-        //fish -> usdc
-        await strategy24.setFirebirdPairs("0x3a3df212b7aa91aa0402b9035b098891d276572b", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x326E00705b2e742426623dAb0aCe2CeecbbD6067"]);
-
-
-        //fish-matic firebird lp
-        let strategy23 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy23.initialize(
-          "0x46c8BE37Ff8CEdf09B88E457369033876087197e",
-          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
-          "0x8cfd1b9b7478e7b0422916b72d1db6a9d513d734",
-          26,
-          "0x3a3df212b7aa91aa0402b9035b098891d276572b", //fish
-          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", //matic
-          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
-          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
-          controller.address
-        );
-        //fish -> matic
-        await strategy23.setFirebirdPairs("0x3a3df212b7aa91aa0402b9035b098891d276572b", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0x46c8BE37Ff8CEdf09B88E457369033876087197e"]);
-
-
-        //fish-matic dfyn lp
-        let strategy22 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy22.initialize(
-          "0x9e2Fbb31fBd68472f6cd54A1635b8cd64d78FC1C",
-          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
-          "0x8cfd1b9b7478e7b0422916b72d1db6a9d513d734",
-          21,
-          "0x3a3df212b7aa91aa0402b9035b098891d276572b", //fish
-          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", //matic
-          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
-          "0x4c28f48448720e9000907BC2611F73022fdcE1fA",
-          // "0xA102072A4C07F06EC3B4900FDC4C7B80b6c57429",
-          controller.address
-        );
-        //fish -> matic
-        await strategy23.setFirebirdPairs("0x3a3df212b7aa91aa0402b9035b098891d276572b", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0x46c8BE37Ff8CEdf09B88E457369033876087197e"]);
-        //fish -> weth (wmatic)
-        await strategy22.setFirebirdPairs("0x3a3df212b7aa91aa0402b9035b098891d276572b", "0x4c28f48448720e9000907BC2611F73022fdcE1fA", ["0x9e2Fbb31fBd68472f6cd54A1635b8cd64d78FC1C"]);
-
-
-        //fish-matic sushi lp
-        let strategy21 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy21.initialize(
-          "0xcBF6f78981e63Ef813cb71852d72A060b583EECF",
-          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
-          "0x8cfd1b9b7478e7b0422916b72d1db6a9d513d734",
-          13,
-          "0x3a3df212b7aa91aa0402b9035b098891d276572b", //fish
-          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", //matic
-          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
-          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
-          // "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506",
-          controller.address
-        );
-        //fish -> matic
-        await strategy21.setFirebirdPairs("0x3a3df212b7aa91aa0402b9035b098891d276572b", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0x46c8BE37Ff8CEdf09B88E457369033876087197e"]);
-
-
-        //fish-matic quick lp
-        let strategy20 = await new StrategySushiLpFactory(deployerMainnet).deploy();
-        await strategy20.initialize(
-          "0x289cf2B63c5Edeeeab89663639674d9233E8668E",
-          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
-          "0x8cfd1b9b7478e7b0422916b72d1db6a9d513d734",
-          0,
-          "0x3a3df212b7aa91aa0402b9035b098891d276572b", //fish
-          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", //matic
-          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
-          "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
-          // "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff",
-          controller.address
-        );
-        //fish -> matic
-        await strategy20.setFirebirdPairs("0x3a3df212b7aa91aa0402b9035b098891d276572b", "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270", ["0x46c8BE37Ff8CEdf09B88E457369033876087197e"]);
-
 
         //knc-eth dmm lp
         let strategy19 = await new StrategyFairLaunchKyberDmmLpFactory(deployerMainnet).deploy();

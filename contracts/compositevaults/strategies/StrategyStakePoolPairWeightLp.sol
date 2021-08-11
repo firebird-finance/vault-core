@@ -71,7 +71,7 @@ contract StrategyStakePoolPairWeightLp is StrategyBase {
         return "StrategyStakePoolPairWeightLp";
     }
 
-    function deposit() public override nonReentrant {
+    function deposit() external override nonReentrant {
         _deposit();
     }
 

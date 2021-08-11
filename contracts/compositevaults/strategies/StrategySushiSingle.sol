@@ -47,7 +47,7 @@ contract StrategySushiSingle is StrategyBase {
         return "StrategySushiSingle";
     }
 
-    function deposit() public override nonReentrant {
+    function deposit() external override nonReentrant {
         _deposit();
     }
 

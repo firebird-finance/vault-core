@@ -70,7 +70,7 @@ contract StrategyStakePoolStableSwapLp is StrategyBase {
         return "StrategyStableSwapLp";
     }
 
-    function deposit() public override nonReentrant {
+    function deposit() external override nonReentrant {
         _deposit();
     }
 

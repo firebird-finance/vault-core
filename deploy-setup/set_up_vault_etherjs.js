@@ -2,19 +2,19 @@ const {ethers, providers, Contract, BigNumber} = require('ethers');
 require('dotenv').config();
 const VaultABI = require('../artifacts/contracts/compositevaults/vaults/Vault.sol/Vault.json').abi;
 const ControllerABI = require('../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
-const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategyVenusLeverage.sol/StrategyVenusLeverage.json').abi;
+const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategyPolycatLp.sol/StrategyPolycatLp.json').abi;
 const ownerPrivateKey = process.env.MNEMONICC;
 let wallet, overrides;
 let vaultMasterAddress = '0x439392419b8bEEe085A3Fd913eF04e116cE99870';
 
-let baseToken = '0xc2132d05d31c914a87c6611c10748aeb04b58e8f';
-let vaultAddress = '0x59Ff10e411F8040d3db4bE2ef187E9493f90D86C';
-let controllerAddress = '0x6670Ae26751F4701778a828136882d65b2DBC1a7';
-let strategyAddress = '0x31fb7a11338a0749Bb8c2e122d88953cE3880655';
+let baseToken = '0x6b2d7c0cC9F75Db8dd5228F329730BbC732FeA05';
+let vaultAddress = '0x47ebD3B3703782Bb9852b3F74f090C3DdEcb7299';
+let controllerAddress = '0x7E2c5b991D55e73939b40D7935F7E62cE0467f26';
+let strategyAddress = '0xECEB8961C441C61082e570615DaEf11Dde9ae31A';
 
-let vaultName = 'Vault:USDT';
-let vaultSymbol = 'vaultUSDT';
-let controllerName = 'VaultController:USDT';
+let vaultName = 'Vault:PolyCatFISHWMATIC';
+let vaultSymbol = 'vaultFISHWMATIC';
+let controllerName = 'VaultController:PolyCatFISHWMATIC';
 
 const main = async () => {
     console.log('Run job', new Date());
@@ -23,7 +23,8 @@ const main = async () => {
     const maxUint256 = BigNumber.from('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
 
     let [gasPrice] = await Promise.all([wallet.getGasPrice()]);
-    gasPrice = gasPrice.mul(88);
+    gasPrice = gasPrice.mul(66);
+    if (gasPrice.gt(BigNumber.from(5e11))) gasPrice = BigNumber.from(3e11);
     overrides = {gasLimit: 900000, gasPrice};
 
     let tx;
@@ -42,27 +43,27 @@ const main = async () => {
 
     // strategy
     tx = await strategyContract.populateTransaction.initialize(
-        '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
-        '0x4A81f8796e0c6Ad4877A51C86693B0dE8093F2ef',
-        '0xad6ad29d6b8b74b4302dd829c945ca3274035c16',
-        '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
-        '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
-        '0',
-        '0',
+        '0x6b2d7c0cC9F75Db8dd5228F329730BbC732FeA05',
+        '0x6971AcA589BbD367516d70c3d210E4906b090c96',
+        '0xB026DeD2d4Bc2b94aDd2B724A65D3FE744592827',
+        4,
+        '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', //matic
+        '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
+        '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
+        '0x3a3df212b7aa91aa0402b9035b098891d276572b',
         controllerAddress
     );
     await processTx(tx, 'RECEIPT strategy init');
 
-    tx = await strategyContract.populateTransaction.setFirebirdPairs('0x4A81f8796e0c6Ad4877A51C86693B0dE8093F2ef', '0xc2132d05d31c914a87c6611c10748aeb04b58e8f', [
-        '0xf1EE78544a1118F2efb87f7EaCd9f1E6e80e1ea5',
-        '0xc7f1B47F4ed069E9B34e6bD59792B8ABf5a66339'
+    tx = await strategyContract.populateTransaction.setFirebirdPairs('0x6971AcA589BbD367516d70c3d210E4906b090c96', '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', [
+        '0xd3485DcbcB74D6F971A798228A65F9a3487EBC13'
     ]);
     await processTx(tx, 'RECEIPT strategy');
 
-    // tx = await strategyContract.populateTransaction.setFirebirdPairs('0xc2132d05d31c914a87c6611c10748aeb04b58e8f', '0x692597b009d13c4049a947cab2239b7d6517875f', [
-    //     '0x39BEd7f1C412ab64443196A6fEcb2ac20C707224'
-    // ]);
-    // await processTx(tx, 'RECEIPT strategy');
+    tx = await strategyContract.populateTransaction.setFirebirdPairs('0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', '0x3a3df212b7aa91aa0402b9035b098891d276572b', [
+        '0x6b2d7c0cC9F75Db8dd5228F329730BbC732FeA05'
+    ]);
+    await processTx(tx, 'RECEIPT strategy');
 
     // vault governance
     tx = await vaultContract.populateTransaction.setController(controllerAddress);

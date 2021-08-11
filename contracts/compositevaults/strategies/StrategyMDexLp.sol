@@ -67,7 +67,7 @@ contract StrategyMDexLp is StrategyBase {
         return "StrategyMDexLp";
     }
 
-    function deposit() public override nonReentrant {
+    function deposit() external override nonReentrant {
         _deposit();
     }
 

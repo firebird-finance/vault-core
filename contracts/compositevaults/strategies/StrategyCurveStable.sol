@@ -52,7 +52,7 @@ contract StrategyCurveStable is StrategyBase {
         return "StrategyCurveStable";
     }
 
-    function deposit() public override nonReentrant {
+    function deposit() external override nonReentrant {
         _deposit();
     }
 

@@ -71,7 +71,7 @@ contract StrategyIronFarm is StrategyBase {
         return "StrategyIronFarm";
     }
 
-    function deposit() public override nonReentrant {
+    function deposit() external override nonReentrant {
         _deposit();
     }
 

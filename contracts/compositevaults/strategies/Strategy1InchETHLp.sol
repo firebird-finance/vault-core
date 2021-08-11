@@ -72,7 +72,7 @@ contract Strategy1InchETHLp is StrategyBase {
         return "Strategy1InchLp";
     }
 
-    function deposit() public override nonReentrant {
+    function deposit() external override nonReentrant {
         _deposit();
     }
 
