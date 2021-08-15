@@ -7,14 +7,14 @@ const ownerPrivateKey = process.env.MNEMONICC;
 let wallet, overrides;
 let vaultMasterAddress = '0x439392419b8bEEe085A3Fd913eF04e116cE99870';
 
-let baseToken = '0x6b2d7c0cC9F75Db8dd5228F329730BbC732FeA05';
-let vaultAddress = '0x47ebD3B3703782Bb9852b3F74f090C3DdEcb7299';
-let controllerAddress = '0x7E2c5b991D55e73939b40D7935F7E62cE0467f26';
-let strategyAddress = '0xECEB8961C441C61082e570615DaEf11Dde9ae31A';
+let baseToken = '0xCdf59DE1d771E265aD8A1571532181e137258f44';
+let vaultAddress = '0xaeDd5dceC012a4608952598795c3c26084340f0b';
+let controllerAddress = '0xA305E4f8C2cf42F9D621051A9B1F2527e7017676';
+let strategyAddress = '0xBf9fD1f4dE0582f0E2a26E7dd67992a508fa8720';
 
-let vaultName = 'Vault:PolyCatFISHWMATIC';
-let vaultSymbol = 'vaultFISHWMATIC';
-let controllerName = 'VaultController:PolyCatFISHWMATIC';
+let vaultName = 'Vault:PolyCatPAWV2WMATIC';
+let vaultSymbol = 'vaultPAWV2WMATIC';
+let controllerName = 'VaultController:PolyCatPAWV2WMATIC';
 
 const main = async () => {
     console.log('Run job', new Date());
@@ -43,25 +43,25 @@ const main = async () => {
 
     // strategy
     tx = await strategyContract.populateTransaction.initialize(
-        '0x6b2d7c0cC9F75Db8dd5228F329730BbC732FeA05',
-        '0x6971AcA589BbD367516d70c3d210E4906b090c96',
-        '0xB026DeD2d4Bc2b94aDd2B724A65D3FE744592827',
-        4,
+        '0xCdf59DE1d771E265aD8A1571532181e137258f44',
+        '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
+        '0x4ce9ae2f5983e19aebf5b8bae4460f2b9ece811a',
+        0,
+        '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
         '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', //matic
+        '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
         '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
-        '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
-        '0x3a3df212b7aa91aa0402b9035b098891d276572b',
         controllerAddress
     );
     await processTx(tx, 'RECEIPT strategy init');
 
-    tx = await strategyContract.populateTransaction.setFirebirdPairs('0x6971AcA589BbD367516d70c3d210E4906b090c96', '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', [
-        '0xd3485DcbcB74D6F971A798228A65F9a3487EBC13'
+    tx = await strategyContract.populateTransaction.setFirebirdPairs('0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f', '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', [
+        '0xCdf59DE1d771E265aD8A1571532181e137258f44'
     ]);
     await processTx(tx, 'RECEIPT strategy');
 
-    tx = await strategyContract.populateTransaction.setFirebirdPairs('0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', '0x3a3df212b7aa91aa0402b9035b098891d276572b', [
-        '0x6b2d7c0cC9F75Db8dd5228F329730BbC732FeA05'
+    tx = await strategyContract.populateTransaction.setFirebirdPairs('0x2791bca1f2de4661ed88a30c99a7a9449aa84174', '0x3a3df212b7aa91aa0402b9035b098891d276572b', [
+        '0xbFf681C59158EA5Cf7d29e439cB701a9bB8B79F8'
     ]);
     await processTx(tx, 'RECEIPT strategy');
 
