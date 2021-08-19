@@ -2,19 +2,19 @@ const {ethers, providers, Contract, BigNumber} = require('ethers');
 require('dotenv').config();
 const VaultABI = require('../artifacts/contracts/compositevaults/vaults/Vault.sol/Vault.json').abi;
 const ControllerABI = require('../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
-const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategyPolycatLp.sol/StrategyPolycatLp.json').abi;
+const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategyQuickLp.sol/StrategyQuickLp.json').abi;
 const ownerPrivateKey = process.env.MNEMONICC;
 let wallet, overrides;
 let vaultMasterAddress = '0x439392419b8bEEe085A3Fd913eF04e116cE99870';
 
-let baseToken = '0xCdf59DE1d771E265aD8A1571532181e137258f44';
-let vaultAddress = '0xaeDd5dceC012a4608952598795c3c26084340f0b';
-let controllerAddress = '0xA305E4f8C2cf42F9D621051A9B1F2527e7017676';
-let strategyAddress = '0xBf9fD1f4dE0582f0E2a26E7dd67992a508fa8720';
+let baseToken = '0x327Be6353F28dD021d1E4eFF10c92767E49604d1';
+let vaultAddress = '0x937Efd0CD33d80dDc1a26b98A8E2E24a11c17863';
+let controllerAddress = '0x71a34164Ad4A412A62c00716BF9C3508Fc67d573';
+let strategyAddress = '0x4f81307e332Fb11783A1BC0a90F9f8600FCf6973';
 
-let vaultName = 'Vault:PolyCatPAWV2WMATIC';
-let vaultSymbol = 'vaultPAWV2WMATIC';
-let controllerName = 'VaultController:PolyCatPAWV2WMATIC';
+let vaultName = 'Vault:DfynAGADFYN';
+let vaultSymbol = 'vaultAGADFYN';
+let controllerName = 'VaultController:DfynAGADFYN';
 
 const main = async () => {
     console.log('Run job', new Date());
@@ -43,25 +43,24 @@ const main = async () => {
 
     // strategy
     tx = await strategyContract.populateTransaction.initialize(
-        '0xCdf59DE1d771E265aD8A1571532181e137258f44',
-        '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
-        '0x4ce9ae2f5983e19aebf5b8bae4460f2b9ece811a',
-        0,
-        '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
-        '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', //matic
-        '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
-        '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
+        '0x327Be6353F28dD021d1E4eFF10c92767E49604d1',
+        '0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97',
+        '0x2CaAA00D4505aD79FA75C06c475828e47B01C042',
+        '0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97', //dfyn
+        '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', //usdc
+        '0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97',
+        '0x033d942a6b495c4071083f4cde1f17e986fe856c',
         controllerAddress
     );
     await processTx(tx, 'RECEIPT strategy init');
 
-    tx = await strategyContract.populateTransaction.setFirebirdPairs('0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f', '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', [
-        '0xCdf59DE1d771E265aD8A1571532181e137258f44'
+    tx = await strategyContract.populateTransaction.setFirebirdPairs('0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97', '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', [
+        '0x4c38938E21cB9796932B0B0Cc3f8a088f07b49B0'
     ]);
     await processTx(tx, 'RECEIPT strategy');
 
-    tx = await strategyContract.populateTransaction.setFirebirdPairs('0x2791bca1f2de4661ed88a30c99a7a9449aa84174', '0x3a3df212b7aa91aa0402b9035b098891d276572b', [
-        '0xbFf681C59158EA5Cf7d29e439cB701a9bB8B79F8'
+    tx = await strategyContract.populateTransaction.setFirebirdPairs('0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97', '0x033d942a6b495c4071083f4cde1f17e986fe856c', [
+        '0x327Be6353F28dD021d1E4eFF10c92767E49604d1'
     ]);
     await processTx(tx, 'RECEIPT strategy');
 

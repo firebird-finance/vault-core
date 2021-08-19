@@ -618,6 +618,27 @@ Controller                  : 0xA305E4f8C2cf42F9D621051A9B1F2527e7017676
 Strategy                    : 0xBf9fD1f4dE0582f0E2a26E7dd67992a508fa8720
 
 
+//DFYN-AGAr dfyn
+BaseToken                   : 0x46b7EE7846e9526be1D0Cf5b88f98d1BB07Ad454
+Vault                       : 0x1d71cd330AFDa309083AC8e8154bc85077d89966
+Controller                  : 0xc9d8159B8371488b154B351277B2f33f5Da63f74
+Strategy                    : 0xC1Ff23264da0Cba00D73f8BE3dB89eD5c73Aec44
+
+
+//DFYN-AGA dfyn
+BaseToken                   : 0x327Be6353F28dD021d1E4eFF10c92767E49604d1
+Vault                       : 0x937Efd0CD33d80dDc1a26b98A8E2E24a11c17863
+Controller                  : 0x71a34164Ad4A412A62c00716BF9C3508Fc67d573
+Strategy                    : 0x4f81307e332Fb11783A1BC0a90F9f8600FCf6973
+
+
+//AGA-AGAr dfyn
+BaseToken                   : 0x315e00839a4d96b204D64545b18beaa2b54C44E7
+Vault                       : 0xFb721D7b0361fbD83e3D61DDeDab48d688B57BA2
+Controller                  : 0x3Ed931eE700B3f75f5D900cFAb75d28AF14EE847
+Strategy                    : 0x61294bb8A787B322d22b937aB7C450bd8B250D22
+
+
 
 ===================
 max                         : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
