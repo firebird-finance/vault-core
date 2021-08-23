@@ -113,23 +113,23 @@ describe("StrategyBTCWBNB", function() {
         await strategy.setFirebirdPairs(busd.address, btc.address, ["0xf98313f818c53E40Bd758C5276EF4B434463Bec4"]);
         await strategy.setFirebirdPairs(cakeAddress, busd.address, ["0xC99E3abe7729a3869d5cAd631bcbB90e3d389AA2"]);
 
-
-        //AGA-AGAr dfyn
-        let strategy80 = await new StrategyQuickLpFactory(deployerMainnet).deploy();
+        //SFI-WETH sushi
+        let strategy80 = await new StrategySushiLpFactory(deployerMainnet).deploy();
         await strategy80.initialize(
-          "0x315e00839a4d96b204D64545b18beaa2b54C44E7",
-          "0x033d942a6b495c4071083f4cde1f17e986fe856c",
-          "0x85E894149348c1aC5B63561462Ca6051f1aB4b72",
-          "0x033d942a6b495c4071083f4cde1f17e986fe856c", //aga
-          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
-          "0x033d942a6b495c4071083f4cde1f17e986fe856c",
-          "0xf84bd51eab957c2e7b7d646a3427c5a50848281d",
+          "0x7C07CecD8cdd65C0daD449808cc5f9AD74C22bd1",
+          "0xaa9654becca45b5bdfa5ac646c939c62b527d394",
+          "0x1948abC5400Aa1d72223882958Da3bec643fb4E5",
+          14,
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", //eth
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+          "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+          "0x35b937583f04a24963eb685f728a542240f28dd8",
           controller.address
         );
-        //aga -> usdc
-        await strategy80.setFirebirdPairs("0x033d942a6b495c4071083f4cde1f17e986fe856c", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x327Be6353F28dD021d1E4eFF10c92767E49604d1", "0x4c38938E21cB9796932B0B0Cc3f8a088f07b49B0"]);
-        //aga -> agar
-        await strategy80.setFirebirdPairs("0x033d942a6b495c4071083f4cde1f17e986fe856c", "0xf84bd51eab957c2e7b7d646a3427c5a50848281d", ["0x315e00839a4d96b204D64545b18beaa2b54C44E7"]);
+        //dino -> eth
+        await strategy80.setFirebirdPairs("0xaa9654becca45b5bdfa5ac646c939c62b527d394", "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", ["0x9f03309A588e33A239Bf49ed8D68b2D45C7A1F11"]);
+        //eth -> sfi
+        await strategy80.setFirebirdPairs("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", "0x35b937583f04a24963eb685f728a542240f28dd8", ["0x7C07CecD8cdd65C0daD449808cc5f9AD74C22bd1"]);
 
 
         //DFYN-AGAr dfyn

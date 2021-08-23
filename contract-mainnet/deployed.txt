@@ -639,6 +639,13 @@ Controller                  : 0x3Ed931eE700B3f75f5D900cFAb75d28AF14EE847
 Strategy                    : 0x61294bb8A787B322d22b937aB7C450bd8B250D22
 
 
+//SFI-WETH sushi
+BaseToken                   : 0x7C07CecD8cdd65C0daD449808cc5f9AD74C22bd1
+Vault                       : 0xf464c04A1cc31e2BEE28FdAEDeC1A37378DA2f69
+Controller                  : 0x1812aaD7fA21eEA9097e2aCf3214B680b39ABB10
+Strategy                    : 0x3742b949bbbCE91637f39671D2dde998C80597c4
+
+
 
 ===================
 max                         : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff

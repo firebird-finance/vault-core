@@ -18,45 +18,60 @@ const main = async () => {
     gasPrice = gasPrice.mul(66);
     if (gasPrice.gt(BigNumber.from(5e11))) gasPrice = BigNumber.from(3e11);
     overrides = {gasLimit: 200000, gasPrice};
-    let tx;
+    let nonce;
     console.log('Current nonce', await wallet.getTransactionCount(), await wallet.getTransactionCount('pending'), gasPrice.div(1e9).toString(), 'Gwei');
 
     // vault governance
-    for (const vaultAddress of vaultsAddress) {
-        let vaultContract = new Contract(vaultAddress, ControllerABI, wallet);
-        tx = await vaultContract.populateTransaction.setGovernance(deployerMainnet);
-        await processTx(tx, 'RECEIPT vault');
-    }
+    nonce = await wallet.getTransactionCount();
+    await Promise.all(
+        vaultsAddress.map(async (vaultAddress, index) => {
+            let vaultContract = new Contract(vaultAddress, ControllerABI, wallet);
+            let tx = await vaultContract.populateTransaction.setGovernance(deployerMainnet, {nonce: nonce + index});
+            await processTx(tx, 'RECEIPT vault', vaultAddress, index);
+        })
+    );
 
     // controller strategist
-    for (const controllerAddress of controllersAddress) {
-        let controllerContract = new Contract(controllerAddress, ControllerABI, wallet);
-        tx = await controllerContract.populateTransaction.setStrategist(deployerMainnet);
-        await processTx(tx, 'RECEIPT controller strategist');
+    nonce = await wallet.getTransactionCount();
+    await Promise.all(
+        controllersAddress.map(async (controllerAddress, index) => {
+            let controllerContract = new Contract(controllerAddress, ControllerABI, wallet);
+            let tx1 = await controllerContract.populateTransaction.setStrategist(deployerMainnet, {nonce: nonce + index * 2});
+            let tx2 = await controllerContract.populateTransaction.setGovernance(deployerMainnet, {nonce: nonce + index * 2 + 1});
 
-        // controller governance
-        tx = await controllerContract.populateTransaction.setGovernance(deployerMainnet);
-        await processTx(tx, 'RECEIPT controller governance');
-    }
+            await Promise.all([processTx(tx1, 'RECEIPT controller strategist', controllerAddress, index), processTx(tx2, 'RECEIPT controller governance', controllerAddress, index)]);
+        })
+    );
 
     // strategy
-    for (const strategyAddress of strategiesAddress) {
-        let strategyContract = new Contract(strategyAddress, ControllerABI, wallet);
-        // tx = await strategyContract.populateTransaction.setStrategist(deployerMainnet);
-        // await processTx(tx, 'RECEIPT strategy');
+    nonce = await wallet.getTransactionCount();
+    await Promise.all(
+        strategiesAddress.map(async (strategyAddress, index) => {
+            let strategyContract = new Contract(strategyAddress, ControllerABI, wallet);
+            let txs = [];
+            // txs.push(await strategyContract.populateTransaction.setStrategist(deployerMainnet, {nonce: nonce++}));
 
-        // governance
-        tx = await strategyContract.populateTransaction.setGovernance(deployerMainnet);
-        await processTx(tx, 'RECEIPT strategy');
-    }
+            // governance
+            txs.push(await strategyContract.populateTransaction.setGovernance(deployerMainnet, {nonce: nonce++}));
+            await processBatchTxs(txs, 'RECEIPT strategy', strategyAddress, index);
+        })
+    );
 
     console.log('--------Finished job', new Date());
 };
 
-const processTx = async (tx, message) => {
+const processTx = async (tx, ...message) => {
     await wallet.estimateGas(tx);
     let receipt = await (await wallet.sendTransaction({...tx, ...overrides})).wait(2);
-    console.log(message, new Date(), receipt.transactionHash);
+    console.log(...message, new Date(), receipt.transactionHash);
+};
+
+const processBatchTxs = async (txs, ...message) => {
+    await Promise.all(
+        txs.map(async tx => {
+            await processTx(tx, ...message);
+        })
+    );
 };
 
 main();

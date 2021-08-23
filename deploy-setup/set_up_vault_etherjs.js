@@ -2,19 +2,19 @@ const {ethers, providers, Contract, BigNumber} = require('ethers');
 require('dotenv').config();
 const VaultABI = require('../artifacts/contracts/compositevaults/vaults/Vault.sol/Vault.json').abi;
 const ControllerABI = require('../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
-const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategyQuickLp.sol/StrategyQuickLp.json').abi;
+const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategySushiLp.sol/StrategySushiLp.json').abi;
 const ownerPrivateKey = process.env.MNEMONICC;
 let wallet, overrides;
 let vaultMasterAddress = '0x439392419b8bEEe085A3Fd913eF04e116cE99870';
 
-let baseToken = '0x327Be6353F28dD021d1E4eFF10c92767E49604d1';
-let vaultAddress = '0x937Efd0CD33d80dDc1a26b98A8E2E24a11c17863';
-let controllerAddress = '0x71a34164Ad4A412A62c00716BF9C3508Fc67d573';
-let strategyAddress = '0x4f81307e332Fb11783A1BC0a90F9f8600FCf6973';
+let baseToken = '0x7C07CecD8cdd65C0daD449808cc5f9AD74C22bd1';
+let vaultAddress = '0xf464c04A1cc31e2BEE28FdAEDeC1A37378DA2f69';
+let controllerAddress = '0x1812aaD7fA21eEA9097e2aCf3214B680b39ABB10';
+let strategyAddress = '0x3742b949bbbCE91637f39671D2dde998C80597c4';
 
-let vaultName = 'Vault:DfynAGADFYN';
-let vaultSymbol = 'vaultAGADFYN';
-let controllerName = 'VaultController:DfynAGADFYN';
+let vaultName = 'Vault:SushiSFIWETH';
+let vaultSymbol = 'vaultSFIWETH';
+let controllerName = 'VaultController:SushiSFIWETH';
 
 const main = async () => {
     console.log('Run job', new Date());
@@ -27,58 +27,87 @@ const main = async () => {
     if (gasPrice.gt(BigNumber.from(5e11))) gasPrice = BigNumber.from(3e11);
     overrides = {gasLimit: 900000, gasPrice};
 
-    let tx;
+    let tx,
+        txs = [],
+        msgs = [];
     let vaultContract = new Contract(vaultAddress, VaultABI, wallet);
     let controllerContract = new Contract(controllerAddress, ControllerABI, wallet);
     let strategyContract = new Contract(strategyAddress, StrategyABI, wallet);
-    console.log('Current nonce', await wallet.getTransactionCount(), await wallet.getTransactionCount('pending'), gasPrice.div(1e9).toString(), 'Gwei');
+    let nonce = await wallet.getTransactionCount();
+    console.log('Current nonce', nonce, await wallet.getTransactionCount('pending'), gasPrice.div(1e9).toString(), 'Gwei');
 
     //vault
-    tx = await vaultContract.populateTransaction.initialize(baseToken, vaultMasterAddress, vaultName, vaultSymbol);
-    await processTx(tx, 'RECEIPT vault init');
+    txs.push(await vaultContract.populateTransaction.initialize(baseToken, vaultMasterAddress, vaultName, vaultSymbol, {nonce: nonce++}));
+    msgs.push('RECEIPT vault init');
 
     //controller
-    tx = await controllerContract.populateTransaction.initialize(vaultAddress, controllerName);
-    await processTx(tx, 'RECEIPT controller init');
+    txs.push(await controllerContract.populateTransaction.initialize(vaultAddress, controllerName, {nonce: nonce++}));
+    msgs.push('RECEIPT controller init');
+
+    await processBatchTx(txs, msgs);
+    txs = [];
+    msgs = [];
 
     // strategy
     tx = await strategyContract.populateTransaction.initialize(
-        '0x327Be6353F28dD021d1E4eFF10c92767E49604d1',
-        '0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97',
-        '0x2CaAA00D4505aD79FA75C06c475828e47B01C042',
-        '0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97', //dfyn
-        '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', //usdc
-        '0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97',
-        '0x033d942a6b495c4071083f4cde1f17e986fe856c',
-        controllerAddress
+        '0x7C07CecD8cdd65C0daD449808cc5f9AD74C22bd1',
+        '0xaa9654becca45b5bdfa5ac646c939c62b527d394',
+        '0x1948abC5400Aa1d72223882958Da3bec643fb4E5',
+        14,
+        '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', //eth
+        '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
+        '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
+        '0x35b937583f04a24963eb685f728a542240f28dd8',
+        controllerAddress,
+        {nonce: nonce++}
     );
     await processTx(tx, 'RECEIPT strategy init');
 
-    tx = await strategyContract.populateTransaction.setFirebirdPairs('0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97', '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', [
-        '0x4c38938E21cB9796932B0B0Cc3f8a088f07b49B0'
-    ]);
-    await processTx(tx, 'RECEIPT strategy');
+    txs.push(
+        await strategyContract.populateTransaction.setFirebirdPairs(
+            '0xaa9654becca45b5bdfa5ac646c939c62b527d394',
+            '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
+            ['0x9f03309A588e33A239Bf49ed8D68b2D45C7A1F11'],
+            {nonce: nonce++}
+        )
+    );
+    msgs.push('RECEIPT strategy');
 
-    tx = await strategyContract.populateTransaction.setFirebirdPairs('0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97', '0x033d942a6b495c4071083f4cde1f17e986fe856c', [
-        '0x327Be6353F28dD021d1E4eFF10c92767E49604d1'
-    ]);
-    await processTx(tx, 'RECEIPT strategy');
+    txs.push(
+        await strategyContract.populateTransaction.setFirebirdPairs(
+            '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
+            '0x35b937583f04a24963eb685f728a542240f28dd8',
+            ['0x7C07CecD8cdd65C0daD449808cc5f9AD74C22bd1'],
+            {nonce: nonce++}
+        )
+    );
+    msgs.push('RECEIPT strategy');
 
     // vault governance
-    tx = await vaultContract.populateTransaction.setController(controllerAddress);
-    await processTx(tx, 'RECEIPT vault');
+    txs.push(await vaultContract.populateTransaction.setController(controllerAddress, {nonce: nonce++}));
+    msgs.push('RECEIPT vault');
 
     // controller strategist
-    tx = await controllerContract.populateTransaction.setUseSingleStrategy(strategyAddress);
-    await processTx(tx, 'RECEIPT controller');
+    txs.push(await controllerContract.populateTransaction.setUseSingleStrategy(strategyAddress, {nonce: nonce++}));
+    msgs.push('RECEIPT controller');
+
+    await processBatchTx(txs, msgs);
 
     console.log('--------Finished job', new Date());
 };
 
-const processTx = async (tx, message) => {
+const processTx = async (tx, ...message) => {
     await wallet.estimateGas(tx);
     let receipt = await (await wallet.sendTransaction({...tx, ...overrides})).wait(2);
-    console.log(message, new Date(), receipt.transactionHash);
+    console.log(...message, new Date(), receipt.transactionHash);
+};
+
+const processBatchTx = async (txs, messages) => {
+    await Promise.all(
+        txs.map(async (tx, index) => {
+            await processTx(tx, messages[index]);
+        })
+    );
 };
 
 main();
