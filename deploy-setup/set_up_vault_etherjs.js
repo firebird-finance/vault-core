@@ -27,8 +27,7 @@ const main = async () => {
     if (gasPrice.gt(BigNumber.from(5e11))) gasPrice = BigNumber.from(3e11);
     overrides = {gasLimit: 900000, gasPrice};
 
-    let tx,
-        txs = [],
+    let txs = [],
         msgs = [];
     let vaultContract = new Contract(vaultAddress, VaultABI, wallet);
     let controllerContract = new Contract(controllerAddress, ControllerABI, wallet);
@@ -44,24 +43,22 @@ const main = async () => {
     txs.push(await controllerContract.populateTransaction.initialize(vaultAddress, controllerName, {nonce: nonce++}));
     msgs.push('RECEIPT controller init');
 
-    await processBatchTx(txs, msgs);
-    txs = [];
-    msgs = [];
-
     // strategy
-    tx = await strategyContract.populateTransaction.initialize(
-        '0x7C07CecD8cdd65C0daD449808cc5f9AD74C22bd1',
-        '0xaa9654becca45b5bdfa5ac646c939c62b527d394',
-        '0x1948abC5400Aa1d72223882958Da3bec643fb4E5',
-        14,
-        '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', //eth
-        '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
-        '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
-        '0x35b937583f04a24963eb685f728a542240f28dd8',
-        controllerAddress,
-        {nonce: nonce++}
+    txs.push(
+        await strategyContract.populateTransaction.initialize(
+            '0x7C07CecD8cdd65C0daD449808cc5f9AD74C22bd1',
+            '0xaa9654becca45b5bdfa5ac646c939c62b527d394',
+            '0x1948abC5400Aa1d72223882958Da3bec643fb4E5',
+            14,
+            '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', //eth
+            '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
+            '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
+            '0x35b937583f04a24963eb685f728a542240f28dd8',
+            controllerAddress,
+            {nonce: nonce++}
+        )
     );
-    await processTx(tx, 'RECEIPT strategy init');
+    msgs.push('RECEIPT strategy init');
 
     txs.push(
         await strategyContract.populateTransaction.setFirebirdPairs(
@@ -97,9 +94,9 @@ const main = async () => {
 };
 
 const processTx = async (tx, ...message) => {
-    await wallet.estimateGas(tx);
+    // await wallet.estimateGas(tx);
     let receipt = await (await wallet.sendTransaction({...tx, ...overrides})).wait(2);
-    console.log(...message, new Date(), receipt.transactionHash);
+    console.log(...message, new Date(), receipt.transactionHash, receipt.status ? '' : 'FAILED');
 };
 
 const processBatchTx = async (txs, messages) => {
