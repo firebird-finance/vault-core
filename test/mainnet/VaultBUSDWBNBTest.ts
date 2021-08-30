@@ -113,6 +113,44 @@ describe("StrategyBTCWBNB", function() {
         await strategy.setFirebirdPairs(busd.address, btc.address, ["0xf98313f818c53E40Bd758C5276EF4B434463Bec4"]);
         await strategy.setFirebirdPairs(cakeAddress, busd.address, ["0xC99E3abe7729a3869d5cAd631bcbB90e3d389AA2"]);
 
+
+        //HOPE-PAW polycat
+        let strategy82 = await new StrategyPolycatLpFactory(deployerMainnet).deploy();
+        await strategy82.initialize(
+          "0xDfde5ffA34D86088508482629b3C76fDF6B7cC2A",
+          "0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f",
+          "0x4ce9ae2f5983e19aebf5b8bae4460f2b9ece811a",
+          20,
+          "0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f",
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0xd78c475133731cd54dadcb430f7aae4f03c1e660",
+          "0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f",
+          controller.address
+        );
+        //paw -> usdc
+        await strategy82.setFirebirdPairs("0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x4Cd2b8b7E00ac8EB544c51c4B1F0Bd39868A89dF"]);
+        //paw -> hope
+        await strategy82.setFirebirdPairs("0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f", "0xd78c475133731cd54dadcb430f7aae4f03c1e660", ["0xDfde5ffA34D86088508482629b3C76fDF6B7cC2A"]);
+
+
+        //HOPE-FISH firebird
+        let strategy81 = await new StrategyPairWeightLpFactory(deployerMainnet).deploy();
+        await strategy81.initialize(
+          "0xE63Cec53980152F19506ad9191341b2E723748E5",
+          "0xd78c475133731cd54dadcb430f7aae4f03c1e660",
+          "0xe9a8b6ea3e7431e6befca51258cb472df2dd21d4",
+          71,
+          "0xd78c475133731cd54dadcb430f7aae4f03c1e660",
+          "0xd78c475133731cd54dadcb430f7aae4f03c1e660",
+          50,
+          "0x3a3df212b7aa91aa0402b9035b098891d276572b",
+          "0xd78c475133731cd54dadcb430f7aae4f03c1e660",
+          controller.address
+        );
+        //hope -> fish
+        await strategy81.setFirebirdPairs("0xd78c475133731cd54dadcb430f7aae4f03c1e660", "0x3a3df212b7aa91aa0402b9035b098891d276572b", ["0xE63Cec53980152F19506ad9191341b2E723748E5"]);
+
+
         //SFI-WETH sushi
         let strategy80 = await new StrategySushiLpFactory(deployerMainnet).deploy();
         await strategy80.initialize(

@@ -2,19 +2,19 @@ const {ethers, providers, Contract, BigNumber} = require('ethers');
 require('dotenv').config();
 const VaultABI = require('../artifacts/contracts/compositevaults/vaults/Vault.sol/Vault.json').abi;
 const ControllerABI = require('../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
-const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategySushiLp.sol/StrategySushiLp.json').abi;
+const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategyPolycatLp.sol/StrategyPolycatLp.json').abi;
 const ownerPrivateKey = process.env.MNEMONICC;
 let wallet, overrides;
 let vaultMasterAddress = '0x439392419b8bEEe085A3Fd913eF04e116cE99870';
 
-let baseToken = '0x7C07CecD8cdd65C0daD449808cc5f9AD74C22bd1';
-let vaultAddress = '0xf464c04A1cc31e2BEE28FdAEDeC1A37378DA2f69';
-let controllerAddress = '0x1812aaD7fA21eEA9097e2aCf3214B680b39ABB10';
-let strategyAddress = '0x3742b949bbbCE91637f39671D2dde998C80597c4';
+let baseToken = '0xDfde5ffA34D86088508482629b3C76fDF6B7cC2A';
+let vaultAddress = '0xa3E36e49bDb88310f27Ce31284a600748F763B1a';
+let controllerAddress = '0x307f68cA993B36030298d4487EE9558dBc2aF297';
+let strategyAddress = '0x35F5489236a92B99Bf748B59298add3c81811121';
 
-let vaultName = 'Vault:SushiSFIWETH';
-let vaultSymbol = 'vaultSFIWETH';
-let controllerName = 'VaultController:SushiSFIWETH';
+let vaultName = 'Vault:PolycatHOPEPAW';
+let vaultSymbol = 'vaultHOPEPAW';
+let controllerName = 'VaultController:PolycatHOPEPAW';
 
 const main = async () => {
     console.log('Run job', new Date());
@@ -46,14 +46,14 @@ const main = async () => {
     // strategy
     txs.push(
         await strategyContract.populateTransaction.initialize(
-            '0x7C07CecD8cdd65C0daD449808cc5f9AD74C22bd1',
-            '0xaa9654becca45b5bdfa5ac646c939c62b527d394',
-            '0x1948abC5400Aa1d72223882958Da3bec643fb4E5',
-            14,
-            '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', //eth
-            '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
-            '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
-            '0x35b937583f04a24963eb685f728a542240f28dd8',
+            '0xDfde5ffA34D86088508482629b3C76fDF6B7cC2A',
+            '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
+            '0x4ce9ae2f5983e19aebf5b8bae4460f2b9ece811a',
+            20,
+            '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
+            '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', //usdc
+            '0xd78c475133731cd54dadcb430f7aae4f03c1e660',
+            '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
             controllerAddress,
             {nonce: nonce++}
         )
@@ -62,9 +62,9 @@ const main = async () => {
 
     txs.push(
         await strategyContract.populateTransaction.setFirebirdPairs(
-            '0xaa9654becca45b5bdfa5ac646c939c62b527d394',
-            '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
-            ['0x9f03309A588e33A239Bf49ed8D68b2D45C7A1F11'],
+            '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
+            '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+            ['0x4Cd2b8b7E00ac8EB544c51c4B1F0Bd39868A89dF'],
             {nonce: nonce++}
         )
     );
@@ -72,9 +72,9 @@ const main = async () => {
 
     txs.push(
         await strategyContract.populateTransaction.setFirebirdPairs(
-            '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619',
-            '0x35b937583f04a24963eb685f728a542240f28dd8',
-            ['0x7C07CecD8cdd65C0daD449808cc5f9AD74C22bd1'],
+            '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
+            '0xd78c475133731cd54dadcb430f7aae4f03c1e660',
+            ['0xDfde5ffA34D86088508482629b3C76fDF6B7cC2A'],
             {nonce: nonce++}
         )
     );
@@ -96,7 +96,7 @@ const main = async () => {
 const processTx = async (tx, ...message) => {
     // await wallet.estimateGas(tx);
     let receipt = await (await wallet.sendTransaction({...tx, ...overrides})).wait(2);
-    console.log(...message, new Date(), receipt.transactionHash, receipt.status ? '' : 'FAILED');
+    console.log(...message, new Date(), receipt.transactionHash, receipt.status ? '' : 'FAILED!!!!');
 };
 
 const processBatchTx = async (txs, messages) => {

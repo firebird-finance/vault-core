@@ -646,6 +646,20 @@ Controller                  : 0x1812aaD7fA21eEA9097e2aCf3214B680b39ABB10
 Strategy                    : 0x3742b949bbbCE91637f39671D2dde998C80597c4
 
 
+//HOPE-FISH firebird
+BaseToken                   : 0xE63Cec53980152F19506ad9191341b2E723748E5
+Vault                       : 0x0C3051794F807798255d00A4FfF13Ef10d412c7c
+Controller                  : 0x9d18809dd3Be5Fe2B8cd52ea43564d1FF9c9ca09
+Strategy                    : 0xC63FE99bA7DEAAd29913F322AF468Febc24f22ab
+
+
+//HOPE-PAW polycat
+BaseToken                   : 0xDfde5ffA34D86088508482629b3C76fDF6B7cC2A
+Vault                       : 0xa3E36e49bDb88310f27Ce31284a600748F763B1a
+Controller                  : 0x307f68cA993B36030298d4487EE9558dBc2aF297
+Strategy                    : 0x35F5489236a92B99Bf748B59298add3c81811121
+
+
 
 ===================
 max                         : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
