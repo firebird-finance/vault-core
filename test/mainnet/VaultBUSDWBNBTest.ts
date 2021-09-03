@@ -28,11 +28,7 @@ import {
     StrategyPairWeightLpFactory,
     StrategyPairWeightLp,
     StrategySushiLpFactory,
-    StrategySushiMiniV2LpFactory,
-    StrategyQuickLpFactory,
-    StrategyHopeChefStableSwapFactory,
-    StrategyHopeChefStableSwapLpFactory,
-    StrategyCurveStableFactory
+    StrategyFairLaunchKyberDmmLpFactory
 } from "../../typechain";
 
 import {SignerWithAddress} from "hardhat-deploy-ethers/dist/src/signer-with-address";
@@ -106,62 +102,173 @@ describe("StrategyBTCWBNB", function() {
         await strategy.setFirebirdPairs(busd.address, btc.address, ["0xf98313f818c53E40Bd758C5276EF4B434463Bec4"]);
         await strategy.setFirebirdPairs(cakeAddress, busd.address, ["0xC99E3abe7729a3869d5cAd631bcbB90e3d389AA2"]);
 
+
+        //bnb-knc dmm lp
+        let strategy7 = await new StrategyFairLaunchKyberDmmLpFactory(deployerMainnet).deploy();
+        await strategy7.initialize(
+            "0x6170B6d96167346896169b35e1E9585feAB873bb",
+            "0x31de05f28568e3d3d612bfa6a78b356676367470",
+            0,
+            "0xfe56d5892bdffc7bf58f2e84be1b2c32d21c308b",
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            "0xfe56d5892bdffc7bf58f2e84be1b2c32d21c308b",
+            controller.address
+        );
+        await strategy7.setApproveKyberRouterForToken("0xfe56d5892bdffc7bf58f2e84be1b2c32d21c308b", maxUint256);
+        await strategy7.setApproveKyberRouterForToken("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", maxUint256);
+        //knc -> bnb
+        await strategy7.setKyberPaths(
+            "0xfe56d5892bdffc7bf58f2e84be1b2c32d21c308b",
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            ["0x6170B6d96167346896169b35e1E9585feAB873bb"],
+            ["0xfe56d5892bdffc7bf58f2e84be1b2c32d21c308b", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"]
+        );
+
+
+        //usdt-bnb dmm lp
+        let strategy6 = await new StrategyFairLaunchKyberDmmLpFactory(deployerMainnet).deploy();
+        await strategy6.initialize(
+            "0xec303cE1eDbEbF7e71fc7B350341bB6A6A7a6381",
+            "0x31de05f28568e3d3d612bfa6a78b356676367470",
+            1,
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            "0x55d398326f99059ff775485246999027b3197955",
+            controller.address
+        );
+        await strategy6.setApproveKyberRouterForToken("0xfe56d5892bdffc7bf58f2e84be1b2c32d21c308b", maxUint256);
+        await strategy6.setApproveKyberRouterForToken("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", maxUint256);
+        await strategy6.setApproveKyberRouterForToken("0x55d398326f99059ff775485246999027b3197955", maxUint256);
+        //knc -> bnb
+        await strategy6.setKyberPaths(
+            "0xfe56d5892bdffc7bf58f2e84be1b2c32d21c308b",
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            ["0x6170B6d96167346896169b35e1E9585feAB873bb"],
+            ["0xfe56d5892bdffc7bf58f2e84be1b2c32d21c308b", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"]
+        );
+        //bnb -> usdt
+        await strategy6.setKyberPaths(
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            "0x55d398326f99059ff775485246999027b3197955",
+            ["0xec303cE1eDbEbF7e71fc7B350341bB6A6A7a6381"],
+            ["0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0x55d398326f99059ff775485246999027b3197955"]
+        );
+
+
+        //usdt-busd dmm lp
+        let strategy5 = await new StrategyFairLaunchKyberDmmLpFactory(deployerMainnet).deploy();
+        await strategy5.initialize(
+            "0xc3daC2049616326E7D596cE52062789d96373b55",
+            "0x31de05f28568e3d3d612bfa6a78b356676367470",
+            2,
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
+            "0xe9e7cea3dedca5984780bafc599bd69add087d56",
+            "0x55d398326f99059ff775485246999027b3197955",
+            controller.address
+        );
+        await strategy5.setApproveKyberRouterForToken("0xfe56d5892bdffc7bf58f2e84be1b2c32d21c308b", maxUint256);
+        await strategy5.setApproveKyberRouterForToken("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", maxUint256);
+        await strategy5.setApproveKyberRouterForToken("0xe9e7cea3dedca5984780bafc599bd69add087d56", maxUint256);
+        await strategy5.setApproveKyberRouterForToken("0x55d398326f99059ff775485246999027b3197955", maxUint256);
+        //knc -> bnb
+        await strategy5.setKyberPaths(
+            "0xfe56d5892bdffc7bf58f2e84be1b2c32d21c308b",
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            ["0x6170B6d96167346896169b35e1E9585feAB873bb"],
+            ["0xfe56d5892bdffc7bf58f2e84be1b2c32d21c308b", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"]
+        );
+        //bnb -> busd
+        await strategy5.setFirebirdPairs("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0xe9e7cea3dedca5984780bafc599bd69add087d56", ["0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16"]);
+        //bnb -> usdt
+        await strategy5.setKyberPaths(
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            "0x55d398326f99059ff775485246999027b3197955",
+            ["0xec303cE1eDbEbF7e71fc7B350341bB6A6A7a6381"],
+            ["0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0x55d398326f99059ff775485246999027b3197955"]
+        );
+
+
+        //eth-bnb dmm lp
+        let strategy4 = await new StrategyFairLaunchKyberDmmLpFactory(deployerMainnet).deploy();
+        await strategy4.initialize(
+            "0xd26fa4D47Ab61C03259F0CBC9054890DF5C3B7aD",
+            "0x31de05f28568e3d3d612bfa6a78b356676367470",
+            3,
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            "0x2170ed0880ac9a755fd29b2688956bd959f933f8",
+            controller.address
+        );
+        await strategy4.setApproveKyberRouterForToken("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", maxUint256);
+        await strategy4.setApproveKyberRouterForToken("0x2170ed0880ac9a755fd29b2688956bd959f933f8", maxUint256);
+        await strategy4.setApproveKyberRouterForToken("0xfe56d5892bdffc7bf58f2e84be1b2c32d21c308b", maxUint256);
+        //knc -> bnb
+        await strategy4.setKyberPaths(
+            "0xfe56d5892bdffc7bf58f2e84be1b2c32d21c308b",
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            ["0x6170B6d96167346896169b35e1E9585feAB873bb"],
+            ["0xfe56d5892bdffc7bf58f2e84be1b2c32d21c308b", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"]
+        );
+        //bnb -> eth
+        await strategy4.setFirebirdPairs("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0x2170ed0880ac9a755fd29b2688956bd959f933f8", ["0x74E4716E431f45807DCF19f284c7aA99F18a4fbc"]);
+
         //dot-bnb
         let strategy3 = await new StrategySushiLpFactory(deployerMainnet).deploy();
         await strategy3.initialize(
-          "0xe7fbB8bd95322618e925affd84D7eC0E32DC0e57",
-          "0x965f527d9159dce6288a2219db51fc6eef120dd1",
-          "0xDbc1A13490deeF9c3C12b44FE77b503c1B061739",
-          14,
-          "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
-          "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
-          "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-          "0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402",
-          controller.address
+            "0xe7fbB8bd95322618e925affd84D7eC0E32DC0e57",
+            "0x965f527d9159dce6288a2219db51fc6eef120dd1",
+            "0xDbc1A13490deeF9c3C12b44FE77b503c1B061739",
+            14,
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            "0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402",
+            controller.address
         );
         //bsw -> bnb
         await strategy3.setFirebirdPairs("0x965f527d9159dce6288a2219db51fc6eef120dd1", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", ["0x46492B26639Df0cda9b2769429845cb991591E0A"]);
         //bnb -> dot
         await strategy3.setFirebirdPairs("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402", ["0xe7fbB8bd95322618e925affd84D7eC0E32DC0e57"]);
 
-
         //bnb-busd
         let strategy2 = await new StrategySushiLpFactory(deployerMainnet).deploy();
         await strategy2.initialize(
-          "0xaCAac9311b0096E04Dfe96b6D87dec867d3883Dc",
-          "0x965f527d9159dce6288a2219db51fc6eef120dd1",
-          "0xDbc1A13490deeF9c3C12b44FE77b503c1B061739",
-          3,
-          "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
-          "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
-          "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-          "0xe9e7cea3dedca5984780bafc599bd69add087d56",
-          controller.address
+            "0xaCAac9311b0096E04Dfe96b6D87dec867d3883Dc",
+            "0x965f527d9159dce6288a2219db51fc6eef120dd1",
+            "0xDbc1A13490deeF9c3C12b44FE77b503c1B061739",
+            3,
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            "0xe9e7cea3dedca5984780bafc599bd69add087d56",
+            controller.address
         );
         //bsw -> bnb
         await strategy2.setFirebirdPairs("0x965f527d9159dce6288a2219db51fc6eef120dd1", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", ["0x46492B26639Df0cda9b2769429845cb991591E0A"]);
         //bnb -> busd
         await strategy2.setFirebirdPairs("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0xe9e7cea3dedca5984780bafc599bd69add087d56", ["0xB73B0C0B2dB8808C88f704046A6c7926AbEE45aC"]);
 
-
         //bnb-usdt
         let strategy1 = await new StrategySushiLpFactory(deployerMainnet).deploy();
         await strategy1.initialize(
-          "0x8840C6252e2e86e545deFb6da98B2a0E26d8C1BA",
-          "0x965f527d9159dce6288a2219db51fc6eef120dd1",
-          "0xDbc1A13490deeF9c3C12b44FE77b503c1B061739",
-          2,
-          "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
-          "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
-          "0x55d398326f99059fF775485246999027B3197955",
-          "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-          controller.address
+            "0x8840C6252e2e86e545deFb6da98B2a0E26d8C1BA",
+            "0x965f527d9159dce6288a2219db51fc6eef120dd1",
+            "0xDbc1A13490deeF9c3C12b44FE77b503c1B061739",
+            2,
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //bnb
+            "0x55d398326f99059fF775485246999027B3197955",
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            controller.address
         );
         //bsw -> bnb
         await strategy1.setFirebirdPairs("0x965f527d9159dce6288a2219db51fc6eef120dd1", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", ["0x46492B26639Df0cda9b2769429845cb991591E0A"]);
         //bnb -> usdt
         await strategy1.setFirebirdPairs("0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0x55d398326f99059fF775485246999027B3197955", ["0x8840C6252e2e86e545deFb6da98B2a0E26d8C1BA"]);
-
 
         //eth-bnb biswap lp
         let strategy0 = await new StrategySushiLpFactory(deployerMainnet).deploy();

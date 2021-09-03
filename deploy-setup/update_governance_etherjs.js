@@ -1,7 +1,7 @@
 const {ethers, providers, Contract, BigNumber} = require('ethers');
 require('dotenv').config();
 const ControllerABI = require('../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
-const ownerPrivateKey = process.env.MNEMONICC;
+const ownerPrivateKey = process.env.MNEMONICCC;
 let wallet, overrides;
 let deployerMainnet = '0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c';
 
@@ -11,12 +11,10 @@ let strategiesAddress = [];
 
 const main = async () => {
     console.log('Run job', new Date());
-    const provider = new providers.JsonRpcProvider(process.env.RPC_URL);
+    const provider = new providers.JsonRpcProvider(`https://bsc-dataseed.binance.org/`);
     wallet = new ethers.Wallet(ownerPrivateKey, provider);
 
     let [gasPrice] = await Promise.all([wallet.getGasPrice()]);
-    gasPrice = gasPrice.mul(66);
-    if (gasPrice.gt(BigNumber.from(5e11))) gasPrice = BigNumber.from(3e11);
     overrides = {gasLimit: 200000, gasPrice};
     let nonce;
     console.log('Current nonce', await wallet.getTransactionCount(), await wallet.getTransactionCount('pending'), gasPrice.div(1e9).toString(), 'Gwei');

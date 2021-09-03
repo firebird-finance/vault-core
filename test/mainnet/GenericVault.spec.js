@@ -6,13 +6,13 @@ const {maxUint256} = require('../shared/utilities');
 const VaultABI = require('../../artifacts/contracts/compositevaults/vaults/Vault.sol/Vault.json').abi;
 const ControllerABI = require('../../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
 const StrategyABI = require('../../artifacts/contracts/compositevaults/strategies/StrategySushiLp.sol/StrategySushiLp.json').abi;
-const ownerPrivateKey = process.env.MNEMONICC;
+const ownerPrivateKey = process.env.MNEMONICCC;
 let wallet, overrides;
 
-let baseToken = '0x315e00839a4d96b204D64545b18beaa2b54C44E7';
-let vaultAddress = '0xFb721D7b0361fbD83e3D61DDeDab48d688B57BA2';
-let controllerAddress = '0x3Ed931eE700B3f75f5D900cFAb75d28AF14EE847';
-let strategyAddress = '0x61294bb8A787B322d22b937aB7C450bd8B250D22';
+let baseToken = '0x6170B6d96167346896169b35e1E9585feAB873bb';
+let vaultAddress = '0x28683C97aA3Dd26882317B030b040c7Db96814a8';
+let controllerAddress = '0xbeE2d3E765efDa6c5D4b51E22Fd315bD53BA14B8';
+let strategyAddress = '0x89c70E2319704CDC388AC6773cC12d79895F3261';
 
 let depositAmount = maxUint256;
 // let depositAmount = BigNumber.from("1000000");
@@ -21,11 +21,9 @@ describe('GenericVault', function() {
   let baseTokenContract, vaultContract, controllerContract, strategyContract;
 
   before(async function() {
-    const provider = new providers.JsonRpcProvider(process.env.RPC_URL);
+    const provider = new providers.JsonRpcProvider(`https://bsc-dataseed.binance.org/`);
     wallet = new ethers.Wallet(ownerPrivateKey, provider);
     let [gasPrice] = await Promise.all([wallet.getGasPrice()]);
-    gasPrice = gasPrice.mul(66);
-    if (gasPrice.gt(BigNumber.from(5e11))) gasPrice = BigNumber.from(3e11);
     overrides = {gasLimit: 1600000, gasPrice};
 
     baseTokenContract = new Contract(baseToken, VaultABI, wallet);

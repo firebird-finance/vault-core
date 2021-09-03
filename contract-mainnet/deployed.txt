@@ -1,7 +1,9 @@
 Deployer                    : 0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c
 
 VaultMaster                 : 0x412b30F7c14527a7cEab3aC07945Eb14faA201c7
-VaultBank                   : 0xAb697fb42c174D8eb34C7F02a77fF1a4ab312a81
+VaultBank                   : 0x51A5887d6E677cdDef0834d4917D25b367f37AeB
+VaultCreator                : 0xd897194623DD19568975B3F63De2161836932a50
+VaultControllerCreator      : 0x574D6EE64408a6242DeB1B23DE110021B1581468
 
 
 //eth-bnb biswap
@@ -30,6 +32,34 @@ BaseToken                   : 0xe7fbB8bd95322618e925affd84D7eC0E32DC0e57
 Vault                       : 0x911b6B20410983A6C4f39598BB53fC908Ec40b48
 Controller                  : 0xE7b3d97616eF8Ef43042878Bad9E2FB4DD578007
 Strategy                    : 0xe24EC9409989ceB5E9C37Dd2289a670f45611F46
+
+
+//eth-bnb dmm
+BaseToken                   : 0xd26fa4D47Ab61C03259F0CBC9054890DF5C3B7aD
+Vault                       : 0x97f60461D4767F3D411916C0b0f3C44e366d693f
+Controller                  : 0x31Bdf0967fb21D3B1c9D25453Ebc1cfb6BE0d785
+Strategy                    : 0x90B543A185CFc910cF951C9D51F73F16D4271882
+
+
+//usdt-busd dmm
+BaseToken                   : 0xc3daC2049616326E7D596cE52062789d96373b55
+Vault                       : 0x83D3AC074DA6327fE77E3Bd8a15DdFaFb4772E32
+Controller                  : 0xAF47eC127Ee15284AE7501a40bf3620DEce38AEf
+Strategy                    : 0x4BCC1D8aF761e4957A443B18d2db3d2DF2B624fb
+
+
+//usdt-bnb dmm
+BaseToken                   : 0xec303cE1eDbEbF7e71fc7B350341bB6A6A7a6381
+Vault                       : 0x9f966C447980b6abe8Bd20974Cde4649BcB8da9D
+Controller                  : 0xcBb9b685A5ad4df0Bcd54493fC53953bc5CD27C0
+Strategy                    : 0xf2CBfA555b7a2d1bE38b602304A5A5908a985736
+
+
+//bnb-knc dmm
+BaseToken                   : 0x6170B6d96167346896169b35e1E9585feAB873bb
+Vault                       : 0x28683C97aA3Dd26882317B030b040c7Db96814a8
+Controller                  : 0xbeE2d3E765efDa6c5D4b51E22Fd315bD53BA14B8
+Strategy                    : 0x89c70E2319704CDC388AC6773cC12d79895F3261
 
 
 

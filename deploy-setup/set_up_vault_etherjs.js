@@ -2,29 +2,27 @@ const {ethers, providers, Contract, BigNumber} = require('ethers');
 require('dotenv').config();
 const VaultABI = require('../artifacts/contracts/compositevaults/vaults/Vault.sol/Vault.json').abi;
 const ControllerABI = require('../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
-const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategyPolycatLp.sol/StrategyPolycatLp.json').abi;
-const ownerPrivateKey = process.env.MNEMONICC;
+const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategyFairLaunchKyberDMMLp.sol/StrategyFairLaunchKyberDMMLp.json').abi;
+const ownerPrivateKey = process.env.MNEMONICCC;
 let wallet, overrides;
-let vaultMasterAddress = '0x439392419b8bEEe085A3Fd913eF04e116cE99870';
+let vaultMasterAddress = '0x412b30F7c14527a7cEab3aC07945Eb14faA201c7';
 
-let baseToken = '0xDfde5ffA34D86088508482629b3C76fDF6B7cC2A';
-let vaultAddress = '0xa3E36e49bDb88310f27Ce31284a600748F763B1a';
-let controllerAddress = '0x307f68cA993B36030298d4487EE9558dBc2aF297';
-let strategyAddress = '0x35F5489236a92B99Bf748B59298add3c81811121';
+let baseToken = '0x6170B6d96167346896169b35e1E9585feAB873bb';
+let vaultAddress = '0x28683C97aA3Dd26882317B030b040c7Db96814a8';
+let controllerAddress = '0xbeE2d3E765efDa6c5D4b51E22Fd315bD53BA14B8';
+let strategyAddress = '0x89c70E2319704CDC388AC6773cC12d79895F3261';
 
-let vaultName = 'Vault:PolycatHOPEPAW';
-let vaultSymbol = 'vaultHOPEPAW';
-let controllerName = 'VaultController:PolycatHOPEPAW';
+let vaultName = 'Vault:KyberDMMWBNBKNC';
+let vaultSymbol = 'vaultWBNBKNC';
+let controllerName = 'VaultController:KyberDMMWBNBKNC';
 
 const main = async () => {
     console.log('Run job', new Date());
-    const provider = new providers.JsonRpcProvider(process.env.RPC_URL);
+    const provider = new providers.JsonRpcProvider(`https://bsc-dataseed.binance.org/`);
     wallet = new ethers.Wallet(ownerPrivateKey, provider);
     const maxUint256 = BigNumber.from('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
 
     let [gasPrice] = await Promise.all([wallet.getGasPrice()]);
-    gasPrice = gasPrice.mul(66);
-    if (gasPrice.gt(BigNumber.from(5e11))) gasPrice = BigNumber.from(3e11);
     overrides = {gasLimit: 900000, gasPrice};
 
     let txs = [],
@@ -46,14 +44,13 @@ const main = async () => {
     // strategy
     txs.push(
         await strategyContract.populateTransaction.initialize(
-            '0xDfde5ffA34D86088508482629b3C76fDF6B7cC2A',
-            '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
-            '0x4ce9ae2f5983e19aebf5b8bae4460f2b9ece811a',
-            20,
-            '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
-            '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', //usdc
-            '0xd78c475133731cd54dadcb430f7aae4f03c1e660',
-            '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
+            '0x6170B6d96167346896169b35e1E9585feAB873bb',
+            '0x31de05f28568e3d3d612bfa6a78b356676367470',
+            0,
+            '0xfe56d5892bdffc7bf58f2e84be1b2c32d21c308b',
+            '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+            '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+            '0xfe56d5892bdffc7bf58f2e84be1b2c32d21c308b',
             controllerAddress,
             {nonce: nonce++}
         )
@@ -61,10 +58,11 @@ const main = async () => {
     msgs.push('RECEIPT strategy init');
 
     txs.push(
-        await strategyContract.populateTransaction.setFirebirdPairs(
-            '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
-            '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
-            ['0x4Cd2b8b7E00ac8EB544c51c4B1F0Bd39868A89dF'],
+        await strategyContract.populateTransaction.setKyberPaths(
+            '0xfe56d5892bdffc7bf58f2e84be1b2c32d21c308b',
+            '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+            ['0x6170B6d96167346896169b35e1E9585feAB873bb'],
+            ['0xfe56d5892bdffc7bf58f2e84be1b2c32d21c308b', '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'],
             {nonce: nonce++}
         )
     );
