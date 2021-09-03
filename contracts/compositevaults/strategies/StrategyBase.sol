@@ -38,7 +38,7 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
     using SafeMath for uint;
 
     IUniswapV2Router public unirouter = IUniswapV2Router(0x10ED43C718714eb63d5aA57B78B54704E256024E);
-    IFirebirdRouter public firebirdRouter = IFirebirdRouter(0x4BFBf7fCC9776CE8285B059fB77e7Bb2A5c5E365);
+    IFirebirdRouter public firebirdRouter = IFirebirdRouter(0x92e4F29Be975C1B1eB72E77De24Dccf11432a5bd);
 
     address public override baseToken;
     address public farmingToken;
