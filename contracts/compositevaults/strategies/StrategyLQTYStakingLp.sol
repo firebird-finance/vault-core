@@ -37,6 +37,7 @@ contract StrategyLQTYStakingLp is StrategyBase {
     address public lqtyStaking = 0x3509f19581aFEDEff07c53592bc0Ca84e4855475;
 
     address public wmatic = 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270;
+    bool public shouldClaim = true;
 
     // baseToken       = 0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6 (CAKEBNB-CAKELP)
     // farmingToken = 0x4f47a0d15c1e53f3d94c069c7d16977c29f9cb6b (RAMEN)
@@ -99,7 +100,12 @@ contract StrategyLQTYStakingLp is StrategyBase {
     }
 
     function _withdrawAll() internal override {
-        IUnipool(farmPool).withdrawAndClaim();
+        if (shouldClaim) {
+            IUnipool(farmPool).withdrawAndClaim();
+        } else {
+            uint _stakedAmount = IUnipool(farmPool).balanceOf(address(this));
+            IUnipool(farmPool).withdraw(_stakedAmount);
+        }
     }
 
     function depositStakeLqty() public {
@@ -113,7 +119,7 @@ contract StrategyLQTYStakingLp is StrategyBase {
     }
 
     function claimReward() public override {
-        IUnipool(farmPool).claimReward();
+        if (shouldClaim) IUnipool(farmPool).claimReward();
         depositStakeLqty();
 
         if (address(this).balance > 0) {
@@ -236,5 +242,9 @@ contract StrategyLQTYStakingLp is StrategyBase {
             IERC20(farmingTokens[i]).approve(address(unirouter), type(uint256).max);
             IERC20(farmingTokens[i]).approve(address(firebirdRouter), type(uint256).max);
         }
+    }
+
+    function setShouldClaim(bool _shouldClaim) external onlyStrategist {
+        shouldClaim = _shouldClaim;
     }
 }
