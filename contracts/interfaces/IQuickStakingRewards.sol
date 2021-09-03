@@ -7,6 +7,8 @@ interface IQuickStakingRewards {
     function lastTimeRewardApplicable() external view returns (uint256);
     function rewardPerToken() external view returns (uint256);
     function earned(address account) external view returns (uint256);
+    function earned(address account, address rewardToken) external view returns (uint256);
+    function bothTokensEarned(address account) external view returns (address[] memory, uint256[] memory);
     function totalSupply() external view returns (uint256);
     function balanceOf(address account) external view returns (uint256);
 

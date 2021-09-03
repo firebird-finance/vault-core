@@ -7,6 +7,7 @@ interface IVaultMaster {
     event UpdateVault(address vault, bool isAdd);
     event UpdateController(address controller, bool isAdd);
     event UpdateStrategy(address strategy, bool isAdd);
+    event LogNewGovernance(address governance);
 
     function bankMaster() view external returns (address);
     function bank(address) view external returns (address);

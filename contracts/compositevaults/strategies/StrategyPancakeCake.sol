@@ -25,8 +25,6 @@ import "../../interfaces/ICakeMasterChef.sol";
 */
 
 contract StrategyPancakeCake is StrategyBase {
-    uint public timeToReleaseCompound = 0; // 0 to disable
-
     address public farmPool = 0x0895196562C7868C5Be92459FaE7f877ED450452;
 
     // baseToken       = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 (USDC)
@@ -47,7 +45,7 @@ contract StrategyPancakeCake is StrategyBase {
         return "StrategyPancakeCake";
     }
 
-    function deposit() public override nonReentrant {
+    function deposit() external override nonReentrant {
         uint _baseBal = IERC20(baseToken).balanceOf(address(this));
         if (_baseBal > 0) {
             _stakeCake();
@@ -126,14 +124,11 @@ contract StrategyPancakeCake is StrategyBase {
                 address _targetProfitToken = targetProfitToken;
                 if (_performanceFee > 0 && _reserveFund != address(0)) {
                     _reserveFundAmount = _targetCompoundBal.mul(_performanceFee).div(10000);
-                    _reserveFundAmount = _swapTokens(_targetCompoundToken, _targetProfitToken, _reserveFundAmount);
-                    IERC20(_targetProfitToken).safeTransfer(_reserveFund, _reserveFundAmount);
+                    _reserveFundAmount = _swapTokens(_targetCompoundToken, _targetProfitToken, _reserveFundAmount, _reserveFund);
                 }
 
                 if (_gasFee > 0 && _performanceReward != address(0)) {
-                    uint256 _amount = _targetCompoundBal.mul(_gasFee).div(10000);
-                    _amount = _swapTokens(_targetCompoundToken, _targetProfitToken, _amount);
-                    IERC20(_targetProfitToken).safeTransfer(_performanceReward, _amount);
+                    _swapTokens(_targetCompoundToken, _targetProfitToken, _targetCompoundBal.mul(_gasFee).div(10000), _performanceReward);
                 }
 
                 _buyWantAndReinvest();
@@ -157,15 +152,19 @@ contract StrategyPancakeCake is StrategyBase {
         address _targetProfitToken = targetProfitToken;
         if (_performanceFee > 0 && _reserveFund != address(0)) {
             _reserveFundAmount = _rewardBal.mul(_performanceFee).div(10000);
-            _reserveFundAmount = _swapTokens(_baseToken, _targetProfitToken, _reserveFundAmount);
-            IERC20(_targetProfitToken).safeTransfer(_reserveFund, _reserveFundAmount);
+            _reserveFundAmount = _swapTokens(_baseToken, _targetProfitToken, _reserveFundAmount, _reserveFund);
         }
 
         if (_gasFee > 0 && _performanceReward != address(0)) {
-            uint256 _amount = _rewardBal.mul(_gasFee).div(10000);
-            _amount = _swapTokens(_baseToken, _targetProfitToken, _amount);
-            IERC20(_targetProfitToken).safeTransfer(_performanceReward, _amount);
+            _swapTokens(_baseToken, _targetProfitToken, _rewardBal.mul(_gasFee).div(10000), _performanceReward);
         }
+
+        if (_rewardBal > 0) {
+            if (vaultMaster.isStrategy(address(this))) {
+                vault.addNewCompound(_rewardBal, timeToReleaseCompound);
+            }
+        }
+
         emit Harvest(0, 0, _baseToken, _rewardBal, _targetProfitToken, _reserveFundAmount);
     }
 
@@ -186,11 +185,7 @@ contract StrategyPancakeCake is StrategyBase {
 
     function balanceOfPool() public override view returns (uint) {
         (uint amount,) = ICakeMasterChef(farmPool).userInfo(0, address(this));
-        return amount.add(balanceOfPoolPending());
-    }
-
-    function balanceOfPoolPending() public view returns (uint256) {
-        return ICakeMasterChef(farmPool).pendingCake(0, address(this));
+        return amount;
     }
 
     function claimable_tokens() external override view returns (address[] memory farmToken, uint[] memory totalDistributedValue) {
@@ -217,15 +212,11 @@ contract StrategyPancakeCake is StrategyBase {
      * @dev Function that has to be called as part of strat migration. It sends all the available funds back to the
      * vault, ready to be migrated to the new strat.
      */
-    function retireStrat() external onlyStrategist {
+    function retireStrat() external override onlyStrategist {
         ICakeMasterChef(farmPool).emergencyWithdraw(0);
 
         uint256 baseBal = IERC20(baseToken).balanceOf(address(this));
         IERC20(baseToken).safeTransfer(address(vault), baseBal);
-    }
-
-    function setTimeToReleaseCompound(uint _timeSeconds) external onlyStrategist {
-        timeToReleaseCompound = _timeSeconds;
     }
 
     function setFarmPoolContract(address _farmPool) external onlyStrategist {

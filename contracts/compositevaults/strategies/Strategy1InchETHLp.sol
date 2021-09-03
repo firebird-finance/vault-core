@@ -27,8 +27,6 @@ import "../../interfaces/IWETH.sol";
 */
 
 contract Strategy1InchETHLp is StrategyBase {
-    uint public timeToReleaseCompound = 0; // 0 to disable
-
     address public rewardPool  = 0x5D0EC1F843c1233D304B96DbDE0CAB9Ec04D71EF;
     address public referral = address(this);
 
@@ -74,7 +72,7 @@ contract Strategy1InchETHLp is StrategyBase {
         return "Strategy1InchLp";
     }
 
-    function deposit() public override nonReentrant {
+    function deposit() external override nonReentrant {
         _deposit();
     }
 
@@ -223,7 +221,7 @@ contract Strategy1InchETHLp is StrategyBase {
      * @dev Function that has to be called as part of strat migration. It sends all the available funds back to the
      * vault, ready to be migrated to the new strat.
      */
-    function retireStrat() external onlyStrategist {
+    function retireStrat() external override onlyStrategist {
         IFarmingRewards(rewardPool).withdraw(balanceOfPool());
 
         uint256 baseBal = IERC20(baseToken).balanceOf(address(this));
@@ -234,10 +232,6 @@ contract Strategy1InchETHLp is StrategyBase {
         if (address(this).balance > 0) {
             IWETH(wbnb).deposit{value: address(this).balance}();
         }
-    }
-
-    function setTimeToReleaseCompound(uint _timeSeconds) external onlyStrategist {
-        timeToReleaseCompound = _timeSeconds;
     }
 
     function setRewardPoolContract(address _rewardPool) external onlyStrategist {

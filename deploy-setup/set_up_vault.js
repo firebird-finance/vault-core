@@ -32,17 +32,18 @@ const main = async () => {
     let vaultContract = new web3.eth.Contract(VaultABI, vaultAddress);
     let controllerContract = new web3.eth.Contract(ControllerABI, controllerAddress);
     let strategyContract = new web3.eth.Contract(StrategyABI, strategyAddress);
+    console.log('Current nonce', await web3.eth.getTransactionCount(from), await web3.eth.getTransactionCount(from, 'pending'), gasPrice.div(1e9).toString(), 'Gwei');
 
     //vault
     method = vaultContract.methods.initialize(baseToken, vaultMasterAddress, vaultName, vaultSymbol);
     await method.estimateGas({from});
-    txReceipt = await method.send({from, gas: 2000000, gasPrice});
+    txReceipt = await method.send({from, gas: 900000, gasPrice});
     console.log('RECEIPT vault init', new Date(), txReceipt.transactionHash);
 
     //controller
     method = controllerContract.methods.initialize(vaultAddress, controllerName);
     await method.estimateGas({from});
-    txReceipt = await method.send({from, gas: 2000000, gasPrice});
+    txReceipt = await method.send({from, gas: 900000, gasPrice});
     console.log('RECEIPT controller init', new Date(), txReceipt.transactionHash);
 
     // strategy
@@ -58,39 +59,29 @@ const main = async () => {
         controllerAddress
     );
     await method.estimateGas({from});
-    txReceipt = await method.send({from, gas: 2000000, gasPrice});
+    txReceipt = await method.send({from, gas: 900000, gasPrice});
     console.log('RECEIPT strategy init', new Date(), txReceipt.transactionHash);
 
     method = strategyContract.methods.setFirebirdPairs('0x965f527d9159dce6288a2219db51fc6eef120dd1', '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', ['0x46492B26639Df0cda9b2769429845cb991591E0A']);
     await method.estimateGas({from});
-    txReceipt = await method.send({from, gas: 2000000, gasPrice});
+    txReceipt = await method.send({from, gas: 900000, gasPrice});
     console.log('RECEIPT strategy', new Date(), txReceipt.transactionHash);
 
     method = strategyContract.methods.setFirebirdPairs('0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', '0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402', ['0xe7fbB8bd95322618e925affd84D7eC0E32DC0e57']);
     await method.estimateGas({from});
-    txReceipt = await method.send({from, gas: 2000000, gasPrice});
+    txReceipt = await method.send({from, gas: 900000, gasPrice});
     console.log('RECEIPT strategy', new Date(), txReceipt.transactionHash);
 
     // vault governance
     method = vaultContract.methods.setController(controllerAddress);
     await method.estimateGas({from});
-    txReceipt = await method.send({from, gas: 2000000, gasPrice});
+    txReceipt = await method.send({from, gas: 900000, gasPrice});
     console.log('RECEIPT vault', new Date(), txReceipt.transactionHash);
 
     // controller strategist
-    method = controllerContract.methods.approveStrategy(strategyAddress);
+    method = controllerContract.methods.setUseSingleStrategy(strategyAddress);
     await method.estimateGas({from});
-    txReceipt = await method.send({from, gas: 2000000, gasPrice});
-    console.log('RECEIPT controller', new Date(), txReceipt.transactionHash);
-
-    method = controllerContract.methods.setStrategyInfo('0', strategyAddress, maxUint256, '100');
-    await method.estimateGas({from});
-    txReceipt = await method.send({from, gas: 2000000, gasPrice});
-    console.log('RECEIPT controller', new Date(), txReceipt.transactionHash);
-
-    method = controllerContract.methods.setStrategyLength('1');
-    await method.estimateGas({from});
-    txReceipt = await method.send({from, gas: 2000000, gasPrice});
+    txReceipt = await method.send({from, gas: 900000, gasPrice});
     console.log('RECEIPT controller', new Date(), txReceipt.transactionHash);
 
     console.log('--------Finished job', new Date());

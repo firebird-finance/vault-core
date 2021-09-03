@@ -2,24 +2,23 @@
 
 pragma solidity 0.6.12;
 
-import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol";
-import "@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol";
-import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/SafeERC20.sol";
-
-import "../../interfaces/Converter.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts-upgradeable/math/MathUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/math/SafeMathUpgradeable.sol";
+import "@openzeppelin/contracts/utils/Address.sol";
+import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
 import "../IVault.sol";
 import "../IVaultMaster.sol";
 import "../IController.sol";
 import "../converters/IDecimals.sol";
 
-abstract contract VaultBase is ERC20UpgradeSafe, IVault {
+abstract contract VaultBase is ERC20Upgradeable, IVault {
     using Address for address;
-    using SafeMath for uint;
     using SafeERC20 for IERC20;
 
+    uint256 constant BONE = 10**18;
     IERC20 public basedToken;
 
     uint public earnLowerlimit; // minimum to invest
@@ -31,7 +30,6 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
     address public controller;
 
     IVaultMaster vaultMaster;
-    mapping(address => address) public converterMap; // non-core token => converter
 
     bool public acceptContractDepositor;
     mapping(address => bool) public whitelistedContract;
@@ -52,6 +50,9 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
 
     bool public depositPaused;
     bool public withdrawPaused;
+
+    event LogNewGovernance(address governance);
+    event LogNewTimelock(address timelock);
 
     // name: Vault:BUSDWBNB
     //symbol: vaultBUSDWBNB
@@ -74,9 +75,9 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
     /**
      * @dev Throws if called by a not-whitelisted contract while we do not accept contract depositor.
      */
-    modifier checkContract(address _account) {
-        if (!acceptContractDepositor && !whitelistedContract[_account] && _account != vaultMaster.bank(address(this)) && _account != vaultMaster.bankMaster()) {
-            require(!address(_account).isContract() && _account == tx.origin, "contract not support");
+    modifier checkContract() {
+        if (!acceptContractDepositor && !whitelistedContract[msg.sender] && msg.sender != vaultMaster.bank(address(this)) && msg.sender != vaultMaster.bankMaster()) {
+            require(!address(msg.sender).isContract() && msg.sender == tx.origin, "contract not support");
         }
         _;
     }
@@ -88,28 +89,33 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
         _mutex = false;
     }
 
-    function setAcceptContractDepositor(bool _acceptContractDepositor) external {
+    modifier onlyGovernance() {
         require(msg.sender == governance, "!governance");
+        _;
+    }
+
+    modifier onlyTimelock() {
+        require(msg.sender == timelock, "!timelock");
+        _;
+    }
+
+    function setAcceptContractDepositor(bool _acceptContractDepositor) external onlyGovernance {
         acceptContractDepositor = _acceptContractDepositor;
     }
 
-    function whitelistContract(address _contract) external {
-        require(msg.sender == governance, "!governance");
+    function whitelistContract(address _contract) external onlyGovernance {
         whitelistedContract[_contract] = true;
     }
 
-    function unwhitelistContract(address _contract) external {
-        require(msg.sender == governance, "!governance");
+    function unwhitelistContract(address _contract) external onlyGovernance {
         whitelistedContract[_contract] = false;
     }
 
-    function setPauseDeposit(bool _depositPaused) external {
-        require(msg.sender == governance, "!governance");
+    function setPauseDeposit(bool _depositPaused) external onlyGovernance {
         depositPaused = _depositPaused;
     }
 
-    function setPauseWithdraw(bool _withdrawPaused) external {
-        require(msg.sender == governance, "!governance");
+    function setPauseWithdraw(bool _withdrawPaused) external onlyTimelock {
         withdrawPaused = _withdrawPaused;
     }
 
@@ -147,44 +153,34 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
         _balance = basedToken.balanceOf(address(this)).add(IController(controller).balanceOf()).sub(pendingCompound());
     }
 
-    function setGovernance(address _governance) external {
-        require(msg.sender == governance, "!governance");
+    function setGovernance(address _governance) external onlyGovernance {
         governance = _governance;
+        emit LogNewGovernance(governance);
     }
 
-    function setTimelock(address _timelock) external {
-        require(msg.sender == timelock, "!timelock");
+    function setTimelock(address _timelock) external onlyTimelock {
         timelock = _timelock;
+        emit LogNewTimelock(timelock);
     }
 
-    function setController(address _controller) external {
-        require(msg.sender == governance, "!governance");
+    function setController(address _controller) external onlyGovernance {
         require(IController(_controller).want() == address(basedToken), "!token");
         controller = _controller;
     }
 
-    function setConverterMap(address _token, address _converter) external {
-        require(msg.sender == governance, "!governance");
-        converterMap[_token] = _converter;
-    }
-
-    function setVaultMaster(IVaultMaster _vaultMaster) external {
-        require(msg.sender == governance, "!governance");
+    function setVaultMaster(IVaultMaster _vaultMaster) external onlyGovernance {
         vaultMaster = _vaultMaster;
     }
 
-    function setEarnLowerlimit(uint _earnLowerlimit) external {
-        require(msg.sender == governance, "!governance");
+    function setEarnLowerlimit(uint _earnLowerlimit) external onlyGovernance {
         earnLowerlimit = _earnLowerlimit;
     }
 
-    function setCap(uint _cap) external {
-        require(msg.sender == governance, "!governance");
+    function setCap(uint _cap) external onlyGovernance {
         totalDepositCap = _cap;
     }
 
-    function setDepositLimit(uint _limit) external {
-        require(msg.sender == governance, "!governance");
+    function setDepositLimit(uint _limit) external onlyGovernance {
         depositLimit = _limit;
     }
 
@@ -211,24 +207,12 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
         }
     }
 
-    // Only allows to earn some extra yield from non-core tokens
-    function earnExtra(address _token) external {
-        require(msg.sender == governance, "!governance");
-        require(converterMap[_token] != address(0), "!converter");
-        require(address(_token) != address(basedToken), "token");
-        require(address(_token) != address(this), "share");
-        uint _amount = IERC20(_token).balanceOf(address(this));
-        address _converter = converterMap[_token];
-        IERC20(_token).safeTransfer(_converter, _amount);
-        Converter(_converter).convert(_token);
-    }
-
     function withdraw_fee(uint _shares) public override view returns (uint) {
         return (controller == address(0)) ? 0 : IController(controller).withdraw_fee(_shares);
     }
 
     function calc_token_amount_deposit(uint _amount) external override view returns (uint) {
-        return _amount.mul(1e18).div(getPricePerFullShare());
+        return _amount.mul(BONE).div(getPricePerFullShare());
     }
 
     function calc_token_amount_withdraw(uint _shares) external override view returns (uint) {
@@ -244,7 +228,7 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
         return depositFor(msg.sender, _amount, _min_mint_amount);
     }
 
-    function depositFor(address _to, uint _amount, uint _min_mint_amount) public override checkContract(msg.sender) _non_reentrant_ returns (uint _mint_amount) {
+    function depositFor(address _to, uint _amount, uint _min_mint_amount) public override checkContract() _non_reentrant_ returns (uint _mint_amount) {
         require(!depositPaused, "deposit paused");
         if (controller != address(0)) {
             IController(controller).beforeDeposit();
@@ -306,7 +290,7 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
     }
 
     // No rebalance implementation for lower fees and faster swaps
-    function withdrawFor(address _account, uint _shares, uint _min_output_amount) public override _non_reentrant_ checkContract(_account) checkContract(msg.sender) returns (uint _output_amount) {
+    function withdrawFor(address _account, uint _shares, uint _min_output_amount) public override _non_reentrant_ checkContract() returns (uint _output_amount) {
         require(!withdrawPaused, "withdraw paused");
         // Check that no mint has been made in the same block from the same EOA
         require(keccak256(abi.encodePacked(tx.origin, block.number)) != _minterBlock, "REENTR MINT-BURN");
@@ -339,21 +323,19 @@ abstract contract VaultBase is ERC20UpgradeSafe, IVault {
         basedToken.safeTransfer(_account, _output_amount);
     }
 
-    function setOpenHarvest(bool _openHarvest) external {
-        require(msg.sender == governance, "!governance");
+    function setOpenHarvest(bool _openHarvest) external onlyGovernance {
         openHarvest = _openHarvest;
     }
 
     function getPricePerFullShare() public override view returns (uint) {
-        return (totalSupply() == 0) ? 1e18 : balance().mul(1e18).div(totalSupply());
+        return (totalSupply() == 0) ? BONE : balance().mul(BONE).div(totalSupply());
     }
 
     /**
      * This function allows governance to take unsupported tokens out of the contract. This is in an effort to make someone whole, should they seriously mess up.
      * There is no guarantee governance will vote to return these. It also allows for removal of airdropped tokens.
      */
-    function governanceRecoverUnsupported(IERC20 _token, uint amount, address to) external {
-        require(msg.sender == governance, "!governance");
+    function governanceRecoverUnsupported(IERC20 _token, uint amount, address to) external onlyGovernance {
         require(address(_token) != address(basedToken), "token");
         require(address(_token) != address(this), "share");
         _token.safeTransfer(to, amount);

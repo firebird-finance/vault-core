@@ -25,8 +25,6 @@ import "../../interfaces/IHopeChef.sol";
 */
 
 contract StrategyPairWeightLp is StrategyBase {
-    uint public timeToReleaseCompound = 0; // 0 to disable
-
     address public farmPool;
     uint public poolId;
 
@@ -68,7 +66,7 @@ contract StrategyPairWeightLp is StrategyBase {
         return "StrategyPairWeightLp";
     }
 
-    function deposit() public override nonReentrant {
+    function deposit() external override nonReentrant {
         _deposit();
     }
 
@@ -168,18 +166,15 @@ contract StrategyPairWeightLp is StrategyBase {
      * @dev Function that has to be called as part of strat migration. It sends all the available funds back to the
      * vault, ready to be migrated to the new strat.
      */
-    function retireStrat() external onlyStrategist {
+    function retireStrat() external override onlyStrategist {
         IHopeChef(farmPool).emergencyWithdraw(poolId);
 
         uint256 baseBal = IERC20(baseToken).balanceOf(address(this));
         IERC20(baseToken).safeTransfer(address(vault), baseBal);
     }
 
-    function setTimeToReleaseCompound(uint _timeSeconds) external onlyStrategist {
-        timeToReleaseCompound = _timeSeconds;
-    }
-
     function setFarmPoolContract(address _farmPool) external onlyStrategist {
+        require(_farmPool != address(0), "!farmPool");
         farmPool = _farmPool;
         IERC20(baseToken).approve(farmPool, type(uint256).max);
     }
@@ -189,6 +184,7 @@ contract StrategyPairWeightLp is StrategyBase {
     }
 
     function setTokenLp(address _token0, address _token1, uint _token0Weight) external onlyStrategist {
+        require(_token0 != address(0) && _token1 != address(0), "!token");
         token0 = _token0;
         token0Weight = _token0Weight;
         token1Weight = 100 - _token0Weight;

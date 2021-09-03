@@ -47,6 +47,10 @@ contract VaultController is IController, ReentrancyGuard {
     bool internal _initialized = false;
 
     event ExecuteTransaction(address indexed target, uint value, string signature, bytes data);
+    event LogNewWithdrawalFee(uint withdrawalFee);
+    event LogNewGovernance(address governance);
+    event LogNewStrategist(address strategist);
+    event LogNewTimelock(address timelock);
 
     function initialize(IVault _vault, string memory _name) public {
         require(_initialized == false, "Strategy: Initialize must be false.");
@@ -92,14 +96,17 @@ contract VaultController is IController, ReentrancyGuard {
 
     function setTimelock(address _timelock) external onlyTimelock {
         timelock = _timelock;
+        emit LogNewTimelock(timelock);
     }
 
     function setGovernance(address _governance) external onlyGovernance {
         governance = _governance;
+        emit LogNewGovernance(governance);
     }
 
     function setStrategist(address _strategist) external onlyGovernance {
         strategist = _strategist;
+        emit LogNewStrategist(strategist);
     }
 
     function approveStrategy(address _strategy) external onlyGovernance {
@@ -113,6 +120,7 @@ contract VaultController is IController, ReentrancyGuard {
     function setWithdrawalFee(uint _withdrawalFee) external onlyGovernance {
         require(_withdrawalFee <= 100, "withdrawalFee over 1%");
         withdrawalFee = _withdrawalFee;
+        emit LogNewWithdrawalFee(withdrawalFee);
     }
 
     function setStrategyLength(uint _length) external onlyStrategist {
@@ -121,10 +129,16 @@ contract VaultController is IController, ReentrancyGuard {
 
     // stratId => StrategyInfo
     function setStrategyInfo(uint _sid, address _strategy, uint _quota, uint _percent) external onlyStrategist {
-        require(approvedStrategies[_strategy], "!approved");
-        strategies[_sid].strategy = _strategy;
-        strategies[_sid].quota = _quota;
-        strategies[_sid].percent = _percent;
+        _setStrategyInfo(_sid, _strategy, _quota, _percent);
+    }
+
+    function setStrategiesInfo(uint[] calldata _sids, address[] calldata _strategies, uint[] calldata _quotas, uint[] calldata _percents) external onlyStrategist {
+        require(_sids.length == _strategies.length, "!length");
+        require(_strategies.length == _quotas.length, "!length");
+        require(_quotas.length == _percents.length, "!length");
+        for (uint i=0; i < _sids.length; i++) {
+            _setStrategyInfo(_sids[i], _strategies[i], _quotas[i], _percents[i]);
+        }
     }
 
     function setInvestDisabled(bool _investDisabled) external onlyStrategist {
@@ -135,6 +149,12 @@ contract VaultController is IController, ReentrancyGuard {
         require(approvedStrategies[_strategy], "!approved");
         require(IStrategy(_strategy).baseToken() == want, "!want");
         lazySelectedBestStrategy = _strategy;
+    }
+
+    function setUseSingleStrategy(address _strategy) external onlyGovernance {
+        approvedStrategies[_strategy] = true;
+        _setStrategyInfo(0, _strategy, type(uint256).max, 100);
+        strategyLength = 1;
     }
 
     function getStrategyCount() external override view returns(uint _strategyCount) {
@@ -260,6 +280,13 @@ contract VaultController is IController, ReentrancyGuard {
             _toWithdraw = _toWithdraw.sub(_stratBal);
         }
         return _withdrawFee;
+    }
+
+    function _setStrategyInfo(uint _sid, address _strategy, uint _quota, uint _percent) internal {
+        require(approvedStrategies[_strategy], "!approved");
+        strategies[_sid].strategy = _strategy;
+        strategies[_sid].quota = _quota;
+        strategies[_sid].percent = _percent;
     }
 
     /**
