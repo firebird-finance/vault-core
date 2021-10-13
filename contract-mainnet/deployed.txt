@@ -660,6 +660,27 @@ Controller                  : 0x307f68cA993B36030298d4487EE9558dBc2aF297
 Strategy                    : 0x35F5489236a92B99Bf748B59298add3c81811121
 
 
+//IVORY
+BaseToken                   : 0x88a3aCAc5C48F93121d4d7771A068A1FCDE078BC
+Vault                       : 0x4ff2112d5FBe6aa2f7aa022b500EA6C055B4632b
+Controller                  : 0x21fc2Ef1D309e59A94723813cf1e62De9ca2D0bB
+Strategy                    : 0xE04369f4a48D4F992248EC17319dcc6C04877914
+
+
+//IVORY-USDC firebird
+BaseToken                   : 0x10995233Ef7b3abd1a2706a86FFeA456ebae8796
+Vault                       : 0x6C916D25f56B02045AF8843544dA8B3597aa4Db6
+Controller                  : 0xCA368394A10c7f9923278FfDC9142e116ad48d46
+Strategy                    : 0x6660a567c1BA86195EaF646Cc97b49f7F4b03548
+
+
+//TOWER-USDC firebird
+BaseToken                   : 0xD70f14f13ef3590e537bBd225754248965A3593c
+Vault                       : 0xd356E7f81c0cb55F6e05653906D2c49115cf5DCF
+Controller                  : 0x8aA3A30A6b7c23B604b0122D1576B1e0475109F0
+Strategy                    : 0xA56e8948DFBc208f4Faa38CC4fD0A3a8Fba4e2Ca
+
+
 
 ===================
 max                         : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff

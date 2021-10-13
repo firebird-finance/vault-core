@@ -15,7 +15,7 @@ const main = async () => {
     wallet = new ethers.Wallet(ownerPrivateKey, provider);
 
     let [gasPrice] = await Promise.all([wallet.getGasPrice()]);
-    gasPrice = gasPrice.mul(66);
+    gasPrice = gasPrice.mul(3);
     if (gasPrice.gt(BigNumber.from(5e11))) gasPrice = BigNumber.from(3e11);
     overrides = {gasLimit: 200000, gasPrice};
     let nonce;

@@ -114,6 +114,59 @@ describe("StrategyBTCWBNB", function() {
         await strategy.setFirebirdPairs(cakeAddress, busd.address, ["0xC99E3abe7729a3869d5cAd631bcbB90e3d389AA2"]);
 
 
+        //Tower-usdc firebird
+        let strategy85 = await new StrategyPairWeightLpFactory(deployerMainnet).deploy();
+        await strategy85.initialize(
+          "0xD70f14f13ef3590e537bBd225754248965A3593c",
+          "0x88a3aCAc5C48F93121d4d7771A068A1FCDE078BC",
+          "0x4696B1A198407BFb8bB8dd59030Bf30FaC258f1D",
+          0,
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          50,
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          "0x8201532917e55ba29674ef4e88ffe0b775f1bae8",
+          controller.address
+        );
+        //ivory -> usdc
+        await strategy85.setFirebirdPairs("0x88a3aCAc5C48F93121d4d7771A068A1FCDE078BC", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x10995233Ef7b3abd1a2706a86FFeA456ebae8796"]);
+        //usdc -> tower
+        await strategy85.setFirebirdPairs("0x2791bca1f2de4661ed88a30c99a7a9449aa84174", "0x8201532917e55ba29674ef4e88ffe0b775f1bae8", ["0xD70f14f13ef3590e537bBd225754248965A3593c"]);
+
+
+        //Ivory-usdc firebird
+        let strategy84 = await new StrategyPairWeightLpFactory(deployerMainnet).deploy();
+        await strategy84.initialize(
+          "0x10995233Ef7b3abd1a2706a86FFeA456ebae8796",
+          "0x88a3aCAc5C48F93121d4d7771A068A1FCDE078BC",
+          "0x43d78BA76dc2C5dF8C1cF3423C5b8Db7f476f33a",
+          1,
+          "0x88a3aCAc5C48F93121d4d7771A068A1FCDE078BC", //ivory
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          50,
+          "0x88a3aCAc5C48F93121d4d7771A068A1FCDE078BC",
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          controller.address
+        );
+        //ivory -> usdc
+        await strategy84.setFirebirdPairs("0x88a3aCAc5C48F93121d4d7771A068A1FCDE078BC", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x10995233Ef7b3abd1a2706a86FFeA456ebae8796"]);
+
+
+        //Ivory
+        let strategy83 = await new StrategyPancakeCakeFactory(deployerMainnet).deploy();
+        await strategy83.initialize(
+          "0x88a3aCAc5C48F93121d4d7771A068A1FCDE078BC",
+          "0x88a3aCAc5C48F93121d4d7771A068A1FCDE078BC",
+          "0x43d78BA76dc2C5dF8C1cF3423C5b8Db7f476f33a",
+          0,
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", //usdc
+          controller.address
+        );
+        //ivory -> usdc
+        await strategy83.setFirebirdPairs("0x88a3aCAc5C48F93121d4d7771A068A1FCDE078BC", "0x2791bca1f2de4661ed88a30c99a7a9449aa84174", ["0x10995233Ef7b3abd1a2706a86FFeA456ebae8796"]);
+
+
         //HOPE-PAW polycat
         let strategy82 = await new StrategyPolycatLpFactory(deployerMainnet).deploy();
         await strategy82.initialize(

@@ -2,19 +2,19 @@ const {ethers, providers, Contract, BigNumber} = require('ethers');
 require('dotenv').config();
 const VaultABI = require('../artifacts/contracts/compositevaults/vaults/Vault.sol/Vault.json').abi;
 const ControllerABI = require('../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
-const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategyPolycatLp.sol/StrategyPolycatLp.json').abi;
+const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategyPairWeightLp.sol/StrategyPairWeightLp.json').abi;
 const ownerPrivateKey = process.env.MNEMONICC;
 let wallet, overrides;
 let vaultMasterAddress = '0x439392419b8bEEe085A3Fd913eF04e116cE99870';
 
-let baseToken = '0xDfde5ffA34D86088508482629b3C76fDF6B7cC2A';
-let vaultAddress = '0xa3E36e49bDb88310f27Ce31284a600748F763B1a';
-let controllerAddress = '0x307f68cA993B36030298d4487EE9558dBc2aF297';
-let strategyAddress = '0x35F5489236a92B99Bf748B59298add3c81811121';
+let baseToken = '0xD70f14f13ef3590e537bBd225754248965A3593c';
+let vaultAddress = '0xd356E7f81c0cb55F6e05653906D2c49115cf5DCF';
+let controllerAddress = '0x8aA3A30A6b7c23B604b0122D1576B1e0475109F0';
+let strategyAddress = '0xA56e8948DFBc208f4Faa38CC4fD0A3a8Fba4e2Ca';
 
-let vaultName = 'Vault:PolycatHOPEPAW';
-let vaultSymbol = 'vaultHOPEPAW';
-let controllerName = 'VaultController:PolycatHOPEPAW';
+let vaultName = 'Vault:FirebirdTOWERUSDC';
+let vaultSymbol = 'vaultTOWERUSDC';
+let controllerName = 'VaultController:FirebirdTOWERUSDC';
 
 const main = async () => {
     console.log('Run job', new Date());
@@ -23,7 +23,7 @@ const main = async () => {
     const maxUint256 = BigNumber.from('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
 
     let [gasPrice] = await Promise.all([wallet.getGasPrice()]);
-    gasPrice = gasPrice.mul(66);
+    gasPrice = gasPrice.mul(3);
     if (gasPrice.gt(BigNumber.from(5e11))) gasPrice = BigNumber.from(3e11);
     overrides = {gasLimit: 900000, gasPrice};
 
@@ -46,14 +46,15 @@ const main = async () => {
     // strategy
     txs.push(
         await strategyContract.populateTransaction.initialize(
-            '0xDfde5ffA34D86088508482629b3C76fDF6B7cC2A',
-            '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
-            '0x4ce9ae2f5983e19aebf5b8bae4460f2b9ece811a',
-            20,
-            '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
+            '0xD70f14f13ef3590e537bBd225754248965A3593c',
+            '0x88a3aCAc5C48F93121d4d7771A068A1FCDE078BC',
+            '0x4696B1A198407BFb8bB8dd59030Bf30FaC258f1D',
+            0,
             '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', //usdc
-            '0xd78c475133731cd54dadcb430f7aae4f03c1e660',
-            '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
+            '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', //usdc
+            50,
+            '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+            '0x8201532917e55ba29674ef4e88ffe0b775f1bae8',
             controllerAddress,
             {nonce: nonce++}
         )
@@ -62,9 +63,9 @@ const main = async () => {
 
     txs.push(
         await strategyContract.populateTransaction.setFirebirdPairs(
-            '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
+            '0x88a3aCAc5C48F93121d4d7771A068A1FCDE078BC',
             '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
-            ['0x4Cd2b8b7E00ac8EB544c51c4B1F0Bd39868A89dF'],
+            ['0x10995233Ef7b3abd1a2706a86FFeA456ebae8796'],
             {nonce: nonce++}
         )
     );
@@ -72,9 +73,9 @@ const main = async () => {
 
     txs.push(
         await strategyContract.populateTransaction.setFirebirdPairs(
-            '0xbc5b59ea1b6f8da8258615ee38d40e999ec5d74f',
-            '0xd78c475133731cd54dadcb430f7aae4f03c1e660',
-            ['0xDfde5ffA34D86088508482629b3C76fDF6B7cC2A'],
+            '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+            '0x8201532917e55ba29674ef4e88ffe0b775f1bae8',
+            ['0xD70f14f13ef3590e537bBd225754248965A3593c'],
             {nonce: nonce++}
         )
     );
