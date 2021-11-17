@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 
 import "./StrategyBase.sol";
-import "../../interfaces/IIronChef.sol";
+import "../../interfaces/ISynapseMiniChefV2.sol";
 import "../../interfaces/IRewarder.sol";
 import "../../interfaces/ISwap.sol";
 
@@ -72,19 +72,19 @@ contract StrategySushiMiniV2StableSwap is StrategyBase {
     function _deposit() internal {
         uint _baseBal = IERC20(baseToken).balanceOf(address(this));
         if (_baseBal > 0) {
-            IIronChef(farmPool).deposit(poolId, _baseBal, address(this));
+            ISynapseMiniChefV2(farmPool).deposit(poolId, _baseBal, address(this));
             emit Deposit(baseToken, _baseBal);
         }
     }
 
     function _withdrawSome(uint _amount) internal override returns (uint) {
-        (uint _stakedAmount,) = IIronChef(farmPool).userInfo(poolId, address(this));
+        (uint _stakedAmount,) = ISynapseMiniChefV2(farmPool).userInfo(poolId, address(this));
         if (_amount > _stakedAmount) {
             _amount = _stakedAmount;
         }
 
         uint _before = IERC20(baseToken).balanceOf(address(this));
-        IIronChef(farmPool).withdraw(poolId, _amount, address(this));
+        ISynapseMiniChefV2(farmPool).withdraw(poolId, _amount, address(this));
         uint _after = IERC20(baseToken).balanceOf(address(this));
         _amount = _after.sub(_before);
 
@@ -92,12 +92,12 @@ contract StrategySushiMiniV2StableSwap is StrategyBase {
     }
 
     function _withdrawAll() internal override {
-        (uint _stakedAmount,) = IIronChef(farmPool).userInfo(poolId, address(this));
-        IIronChef(farmPool).withdrawAndHarvest(poolId, _stakedAmount, address(this));
+        (uint _stakedAmount,) = ISynapseMiniChefV2(farmPool).userInfo(poolId, address(this));
+        ISynapseMiniChefV2(farmPool).withdrawAndHarvest(poolId, _stakedAmount, address(this));
     }
 
     function claimReward() public override {
-        IIronChef(farmPool).harvest(poolId, address(this));
+        ISynapseMiniChefV2(farmPool).harvest(poolId, address(this));
 
         for (uint i=0; i<farmingTokens.length; i++) {
             address _rewardToken = farmingTokens[i];
@@ -133,7 +133,7 @@ contract StrategySushiMiniV2StableSwap is StrategyBase {
     }
 
     function balanceOfPool() public override view returns (uint) {
-        (uint amount,) = IIronChef(farmPool).userInfo(poolId, address(this));
+        (uint amount,) = ISynapseMiniChefV2(farmPool).userInfo(poolId, address(this));
         return amount;
     }
 
@@ -141,9 +141,9 @@ contract StrategySushiMiniV2StableSwap is StrategyBase {
         farmToken = new address[](2);
         totalDistributedValue = new uint[](2);
         farmToken[0] = farmingTokens[0];
-        totalDistributedValue[0] = IIronChef(farmPool).pendingReward(poolId, address(this));
+        totalDistributedValue[0] = ISynapseMiniChefV2(farmPool).pendingSynapse(poolId, address(this));
 
-        address rewarder = IIronChef(farmPool).rewarder(poolId);
+        address rewarder = ISynapseMiniChefV2(farmPool).rewarder(poolId);
         if (rewarder != address(0)) {
             (address[] memory tokenRewarder, uint256[] memory rewardAmounts) = IRewarder(rewarder).pendingTokens(poolId, address(this), 0);
             if (tokenRewarder.length > 0) {
@@ -155,7 +155,7 @@ contract StrategySushiMiniV2StableSwap is StrategyBase {
 
     function claimable_token() external override view returns (address farmToken, uint totalDistributedValue) {
         farmToken = farmingTokens[0];
-        totalDistributedValue = IIronChef(farmPool).pendingReward(poolId, address(this));
+        totalDistributedValue = ISynapseMiniChefV2(farmPool).pendingSynapse(poolId, address(this));
     }
 
     function getTargetFarm() external override view returns (address) {
@@ -171,7 +171,7 @@ contract StrategySushiMiniV2StableSwap is StrategyBase {
      * vault, ready to be migrated to the new strat.
      */
     function retireStrat() external override onlyStrategist {
-        IIronChef(farmPool).emergencyWithdraw(poolId, address(this));
+        ISynapseMiniChefV2(farmPool).emergencyWithdraw(poolId, address(this));
 
         uint256 baseBal = IERC20(baseToken).balanceOf(address(this));
         IERC20(baseToken).safeTransfer(address(vault), baseBal);
