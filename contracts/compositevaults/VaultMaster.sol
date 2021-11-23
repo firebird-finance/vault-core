@@ -30,7 +30,7 @@ contract VaultMaster is IVaultMaster, ContextUpgradeable {
         governance = msg.sender;
         reserveFund = 0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c;
         performanceReward = 0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c;
-        performanceFee = 450;
+        performanceFee = 300;
     }
 
     modifier onlyGovernance() {

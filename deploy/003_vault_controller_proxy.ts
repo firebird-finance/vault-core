@@ -2,7 +2,7 @@ import {HardhatRuntimeEnvironment} from "hardhat/types";
 import {DeployFunction} from "hardhat-deploy/types";
 import {BigNumber} from "ethers";
 
-const proxyAdmin = "0xe59511c0eF42FB3C419Ac2651406b7b8822328E1";
+const proxyAdmin = "0x6eB5BBE1CE4b156Bdd6211E5E69CD637377a6C1A";
 const vaultImpl = "0xEfE0c4Aa0092BFddBc6fF24a37f8A57192E8cCe2";
 const controllerImp = "0xE77F5AAFB0823b0BC07ce03be639604e337775C2";
 const numVault = 6;

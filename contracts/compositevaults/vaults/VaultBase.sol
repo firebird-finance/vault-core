@@ -25,7 +25,7 @@ abstract contract VaultBase is ERC20Upgradeable, IVault {
     uint public depositLimit; // limit for each deposit (set 0 to disable)
     uint private totalDepositCap; // initial cap (set 0 to disable)
 
-    address public timelock = address(0xe59511c0eF42FB3C419Ac2651406b7b8822328E1);
+    address public timelock = address(0x6eB5BBE1CE4b156Bdd6211E5E69CD637377a6C1A);
     address public governance;
     address public controller;
 
@@ -69,7 +69,7 @@ abstract contract VaultBase is ERC20Upgradeable, IVault {
         basedToken = _basedToken;
         vaultMaster = _vaultMaster;
         governance = msg.sender;
-        timelock = address(0xe59511c0eF42FB3C419Ac2651406b7b8822328E1);
+        timelock = address(0x6eB5BBE1CE4b156Bdd6211E5E69CD637377a6C1A);
     }
 
     /**

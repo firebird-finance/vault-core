@@ -37,8 +37,8 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
     using Address for address;
     using SafeMath for uint;
 
-    IUniswapV2Router public unirouter = IUniswapV2Router(0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506);
-    IFirebirdRouter public firebirdRouter = IFirebirdRouter(0xb31D1B1eA48cE4Bf10ed697d44B747287E785Ad4);
+    IUniswapV2Router public unirouter = IUniswapV2Router(0xF491e7B69E4244ad4002BC14e878a34207E38c29);
+    IFirebirdRouter public firebirdRouter = IFirebirdRouter(0xe0C38b2a8D09aAD53f1C67734B9A95E43d5981c0);
 
     address public override baseToken;
     address public farmingToken;
@@ -47,7 +47,7 @@ abstract contract StrategyBase is IStrategy, ReentrancyGuard, Initializable {
 
     address public governance;
     uint public timeToReleaseCompound = 30 minutes; // 0 to disable
-    address public timelock = address(0xe59511c0eF42FB3C419Ac2651406b7b8822328E1);
+    address public timelock = address(0x6eB5BBE1CE4b156Bdd6211E5E69CD637377a6C1A);
 
     address public controller;
     address public strategist;

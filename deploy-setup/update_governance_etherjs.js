@@ -1,7 +1,7 @@
 const {ethers, providers, Contract, BigNumber} = require('ethers');
 require('dotenv').config();
 const ControllerABI = require('../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
-const ownerPrivateKey = process.env.MNEMONICC;
+const ownerPrivateKey = process.env.MNEMONICCC;
 let wallet, overrides;
 let deployerMainnet = '0xA20CA7c6705fB88847Cbf50549D7A38f4e99d32c';
 
