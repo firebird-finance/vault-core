@@ -268,4 +268,9 @@ contract StrategyBalancerLp is StrategyBase {
     function setBalancerV2Vault(address _balancerV2Vault) external onlyTimelock {
         balancerV2Vault = _balancerV2Vault;
     }
+
+    function setCompoundConfig(uint _totalUnderlyingTokens, uint _tokenCompoundIndex) external onlyStrategist {
+        totalUnderlyingTokens = _totalUnderlyingTokens;
+        tokenCompoundIndex = _tokenCompoundIndex;
+    }
 }
