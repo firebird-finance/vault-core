@@ -6,7 +6,25 @@ VaultCreator                : 0x2eCC93aDBb4b059028cC618791A1eC192a7a97db
 VaultControllerCreator      : 0xb72646342f937529495936F271859a9CdF612f67
 
 
+// BEETS-wFTM 80/20 Beetx
+BaseToken                   : 0xcdE5a11a4ACB4eE4c805352Cec57E236bdBC3837
+Vault                       : 0x1dDf73F77d038116dCA30dDb348e6191730390c1
+Controller                  : 0x66DefE7C26B170322e7B430507cA8B948D2dAFA1
+Strategy                    : 0xF58Dfcf21c92ea077bd2B9907d414aC986127D23
 
+
+// BEETS-USDC 80/20 Beetx
+BaseToken                   : 0x03c6b3f09d2504606936b1a4decefad204687890
+Vault                       : 0xd3b09F2BDEd4835255b60e2a509c4F01bE873D12
+Controller                  : 0x08B91505c2cc11D8d703db22651dc52843E813F4
+Strategy                    : 0x95CC889dCb71f409A499150091DAFFC7E93e319C
+
+
+// wFTM-USDC 70/30 Beetx
+BaseToken                   : 0xcdf68a4d525ba2e90fe959c74330430a5a6b8226
+Vault                       : 0xEEc4f61249d726Ae2c75B31D4050E6289D7460F6
+Controller                  : 0x7C1E1489092a8AebfAC1c3F0779D085b19667617
+Strategy                    : 0x37fF16D4120de88D25C41B9F9B65Cd844c88E396
 
 
 

@@ -5,7 +5,7 @@ const VaultABI = require('../artifacts/contracts/compositevaults/vaults/Vault.so
 const ControllerABI = require('../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
 const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategyPairWeightLp.sol/StrategyPairWeightLp.json').abi;
 const ownerPrivateKey = process.env.MNEMONICC;
-let vaultMasterAddress = '0x439392419b8bEEe085A3Fd913eF04e116cE99870';
+let vaultMasterAddress = '0x4036201071D148326c1F0D42AeCb8D265f28eCe0';
 
 let baseToken = '0xB949de02e5bB30DaC57460a61aBd4Fcd9c256f18';
 let vaultAddress = '0xc19B182a24823F05f112265789C97A1D1eA74F0b';

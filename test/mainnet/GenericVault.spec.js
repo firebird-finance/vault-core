@@ -6,13 +6,13 @@ const {maxUint256} = require('../shared/utilities');
 const VaultABI = require('../../artifacts/contracts/compositevaults/vaults/Vault.sol/Vault.json').abi;
 const ControllerABI = require('../../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
 const StrategyABI = require('../../artifacts/contracts/compositevaults/strategies/StrategySushiLp.sol/StrategySushiLp.json').abi;
-const ownerPrivateKey = process.env.MNEMONICC;
+const ownerPrivateKey = process.env.MNEMONICCCC;
 let wallet, overrides;
 
-let baseToken = '0xD70f14f13ef3590e537bBd225754248965A3593c';
-let vaultAddress = '0xd356E7f81c0cb55F6e05653906D2c49115cf5DCF';
-let controllerAddress = '0x8aA3A30A6b7c23B604b0122D1576B1e0475109F0';
-let strategyAddress = '0xA56e8948DFBc208f4Faa38CC4fD0A3a8Fba4e2Ca';
+let baseToken = '0xcdf68a4d525ba2e90fe959c74330430a5a6b8226';
+let vaultAddress = '0xEEc4f61249d726Ae2c75B31D4050E6289D7460F6';
+let controllerAddress = '0x7C1E1489092a8AebfAC1c3F0779D085b19667617';
+let strategyAddress = '0x37fF16D4120de88D25C41B9F9B65Cd844c88E396';
 
 let depositAmount = maxUint256;
 // let depositAmount = BigNumber.from("1000000");
@@ -21,11 +21,9 @@ describe('GenericVault', function() {
   let baseTokenContract, vaultContract, controllerContract, strategyContract;
 
   before(async function() {
-    const provider = new providers.JsonRpcProvider(process.env.RPC_URL);
+    const provider = new providers.JsonRpcProvider("https://rpcapi.fantom.network");
     wallet = new ethers.Wallet(ownerPrivateKey, provider);
     let [gasPrice] = await Promise.all([wallet.getGasPrice()]);
-    gasPrice = gasPrice.mul(5);
-    if (gasPrice.gt(BigNumber.from(5e11))) gasPrice = BigNumber.from(3e11);
     overrides = {gasLimit: 1600000, gasPrice};
 
     baseTokenContract = new Contract(baseToken, VaultABI, wallet);
