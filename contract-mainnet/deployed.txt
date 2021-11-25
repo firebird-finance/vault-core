@@ -27,6 +27,13 @@ Controller                  : 0x7C1E1489092a8AebfAC1c3F0779D085b19667617
 Strategy                    : 0x37fF16D4120de88D25C41B9F9B65Cd844c88E396
 
 
+// wFTM-DAI 50/50 Beetx
+BaseToken                   : 0x63386eF152E1Ddef96c065636D6cC0165Ff33291
+Vault                       : 0x5098B125347eb4EF1300aBAa79D6F168F31B7D82
+Controller                  : 0x6d1EdC3C5e6F5D6f6CD56e805548CF7a0dC3B6e0
+Strategy                    : 0x2E53bde8cAB2570B3879B39AC6aC86c96E7b111F
+
+
 
 ===================
 max                         : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff

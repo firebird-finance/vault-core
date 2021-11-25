@@ -7,14 +7,14 @@ const ownerPrivateKey = process.env.MNEMONICCCC;
 let wallet, overrides;
 let vaultMasterAddress = '0x4036201071D148326c1F0D42AeCb8D265f28eCe0';
 
-let baseToken = '0xcdf68a4d525ba2e90fe959c74330430a5a6b8226';
-let vaultAddress = '0xEEc4f61249d726Ae2c75B31D4050E6289D7460F6';
-let controllerAddress = '0x7C1E1489092a8AebfAC1c3F0779D085b19667617';
-let strategyAddress = '0x37fF16D4120de88D25C41B9F9B65Cd844c88E396';
+let baseToken = '0x63386eF152E1Ddef96c065636D6cC0165Ff33291';
+let vaultAddress = '0x5098B125347eb4EF1300aBAa79D6F168F31B7D82';
+let controllerAddress = '0x6d1EdC3C5e6F5D6f6CD56e805548CF7a0dC3B6e0';
+let strategyAddress = '0x2E53bde8cAB2570B3879B39AC6aC86c96E7b111F';
 
-let vaultName = 'Vault:BeetxwFTMUSDC';
-let vaultSymbol = 'vaultwFTMUSDC';
-let controllerName = 'VaultController:BeetxwFTMUSDC';
+let vaultName = 'Vault:BeetxwFTMDAI';
+let vaultSymbol = 'vaultwFTMDAI';
+let controllerName = 'VaultController:BeetxwFTMDAI';
 
 const main = async () => {
     console.log('Run job', new Date());
@@ -44,12 +44,12 @@ const main = async () => {
     // strategy
     txs.push(
         await strategyContract.populateTransaction.initialize(
-            '0xcdf68a4d525ba2e90fe959c74330430a5a6b8226',
+            '0x63386eF152E1Ddef96c065636D6cC0165Ff33291',
             ['0xF24Bcf4d1e507740041C9cFd2DddB29585aDCe1e'],
             '0x8166994d9ebBe5829EC86Bd81258149B87faCfd3',
-            8,
-            '0x04068DA6C83AFCFA0e13ba15A6696662335D5B75', //usdc
-            '0x04068DA6C83AFCFA0e13ba15A6696662335D5B75', //usdc
+            23,
+            '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83', //ftm
+            '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83', //ftm
             '0x20dd72Ed959b6147912C2e529F0a0C651c33c9ce',
             controllerAddress,
             {nonce: nonce++}
@@ -60,8 +60,8 @@ const main = async () => {
     txs.push(
         await strategyContract.populateTransaction.setBalancerPoolPaths(
             '0xF24Bcf4d1e507740041C9cFd2DddB29585aDCe1e',
-            '0x04068DA6C83AFCFA0e13ba15A6696662335D5B75',
-            '0x03c6b3f09d2504606936b1a4decefad204687890000200000000000000000015',
+            '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83',
+            '0xcde5a11a4acb4ee4c805352cec57e236bdbc3837000200000000000000000019',
             {nonce: nonce++}
         )
     );

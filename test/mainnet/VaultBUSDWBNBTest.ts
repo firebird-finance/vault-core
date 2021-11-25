@@ -115,6 +115,22 @@ describe("StrategyBTCWBNB", function() {
         await strategy.setFirebirdPairs(cakeAddress, busd.address, ["0xC99E3abe7729a3869d5cAd631bcbB90e3d389AA2"]);
 
 
+        //wFTM-DAI 50/50 Beetx
+        let strategy3 = await new StrategyBalancerLpFactory(deployerMainnet).deploy();
+        await strategy3.initialize(
+          "0x63386eF152E1Ddef96c065636D6cC0165Ff33291",
+          ["0xF24Bcf4d1e507740041C9cFd2DddB29585aDCe1e"],
+          "0x8166994d9ebBe5829EC86Bd81258149B87faCfd3",
+          23,
+          "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83", //ftm
+          "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83", //ftm
+          "0x20dd72Ed959b6147912C2e529F0a0C651c33c9ce",
+          controller.address
+        );
+        //beets -> wftm
+        await strategy3.setBalancerPoolPaths("0xF24Bcf4d1e507740041C9cFd2DddB29585aDCe1e", "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83", "0xcde5a11a4acb4ee4c805352cec57e236bdbc3837000200000000000000000019");
+
+
         //wFTM-USDC 70/30 Beetx
         let strategy2 = await new StrategyBalancerLpFactory(deployerMainnet).deploy();
         await strategy2.initialize(
