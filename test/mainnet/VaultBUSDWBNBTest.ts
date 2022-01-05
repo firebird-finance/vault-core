@@ -115,6 +115,42 @@ describe("StrategyBTCWBNB", function() {
         await strategy.setFirebirdPairs(cakeAddress, busd.address, ["0xC99E3abe7729a3869d5cAd631bcbB90e3d389AA2"]);
 
 
+        //GSCARAB-FTM Spirit
+        let strategy5 = await new StrategySushiLpFactory(deployerMainnet).deploy();
+        await strategy5.initialize(
+          "0x27228140D72a7186F70eD3052C3318f2D55c404d",
+          "0x6ab5660f0B1f174CFA84e9977c15645e4848F5D6",
+          "0xc88690163b10521d5fB86c2ECB293261F7771525",
+          1,
+          "0x6ab5660f0B1f174CFA84e9977c15645e4848F5D6",
+          "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83", //wftm
+          "0x6ab5660f0b1f174cfa84e9977c15645e4848f5d6",
+          "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83",
+          controller.address
+        );
+        //GSCARAB -> WFTM
+        await strategy5.setFirebirdPairs("0x6ab5660f0B1f174CFA84e9977c15645e4848F5D6", "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83", ["0x27228140D72a7186F70eD3052C3318f2D55c404d"]);
+
+
+        //SCARAB-FTM Spirit
+        let strategy4 = await new StrategySushiLpFactory(deployerMainnet).deploy();
+        await strategy4.initialize(
+          "0x78e70eF4eE5cc72FC25A8bDA4519c45594CcD8d4",
+          "0x6ab5660f0B1f174CFA84e9977c15645e4848F5D6",
+          "0xc88690163b10521d5fB86c2ECB293261F7771525",
+          0,
+          "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83", //wftm
+          "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83",
+          "0x2e79205648b85485731cfe3025d66cf2d3b059c4",
+          "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83",
+          controller.address
+        );
+        //GSCARAB -> WFTM
+        await strategy4.setFirebirdPairs("0x6ab5660f0B1f174CFA84e9977c15645e4848F5D6", "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83", ["0x27228140D72a7186F70eD3052C3318f2D55c404d"]);
+        //WFTM -> SCARAB
+        await strategy4.setFirebirdPairs("0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83", "0x2e79205648b85485731cfe3025d66cf2d3b059c4", ["0x78e70eF4eE5cc72FC25A8bDA4519c45594CcD8d4"]);
+
+
         //wFTM-DAI 50/50 Beetx
         let strategy3 = await new StrategyBalancerLpFactory(deployerMainnet).deploy();
         await strategy3.initialize(

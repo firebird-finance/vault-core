@@ -2,19 +2,19 @@ const {ethers, providers, Contract, BigNumber} = require('ethers');
 require('dotenv').config();
 const VaultABI = require('../artifacts/contracts/compositevaults/vaults/Vault.sol/Vault.json').abi;
 const ControllerABI = require('../artifacts/contracts/compositevaults/controllers/VaultController.sol/VaultController').abi;
-const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategyBalancerLp.sol/StrategyBalancerLp.json').abi;
+const StrategyABI = require('../artifacts/contracts/compositevaults/strategies/StrategySushiLp.sol/StrategySushiLp.json').abi;
 const ownerPrivateKey = process.env.MNEMONICCCC;
 let wallet, overrides;
 let vaultMasterAddress = '0x4036201071D148326c1F0D42AeCb8D265f28eCe0';
 
-let baseToken = '0x63386eF152E1Ddef96c065636D6cC0165Ff33291';
-let vaultAddress = '0x5098B125347eb4EF1300aBAa79D6F168F31B7D82';
-let controllerAddress = '0x6d1EdC3C5e6F5D6f6CD56e805548CF7a0dC3B6e0';
-let strategyAddress = '0x2E53bde8cAB2570B3879B39AC6aC86c96E7b111F';
+let baseToken = '0x78e70eF4eE5cc72FC25A8bDA4519c45594CcD8d4';
+let vaultAddress = '0xbE61A50a628f906eB5271c9b56858C71aB599f55';
+let controllerAddress = '0xb8EC7eeCCac23e5Aa20820b5E39F524576c98Cd8';
+let strategyAddress = '0x9cc8d9E813Fb0ed6c1c3B4AbDff7A37fcf2E7cb8';
 
-let vaultName = 'Vault:BeetxwFTMDAI';
-let vaultSymbol = 'vaultwFTMDAI';
-let controllerName = 'VaultController:BeetxwFTMDAI';
+let vaultName = 'Vault:SpiritSCARABWFTM';
+let vaultSymbol = 'vaultSCARABWFTM';
+let controllerName = 'VaultController:SpiritSCARABWFTM';
 
 const main = async () => {
     console.log('Run job', new Date());
@@ -44,13 +44,14 @@ const main = async () => {
     // strategy
     txs.push(
         await strategyContract.populateTransaction.initialize(
-            '0x63386eF152E1Ddef96c065636D6cC0165Ff33291',
-            ['0xF24Bcf4d1e507740041C9cFd2DddB29585aDCe1e'],
-            '0x8166994d9ebBe5829EC86Bd81258149B87faCfd3',
-            23,
-            '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83', //ftm
-            '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83', //ftm
-            '0x20dd72Ed959b6147912C2e529F0a0C651c33c9ce',
+            '0x78e70eF4eE5cc72FC25A8bDA4519c45594CcD8d4',
+            '0x6ab5660f0B1f174CFA84e9977c15645e4848F5D6',
+            '0xc88690163b10521d5fB86c2ECB293261F7771525',
+            0,
+            '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83', //wftm
+            '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83',
+            '0x2e79205648b85485731cfe3025d66cf2d3b059c4',
+            '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83',
             controllerAddress,
             {nonce: nonce++}
         )
@@ -58,10 +59,20 @@ const main = async () => {
     msgs.push('RECEIPT strategy init');
 
     txs.push(
-        await strategyContract.populateTransaction.setBalancerPoolPaths(
-            '0xF24Bcf4d1e507740041C9cFd2DddB29585aDCe1e',
+        await strategyContract.populateTransaction.setFirebirdPairs(
+            '0x6ab5660f0B1f174CFA84e9977c15645e4848F5D6',
             '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83',
-            '0xcde5a11a4acb4ee4c805352cec57e236bdbc3837000200000000000000000019',
+            ['0x27228140D72a7186F70eD3052C3318f2D55c404d'],
+            {nonce: nonce++}
+        )
+    );
+    msgs.push('RECEIPT strategy');
+
+    txs.push(
+        await strategyContract.populateTransaction.setFirebirdPairs(
+            '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83',
+            '0x2e79205648b85485731cfe3025d66cf2d3b059c4',
+            ['0x78e70eF4eE5cc72FC25A8bDA4519c45594CcD8d4'],
             {nonce: nonce++}
         )
     );

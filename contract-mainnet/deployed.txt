@@ -34,6 +34,20 @@ Controller                  : 0x6d1EdC3C5e6F5D6f6CD56e805548CF7a0dC3B6e0
 Strategy                    : 0x2E53bde8cAB2570B3879B39AC6aC86c96E7b111F
 
 
+// GSCARAB-FTM Spirit
+BaseToken                   : 0x27228140D72a7186F70eD3052C3318f2D55c404d
+Vault                       : 0xc650e7D7FF6330AE420Fa5c3aCB7A05b5DDf8EAe
+Controller                  : 0x89031657A68a63412f9747B5B8e52d12dee7DAbc
+Strategy                    : 0x61B7751B740ED691229F930cE571A06150b42fF0
+
+
+// SCARAB-FTM Spirit
+BaseToken                   : 0x78e70eF4eE5cc72FC25A8bDA4519c45594CcD8d4
+Vault                       : 0xbE61A50a628f906eB5271c9b56858C71aB599f55
+Controller                  : 0xb8EC7eeCCac23e5Aa20820b5E39F524576c98Cd8
+Strategy                    : 0x9cc8d9E813Fb0ed6c1c3B4AbDff7A37fcf2E7cb8
+
+
 
 ===================
 max                         : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
