@@ -11,7 +11,7 @@ let strategiesAddress = [];
 
 const main = async () => {
     console.log('Run job', new Date());
-    const provider = new providers.JsonRpcProvider("https://rpcapi.fantom.network");
+    const provider = new providers.JsonRpcProvider("https://rpc.ankr.com/fantom");
     wallet = new ethers.Wallet(ownerPrivateKey, provider);
 
     let [gasPrice] = await Promise.all([wallet.getGasPrice()]);

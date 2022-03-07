@@ -9,10 +9,10 @@ const StrategyABI = require('../../artifacts/contracts/compositevaults/strategie
 const ownerPrivateKey = process.env.MNEMONICCCC;
 let wallet, overrides;
 
-let baseToken = '0x78e70eF4eE5cc72FC25A8bDA4519c45594CcD8d4';
-let vaultAddress = '0xbE61A50a628f906eB5271c9b56858C71aB599f55';
-let controllerAddress = '0xb8EC7eeCCac23e5Aa20820b5E39F524576c98Cd8';
-let strategyAddress = '0x9cc8d9E813Fb0ed6c1c3B4AbDff7A37fcf2E7cb8';
+let baseToken = '0xbEa8E843c0fD428f79a166EaE2671E3a8Cc39A0a';
+let vaultAddress = '0xF4E3944d37E6A0C44B9B7424D6ee77AD0BcaD253';
+let controllerAddress = '0x2A3a10B065026EAF66c9E9379D0E20f3a732A61B';
+let strategyAddress = '0x4169D8f366a04deE74aa2Add5a3f44bbe6a6372D';
 
 let depositAmount = maxUint256;
 // let depositAmount = BigNumber.from("1000000");
@@ -21,7 +21,7 @@ describe('GenericVault', function() {
   let baseTokenContract, vaultContract, controllerContract, strategyContract;
 
   before(async function() {
-    const provider = new providers.JsonRpcProvider("https://rpcapi.fantom.network");
+    const provider = new providers.JsonRpcProvider("https://rpc.ankr.com/fantom");
     wallet = new ethers.Wallet(ownerPrivateKey, provider);
     let [gasPrice] = await Promise.all([wallet.getGasPrice()]);
     overrides = {gasLimit: 1600000, gasPrice};

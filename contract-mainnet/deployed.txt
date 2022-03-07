@@ -48,6 +48,27 @@ Controller                  : 0xb8EC7eeCCac23e5Aa20820b5E39F524576c98Cd8
 Strategy                    : 0x9cc8d9E813Fb0ed6c1c3B4AbDff7A37fcf2E7cb8
 
 
+// XFTM-WFTM Spirit
+BaseToken                   : 0x128aff18EfF64dA69412ea8d262DC4ef8bb3102d
+Vault                       : 0x6603691331017146cdB9541C4171C96e0F6d8d6C
+Controller                  : 0xA50F42E04D587Ad50e34D7Bd484D6482fF191dF7
+Strategy                    : 0x975A4a2f46E02dcFD1AdA50C20Bbc41A76B4e9de
+
+
+// FSM-XFTM Spirit
+BaseToken                   : 0xbEa8E843c0fD428f79a166EaE2671E3a8Cc39A0a
+Vault                       : 0xF4E3944d37E6A0C44B9B7424D6ee77AD0BcaD253
+Controller                  : 0x2A3a10B065026EAF66c9E9379D0E20f3a732A61B
+Strategy                    : 0x4169D8f366a04deE74aa2Add5a3f44bbe6a6372D
+
+
+// FSM-WFTM Spirit
+BaseToken                   : 0x457C8Efcd523058dd58CF080533B41026788eCee
+Vault                       : 0x1fd4B94a2Fad477f3FC822fB29934348A84f52Cc
+Controller                  : 0xC8F06566dae14e9f8f20368A5931d7be8A3F29b6
+Strategy                    : 0x9dd8930D7994581E6B09E12be0684eFCd2A476c5
+
+
 
 ===================
 max                         : 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff

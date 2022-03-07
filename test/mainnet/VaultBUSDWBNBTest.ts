@@ -115,6 +115,61 @@ describe("StrategyBTCWBNB", function() {
         await strategy.setFirebirdPairs(cakeAddress, busd.address, ["0xC99E3abe7729a3869d5cAd631bcbB90e3d389AA2"]);
 
 
+        //XFTM-FTM spirit
+        let strategy8 = await new StrategySushiMiniV2LpFactory(deployerMainnet).deploy();
+        await strategy8.initialize(
+          "0x128aff18EfF64dA69412ea8d262DC4ef8bb3102d",
+          ["0xaa621D2002b5a6275EF62d7a065A865167914801"],
+          "0x7aeE1FF33E1b7F6D874D488fb2533a79419ca240",
+          1,
+          "0xfBD2945D3601f21540DDD85c29C5C3CaF108B96F", //xftm
+          "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83", //ftm
+          "0xfBD2945D3601f21540DDD85c29C5C3CaF108B96F",
+          "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83",
+          controller.address
+        );
+        //fsm -> xftm
+        await strategy8.setFirebirdPairs("0xaa621D2002b5a6275EF62d7a065A865167914801", "0xfBD2945D3601f21540DDD85c29C5C3CaF108B96F", ["0xbEa8E843c0fD428f79a166EaE2671E3a8Cc39A0a"]);
+        //xftm -> ftm
+        await strategy8.setFirebirdPairs("0xfBD2945D3601f21540DDD85c29C5C3CaF108B96F", "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83", ["0x128aff18EfF64dA69412ea8d262DC4ef8bb3102d"]);
+
+
+        //FSM-XFTM spirit
+        let strategy7 = await new StrategySushiMiniV2LpFactory(deployerMainnet).deploy();
+        await strategy7.initialize(
+          "0xbEa8E843c0fD428f79a166EaE2671E3a8Cc39A0a",
+          ["0xaa621D2002b5a6275EF62d7a065A865167914801"],
+          "0x7aeE1FF33E1b7F6D874D488fb2533a79419ca240",
+          2,
+          "0xaa621D2002b5a6275EF62d7a065A865167914801", //fsm
+          "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83", //ftm
+          "0xaa621D2002b5a6275EF62d7a065A865167914801", //fsm
+          "0xfBD2945D3601f21540DDD85c29C5C3CaF108B96F", //xftm
+          controller.address
+        );
+        //fsm -> ftm
+        await strategy7.setFirebirdPairs("0xaa621D2002b5a6275EF62d7a065A865167914801", "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83", ["0x457C8Efcd523058dd58CF080533B41026788eCee"]);
+        //fsm -> xftm
+        await strategy7.setFirebirdPairs("0xaa621D2002b5a6275EF62d7a065A865167914801", "0xfBD2945D3601f21540DDD85c29C5C3CaF108B96F", ["0xbEa8E843c0fD428f79a166EaE2671E3a8Cc39A0a"]);
+
+
+        //FSM-FTM spirit
+        let strategy6 = await new StrategySushiMiniV2LpFactory(deployerMainnet).deploy();
+        await strategy6.initialize(
+          "0x457C8Efcd523058dd58CF080533B41026788eCee",
+          ["0xaa621D2002b5a6275EF62d7a065A865167914801"],
+          "0x7aeE1FF33E1b7F6D874D488fb2533a79419ca240",
+          0,
+          "0xaa621D2002b5a6275EF62d7a065A865167914801", //fsm
+          "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83", //ftm
+          "0xaa621D2002b5a6275EF62d7a065A865167914801",
+          "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83",
+          controller.address
+        );
+        //fsm -> ftm
+        await strategy6.setFirebirdPairs("0xaa621D2002b5a6275EF62d7a065A865167914801", "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83", ["0x457C8Efcd523058dd58CF080533B41026788eCee"]);
+
+
         //GSCARAB-FTM Spirit
         let strategy5 = await new StrategySushiLpFactory(deployerMainnet).deploy();
         await strategy5.initialize(
