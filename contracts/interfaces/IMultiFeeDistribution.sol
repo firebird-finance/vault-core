@@ -14,6 +14,8 @@ interface IMultiFeeDistribution {
     function getReward() external;
     // Withdraw full unlocked balance and claim pending rewards
     function exit() external;
+    // Withdraw full unlocked balance and claim pending rewards
+    function emergencyWithdraw() external;
     // Withdraw all currently locked tokens where the unlock time has passed
     function withdrawExpiredLocks() external;
 
